@@ -1,0 +1,302 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Personal Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="fix-col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Prefix" formControlName="lastName">
+              </mat-form-field>
+            </div>
+            <div class="name-col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="*First name" formControlName="firstName">
+                <mat-error *ngIf="addressForm.controls['firstName'].hasError('required')">
+                  First name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="name-col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="*Middle name" formControlName="middleName">
+                <mat-error *ngIf="addressForm.controls['middleName'].hasError('required')">
+                  Middle name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="name-col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="*Last name" formControlName="lastName">
+                <mat-error *ngIf="addressForm.controls['lastName'].hasError('required')">
+                  Last name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="fix-col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Suffix (Sr., Jr., III, IV)" formControlName="lastName">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="*Mobile" formControlName="mobile">            
+                <mat-error *ngIf="addressForm.controls['mobile'].hasError('required')">
+                  Mobile is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-radio-group formControlName="gender">
+                <mat-radio-button value="M">Male</mat-radio-button>
+                <mat-radio-button value="F">Female</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="col">
+              <mat-form-field appearance="fill">
+                <mat-label>*Birthdate</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="birthdate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>              
+            <div class="col">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="*Civil Status" formControlName="civil">
+                  <mat-option *ngFor="let civil of statuses" [value]="civil.value">
+                    {{ civil.text }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addressForm.controls['civil'].hasError('required')">
+                  Civil Status is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>      
+            <div class="col">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="*Religion" formControlName="religion">
+                  <mat-option *ngFor="let religion of religions" [value]="religion.value">
+                    {{ religion.text }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addressForm.controls['religion'].hasError('required')">
+                  Religion is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>      
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="*Address" formControlName="address"></textarea>
+                <mat-error *ngIf="addressForm.controls['address'].hasError('required')">
+                  Address is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="!hasUnitNumber">
+            <div class="col">
+              <button mat-button type="button" (click)="hasUnitNumber = !hasUnitNumber">
+                + Add C/O, Apt, Suite, Unit
+              </button>
+            </div>
+          </div>
+          <div class="row" *ngIf="hasUnitNumber">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          Identification
+          <img src="assets/farmer.png" >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Barangay" formControlName="barangay">
+            <mat-error *ngIf="addressForm.controls['barangay'].hasError('required')">
+              Barangay is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="*Province" formControlName="province">
+              <mat-option *ngFor="let province of provinces" [value]="province">
+                {{ province }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="addressForm.controls['province'].hasError('required')">
+              Province is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*City" formControlName="city">
+            <mat-error *ngIf="addressForm.controls['city'].hasError('required')">
+              City is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number" formControlName="postalCode">
+            <mat-hint align="end">{{postalCode.value.length}} / 4</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Mother's maiden name" formControlName="mother">
+            <mat-error *ngIf="addressForm.controls['mother'].hasError('required')">
+              Mother's maiden name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Educational Background" formControlName="education">
+              <mat-option *ngFor="let education of eds" [value]="education.value">
+                {{ education.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>        
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isHousehold">Household Head</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isPwd">Person With Disability</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isBen">4Ps Beneficiary</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isInd">Indigenous</mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Farming Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Farm type" formControlName="farmType">
+              <mat-option *ngFor="let farmType of farmTypes" [value]="farmType.value">
+                {{ farmType.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="name-org-col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farm Name / Coop Name / Assoc Name" formControlName="farmName">
+            <mat-error *ngIf="addressForm.controls['farmName'].hasError('required')">
+              Farm Name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farm Lot (ha)" type="number" 
+              formControlName="farmLot">
+              <mat-error *ngIf="addressForm.controls['farmLot'].hasError('required')">
+                Farm Lot is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farming since" type="number" formControlName="farmSince">
+              <mat-error *ngIf="addressForm.controls['farmSince'].hasError('required')">
+                Farming since is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Area devoted for crops (ha)" type="number" formControlName="farmArea">
+              <mat-error *ngIf="addressForm.controls['farmArea'].hasError('required')">
+                Farm Area is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isIrrigated">Irrigated</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>Livelihood</mat-label>
+          <mat-radio-group formControlName="livelihood">
+            <mat-radio-button value="subsistence">Subsistence Farming</mat-radio-button>
+            <mat-radio-button value="commercial">Commercial Farming</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isOrgMember">Member of Org</mat-checkbox>
+        </div>
+        <div class="name-org-col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name of Organization" formControlName="orgName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-label>Farm Type(s)</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isAqua">Aqua farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isCrop">Crop Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isDairy">Dairy Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isFruit">Fruit farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isMeat">Meat Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isPoultry">Poultry Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>Farming Method</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isConventional">Conventional / Chemical Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isSustainable">Low-input Sustainable Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isNatural">Natural Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isIntegrated">Integrated Farming System</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isMonoculture">Monoculture Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isOrganic">Organic Farming</mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+
+  </mat-card>
+
+</form>

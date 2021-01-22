@@ -1,0 +1,1105 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "LoopBack Application",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/farmers/count": {
+      "get": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "count",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Farmer model count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "loopback.Count",
+                  "properties": {
+                    "count": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "title": "Farmer.WhereFilter",
+              "additionalProperties": true
+            }
+          }
+        ],
+        "operationId": "FarmerController.count"
+      }
+    },
+    "/farmers/{id}": {
+      "put": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "replaceById",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "204": {
+            "description": "Farmer PUT success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Farmer"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "FarmerController.replaceById"
+      },
+      "patch": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "204": {
+            "description": "Farmer PATCH success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FarmerPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "FarmerController.updateById"
+      },
+      "get": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "findById",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Farmer model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FarmerWithRelations"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "FarmerController.findById"
+      },
+      "delete": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "204": {
+            "description": "Farmer DELETE success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "FarmerController.deleteById"
+      }
+    },
+    "/farmers": {
+      "post": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "create",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Farmer model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Farmer"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewFarmer"
+              }
+            }
+          }
+        },
+        "operationId": "FarmerController.create"
+      },
+      "patch": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "updateAll",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Farmer PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "loopback.Count",
+                  "properties": {
+                    "count": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FarmerPartial"
+              }
+            }
+          }
+        },
+        "operationId": "FarmerController.updateAll"
+      },
+      "get": {
+        "x-controller-name": "FarmerController",
+        "x-operation-name": "find",
+        "tags": [
+          "FarmerController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Farmer model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FarmerWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "title": "Farmer.Filter",
+              "properties": {
+                "where": {
+                  "title": "Farmer.WhereFilter",
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "fields": {
+                  "title": "Farmer.Fields",
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "boolean"
+                    },
+                    "firstName": {
+                      "type": "boolean"
+                    },
+                    "middleName": {
+                      "type": "boolean"
+                    },
+                    "lastName": {
+                      "type": "boolean"
+                    },
+                    "suffix": {
+                      "type": "boolean"
+                    },
+                    "mobile": {
+                      "type": "boolean"
+                    },
+                    "gender": {
+                      "type": "boolean"
+                    },
+                    "civil": {
+                      "type": "boolean"
+                    },
+                    "birthdate": {
+                      "type": "boolean"
+                    },
+                    "religion": {
+                      "type": "boolean"
+                    },
+                    "mother": {
+                      "type": "boolean"
+                    },
+                    "isHousehold": {
+                      "type": "boolean"
+                    },
+                    "isPwd": {
+                      "type": "boolean"
+                    },
+                    "isBen": {
+                      "type": "boolean"
+                    },
+                    "isInd": {
+                      "type": "boolean"
+                    },
+                    "address": {
+                      "type": "boolean"
+                    },
+                    "address2": {
+                      "type": "boolean"
+                    },
+                    "barangay": {
+                      "type": "boolean"
+                    },
+                    "province": {
+                      "type": "boolean"
+                    },
+                    "city": {
+                      "type": "boolean"
+                    },
+                    "postalCode": {
+                      "type": "boolean"
+                    },
+                    "education": {
+                      "type": "boolean"
+                    },
+                    "livelihood": {
+                      "type": "boolean"
+                    },
+                    "isAqua": {
+                      "type": "boolean"
+                    },
+                    "isCrop": {
+                      "type": "boolean"
+                    },
+                    "isDairy": {
+                      "type": "boolean"
+                    },
+                    "isFruit": {
+                      "type": "boolean"
+                    },
+                    "isMeat": {
+                      "type": "boolean"
+                    },
+                    "isPoultry": {
+                      "type": "boolean"
+                    },
+                    "farmType": {
+                      "type": "boolean"
+                    },
+                    "farmLot": {
+                      "type": "boolean"
+                    },
+                    "farmName": {
+                      "type": "boolean"
+                    },
+                    "farmSince": {
+                      "type": "boolean"
+                    },
+                    "farmArea": {
+                      "type": "boolean"
+                    },
+                    "isIrrigated": {
+                      "type": "boolean"
+                    },
+                    "isOrgMember": {
+                      "type": "boolean"
+                    },
+                    "orgName": {
+                      "type": "boolean"
+                    },
+                    "isConventional": {
+                      "type": "boolean"
+                    },
+                    "isSustainable": {
+                      "type": "boolean"
+                    },
+                    "isNatural": {
+                      "type": "boolean"
+                    },
+                    "isIntegrated": {
+                      "type": "boolean"
+                    },
+                    "isMonoculture": {
+                      "type": "boolean"
+                    },
+                    "isOrganic": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "offset": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "example": 100
+                },
+                "skip": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "order": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        ],
+        "operationId": "FarmerController.find"
+      }
+    },
+    "/ping": {
+      "get": {
+        "x-controller-name": "PingController",
+        "x-operation-name": "ping",
+        "tags": [
+          "PingController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ping Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "greeting": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "headers": {
+                      "type": "object",
+                      "properties": {
+                        "Content-Type": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "PingController.ping"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Farmer": {
+        "title": "Farmer",
+        "properties": {
+          "prefix": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "suffix": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "civil": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "religion": {
+            "type": "string"
+          },
+          "mother": {
+            "type": "string"
+          },
+          "isHousehold": {
+            "type": "boolean"
+          },
+          "isPwd": {
+            "type": "boolean"
+          },
+          "isBen": {
+            "type": "boolean"
+          },
+          "isInd": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "barangay": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "number"
+          },
+          "education": {
+            "type": "string"
+          },
+          "livelihood": {
+            "type": "string"
+          },
+          "isAqua": {
+            "type": "boolean"
+          },
+          "isCrop": {
+            "type": "boolean"
+          },
+          "isDairy": {
+            "type": "boolean"
+          },
+          "isFruit": {
+            "type": "boolean"
+          },
+          "isMeat": {
+            "type": "boolean"
+          },
+          "isPoultry": {
+            "type": "boolean"
+          },
+          "farmType": {
+            "type": "string"
+          },
+          "farmLot": {
+            "type": "number"
+          },
+          "farmName": {
+            "type": "string"
+          },
+          "farmSince": {
+            "type": "number"
+          },
+          "farmArea": {
+            "type": "number"
+          },
+          "isIrrigated": {
+            "type": "boolean"
+          },
+          "isOrgMember": {
+            "type": "boolean"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "isConventional": {
+            "type": "boolean"
+          },
+          "isSustainable": {
+            "type": "boolean"
+          },
+          "isNatural": {
+            "type": "boolean"
+          },
+          "isIntegrated": {
+            "type": "boolean"
+          },
+          "isMonoculture": {
+            "type": "boolean"
+          },
+          "isOrganic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "firstName",
+          "middleName",
+          "lastName",
+          "mobile",
+          "gender",
+          "civil",
+          "birthdate",
+          "religion",
+          "mother",
+          "address",
+          "barangay",
+          "province",
+          "city",
+          "education",
+          "farmLot",
+          "farmName",
+          "farmSince",
+          "farmArea"
+        ],
+        "additionalProperties": true
+      },
+      "NewFarmer": {
+        "title": "NewFarmer",
+        "description": "(Schema options: { title: 'NewFarmer', exclude: [ 'id' ] })",
+        "properties": {
+          "prefix": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "suffix": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "civil": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "religion": {
+            "type": "string"
+          },
+          "mother": {
+            "type": "string"
+          },
+          "isHousehold": {
+            "type": "boolean"
+          },
+          "isPwd": {
+            "type": "boolean"
+          },
+          "isBen": {
+            "type": "boolean"
+          },
+          "isInd": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "barangay": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "number"
+          },
+          "education": {
+            "type": "string"
+          },
+          "livelihood": {
+            "type": "string"
+          },
+          "isAqua": {
+            "type": "boolean"
+          },
+          "isCrop": {
+            "type": "boolean"
+          },
+          "isDairy": {
+            "type": "boolean"
+          },
+          "isFruit": {
+            "type": "boolean"
+          },
+          "isMeat": {
+            "type": "boolean"
+          },
+          "isPoultry": {
+            "type": "boolean"
+          },
+          "farmType": {
+            "type": "string"
+          },
+          "farmLot": {
+            "type": "number"
+          },
+          "farmName": {
+            "type": "string"
+          },
+          "farmSince": {
+            "type": "number"
+          },
+          "farmArea": {
+            "type": "number"
+          },
+          "isIrrigated": {
+            "type": "boolean"
+          },
+          "isOrgMember": {
+            "type": "boolean"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "isConventional": {
+            "type": "boolean"
+          },
+          "isSustainable": {
+            "type": "boolean"
+          },
+          "isNatural": {
+            "type": "boolean"
+          },
+          "isIntegrated": {
+            "type": "boolean"
+          },
+          "isMonoculture": {
+            "type": "boolean"
+          },
+          "isOrganic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "firstName",
+          "middleName",
+          "lastName",
+          "mobile",
+          "gender",
+          "civil",
+          "birthdate",
+          "religion",
+          "mother",
+          "address",
+          "barangay",
+          "province",
+          "city",
+          "education",
+          "farmLot",
+          "farmName",
+          "farmSince",
+          "farmArea"
+        ],
+        "additionalProperties": true
+      },
+      "FarmerWithRelations": {
+        "title": "FarmerWithRelations",
+        "description": "(Schema options: { includeRelations: true })",
+        "properties": {
+          "prefix": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "suffix": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "civil": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "religion": {
+            "type": "string"
+          },
+          "mother": {
+            "type": "string"
+          },
+          "isHousehold": {
+            "type": "boolean"
+          },
+          "isPwd": {
+            "type": "boolean"
+          },
+          "isBen": {
+            "type": "boolean"
+          },
+          "isInd": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "barangay": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "number"
+          },
+          "education": {
+            "type": "string"
+          },
+          "livelihood": {
+            "type": "string"
+          },
+          "isAqua": {
+            "type": "boolean"
+          },
+          "isCrop": {
+            "type": "boolean"
+          },
+          "isDairy": {
+            "type": "boolean"
+          },
+          "isFruit": {
+            "type": "boolean"
+          },
+          "isMeat": {
+            "type": "boolean"
+          },
+          "isPoultry": {
+            "type": "boolean"
+          },
+          "farmType": {
+            "type": "string"
+          },
+          "farmLot": {
+            "type": "number"
+          },
+          "farmName": {
+            "type": "string"
+          },
+          "farmSince": {
+            "type": "number"
+          },
+          "farmArea": {
+            "type": "number"
+          },
+          "isIrrigated": {
+            "type": "boolean"
+          },
+          "isOrgMember": {
+            "type": "boolean"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "isConventional": {
+            "type": "boolean"
+          },
+          "isSustainable": {
+            "type": "boolean"
+          },
+          "isNatural": {
+            "type": "boolean"
+          },
+          "isIntegrated": {
+            "type": "boolean"
+          },
+          "isMonoculture": {
+            "type": "boolean"
+          },
+          "isOrganic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "firstName",
+          "middleName",
+          "lastName",
+          "mobile",
+          "gender",
+          "civil",
+          "birthdate",
+          "religion",
+          "mother",
+          "address",
+          "barangay",
+          "province",
+          "city",
+          "education",
+          "farmLot",
+          "farmName",
+          "farmSince",
+          "farmArea"
+        ],
+        "additionalProperties": true
+      },
+      "FarmerPartial": {
+        "title": "FarmerPartial",
+        "description": "(Schema options: { partial: true })",
+        "properties": {
+          "prefix": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "suffix": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "civil": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "religion": {
+            "type": "string"
+          },
+          "mother": {
+            "type": "string"
+          },
+          "isHousehold": {
+            "type": "boolean"
+          },
+          "isPwd": {
+            "type": "boolean"
+          },
+          "isBen": {
+            "type": "boolean"
+          },
+          "isInd": {
+            "type": "boolean"
+          },
+          "address": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "barangay": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "number"
+          },
+          "education": {
+            "type": "string"
+          },
+          "livelihood": {
+            "type": "string"
+          },
+          "isAqua": {
+            "type": "boolean"
+          },
+          "isCrop": {
+            "type": "boolean"
+          },
+          "isDairy": {
+            "type": "boolean"
+          },
+          "isFruit": {
+            "type": "boolean"
+          },
+          "isMeat": {
+            "type": "boolean"
+          },
+          "isPoultry": {
+            "type": "boolean"
+          },
+          "farmType": {
+            "type": "string"
+          },
+          "farmLot": {
+            "type": "number"
+          },
+          "farmName": {
+            "type": "string"
+          },
+          "farmSince": {
+            "type": "number"
+          },
+          "farmArea": {
+            "type": "number"
+          },
+          "isIrrigated": {
+            "type": "boolean"
+          },
+          "isOrgMember": {
+            "type": "boolean"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "isConventional": {
+            "type": "boolean"
+          },
+          "isSustainable": {
+            "type": "boolean"
+          },
+          "isNatural": {
+            "type": "boolean"
+          },
+          "isIntegrated": {
+            "type": "boolean"
+          },
+          "isMonoculture": {
+            "type": "boolean"
+          },
+          "isOrganic": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}
