@@ -1,46 +1,52 @@
 <div class="mat-elevation-z8">
-  <button mat-raised-button color="primary" type="submit">New Farmer</button>
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
-    </ng-container>
+  <mat-form-field>
+    <input matInput placeholder="Search" #input>
+  </mat-form-field>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
-      <td mat-cell *matCellDef="let row">{{row.lastName}}</td>
-    </ng-container>
+    <table mat-table class="full-width-table" 
+      matSort matSortActive="lastName" matSortDisableClear matSortDirection="asc"
+      aria-label="Elements">
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
-      <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+        <td mat-cell *matCellDef="let row">{{row.lastName}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="gender">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
-      <td mat-cell *matCellDef="let row">{{row.gender}}</td>
-    </ng-container>
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+        <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="mobile">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile Number</th>
-      <td mat-cell *matCellDef="let row">{{row.mobile}}</td>
-    </ng-container>
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+        <td mat-cell *matCellDef="let row">{{row.gender}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="city">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Farm Location</th>
-      <td mat-cell *matCellDef="let row">{{row.city}}, {{row.province}}</td>
-    </ng-container>
+      <ng-container matColumnDef="mobile">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile Number</th>
+        <td mat-cell *matCellDef="let row">{{row.mobile}}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Farm Location</th>
+        <td mat-cell *matCellDef="let row">{{row.city}}, {{row.province}}</td>
+      </ng-container>
 
-  <mat-paginator #paginator
-      [length]="100"
-      [pageIndex]="0"
-      [pageSize]="50"
-      [pageSizeOptions]="[25, 50, 100, 250]">
-  </mat-paginator>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink] = "['/farmer/',row.id]"></tr>
+    </table>
+
+    <mat-paginator #paginator
+        [length]="100"
+        [pageIndex]="0"
+        [pageSize]="12"
+        [pageSizeOptions]="[25, 50, 100, 250]">
+    </mat-paginator>
+
 </div>

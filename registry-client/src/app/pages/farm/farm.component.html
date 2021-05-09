@@ -1,0 +1,110 @@
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+<mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Farming Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Farm type" formControlName="farmType">
+              <mat-option *ngFor="let farmType of farmTypes" [value]="farmType.value">
+                {{ farmType.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="name-org-col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farm Name / Coop Name / Assoc Name" formControlName="farmName">
+            <mat-error *ngIf="addressForm.controls['farmName'].hasError('required')">
+              Farm Name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farm Lot (ha)" type="number" 
+              formControlName="farmLot">
+              <mat-error *ngIf="addressForm.controls['farmLot'].hasError('required')">
+                Farm Lot is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Farming since" type="number" formControlName="farmSince">
+              <mat-error *ngIf="addressForm.controls['farmSince'].hasError('required')">
+                Farming since is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="*Area devoted for crops (ha)" type="number" formControlName="farmArea">
+              <mat-error *ngIf="addressForm.controls['farmArea'].hasError('required')">
+                Farm Area is <strong>required</strong>
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isIrrigated">Irrigated</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>Livelihood</mat-label>
+          <mat-radio-group formControlName="livelihood">
+            <mat-radio-button value="subsistence">Subsistence Farming</mat-radio-button>
+            <mat-radio-button value="commercial">Commercial Farming</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="col">
+          <mat-checkbox class="full-width" formControlerName="isOrgMember">Member of Org</mat-checkbox>
+        </div>
+        <div class="name-org-col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name of Organization" formControlName="orgName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-label>Farm Type(s)</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isAqua">Aqua farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isCrop">Crop Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isDairy">Dairy Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isFruit">Fruit farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isMeat">Meat Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isPoultry">Poultry Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>Farming Method</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isConventional">Conventional / Chemical Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isSustainable">Low-input Sustainable Farming</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isNatural">Natural Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isIntegrated">Integrated Farming System</mat-checkbox>
+        </div>
+        <div class="col">
+          <mat-label>&nbsp;</mat-label>
+          <mat-checkbox class="full-width" formControlerName="isMonoculture">Monoculture Farming</mat-checkbox>
+          <mat-checkbox class="full-width" formControlerName="isOrganic">Organic Farming</mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+
+  </mat-card>
+</form>

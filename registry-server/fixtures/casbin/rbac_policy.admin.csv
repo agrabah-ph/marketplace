@@ -1,0 +1,6 @@
+p, admin, farm*, view-all
+p, admin, farm1, donate
+p, admin, farm2, donate
+p, admin, farmer*, view-all
+g, bob@projects.com, admin
+g, user@example.com, admin

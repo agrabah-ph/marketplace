@@ -13,6 +13,7 @@ import { Farmer } from '../models/farmer';
 import { FarmerPartial } from '../models/farmer-partial';
 import { FarmerWithRelations } from '../models/farmer-with-relations';
 import { NewFarmer } from '../models/new-farmer';
+import { Count as LoopbackCount } from '../models/loopback/count';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +38,12 @@ export class FarmerControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   count$Response(params?: {
-    where?: { [key: string]: any };
-  }): Observable<StrictHttpResponse<{ 'count'?: number }>> {
+    where?: any;
+  }): Observable<StrictHttpResponse<LoopbackCount>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerCountPath, 'get');
     if (params) {
-      rb.query('where', params.where, {"style":"deepObject","explode":true});
+      rb.query('where', params.where, {});
     }
 
     return this.http.request(rb.build({
@@ -51,7 +52,7 @@ export class FarmerControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<{ 'count'?: number }>;
+        return r as StrictHttpResponse<LoopbackCount>;
       })
     );
   }
@@ -63,11 +64,11 @@ export class FarmerControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   count(params?: {
-    where?: { [key: string]: any };
-  }): Observable<{ 'count'?: number }> {
+    where?: any;
+  }): Observable<LoopbackCount> {
 
     return this.count$Response(params).pipe(
-      map((r: StrictHttpResponse<{ 'count'?: number }>) => r.body as { 'count'?: number })
+      map((r: StrictHttpResponse<LoopbackCount>) => r.body as LoopbackCount)
     );
   }
 
@@ -84,11 +85,13 @@ export class FarmerControllerService extends BaseService {
    */
   findById$Response(params: {
     id: string;
+    filter?: any;
   }): Observable<StrictHttpResponse<FarmerWithRelations>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerFindByIdPath, 'get');
     if (params) {
       rb.path('id', params.id, {});
+      rb.query('filter', params.filter, {});
     }
 
     return this.http.request(rb.build({
@@ -110,6 +113,7 @@ export class FarmerControllerService extends BaseService {
    */
   findById(params: {
     id: string;
+    filter?: any;
   }): Observable<FarmerWithRelations> {
 
     return this.findById$Response(params).pipe(
@@ -131,7 +135,7 @@ export class FarmerControllerService extends BaseService {
   replaceById$Response(params: {
     id: string;
     body?: Farmer
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerReplaceByIdPath, 'put');
     if (params) {
@@ -140,12 +144,12 @@ export class FarmerControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -159,10 +163,10 @@ export class FarmerControllerService extends BaseService {
   replaceById(params: {
     id: string;
     body?: Farmer
-  }): Observable<void> {
+  }): Observable<any> {
 
     return this.replaceById$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -179,7 +183,7 @@ export class FarmerControllerService extends BaseService {
    */
   deleteById$Response(params: {
     id: string;
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerDeleteByIdPath, 'delete');
     if (params) {
@@ -187,12 +191,12 @@ export class FarmerControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -205,10 +209,10 @@ export class FarmerControllerService extends BaseService {
    */
   deleteById(params: {
     id: string;
-  }): Observable<void> {
+  }): Observable<any> {
 
     return this.deleteById$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -226,7 +230,7 @@ export class FarmerControllerService extends BaseService {
   updateById$Response(params: {
     id: string;
     body?: FarmerPartial
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerUpdateByIdPath, 'patch');
     if (params) {
@@ -235,12 +239,12 @@ export class FarmerControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -254,10 +258,10 @@ export class FarmerControllerService extends BaseService {
   updateById(params: {
     id: string;
     body?: FarmerPartial
-  }): Observable<void> {
+  }): Observable<any> {
 
     return this.updateById$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -273,18 +277,19 @@ export class FarmerControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   find$Response(params?: {
-    filter?: { 'where'?: { [key: string]: any }, 'fields'?: { 'prefix'?: boolean, 'id'?: boolean, 'firstName'?: boolean, 'middleName'?: boolean, 'lastName'?: boolean, 'suffix'?: boolean, 'mobile'?: boolean, 'gender'?: boolean, 'civil'?: boolean, 'birthdate'?: boolean, 'religion'?: boolean, 'mother'?: boolean, 'isHousehold'?: boolean, 'isPwd'?: boolean, 'isBen'?: boolean, 'isInd'?: boolean, 'address'?: boolean, 'address2'?: boolean, 'barangay'?: boolean, 'province'?: boolean, 'city'?: boolean, 'postalCode'?: boolean, 'education'?: boolean, 'livelihood'?: boolean, 'isAqua'?: boolean, 'isCrop'?: boolean, 'isDairy'?: boolean, 'isFruit'?: boolean, 'isMeat'?: boolean, 'isPoultry'?: boolean, 'farmType'?: boolean, 'farmLot'?: boolean, 'farmName'?: boolean, 'farmSince'?: boolean, 'farmArea'?: boolean, 'isIrrigated'?: boolean, 'isOrgMember'?: boolean, 'orgName'?: boolean, 'isConventional'?: boolean, 'isSustainable'?: boolean, 'isNatural'?: boolean, 'isIntegrated'?: boolean, 'isMonoculture'?: boolean, 'isOrganic'?: boolean, [key: string]: any }, 'offset'?: number, 'limit'?: number, 'skip'?: number, 'order'?: Array<string> };
+    filter?: any;
   }): Observable<StrictHttpResponse<Array<FarmerWithRelations>>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerFindPath, 'get');
     if (params) {
-      rb.query('filter', params.filter, {"style":"deepObject","explode":true});
+      rb.query('filter', params.filter, {});
     }
 
-    return this.http.request(rb.build({
+    const requestObject = rb.build({
       responseType: 'json',
       accept: 'application/json'
-    })).pipe(
+    })
+    return this.http.request(requestObject).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
         return r as StrictHttpResponse<Array<FarmerWithRelations>>;
@@ -299,7 +304,7 @@ export class FarmerControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   find(params?: {
-    filter?: { 'where'?: { [key: string]: any }, 'fields'?: { 'prefix'?: boolean, 'id'?: boolean, 'firstName'?: boolean, 'middleName'?: boolean, 'lastName'?: boolean, 'suffix'?: boolean, 'mobile'?: boolean, 'gender'?: boolean, 'civil'?: boolean, 'birthdate'?: boolean, 'religion'?: boolean, 'mother'?: boolean, 'isHousehold'?: boolean, 'isPwd'?: boolean, 'isBen'?: boolean, 'isInd'?: boolean, 'address'?: boolean, 'address2'?: boolean, 'barangay'?: boolean, 'province'?: boolean, 'city'?: boolean, 'postalCode'?: boolean, 'education'?: boolean, 'livelihood'?: boolean, 'isAqua'?: boolean, 'isCrop'?: boolean, 'isDairy'?: boolean, 'isFruit'?: boolean, 'isMeat'?: boolean, 'isPoultry'?: boolean, 'farmType'?: boolean, 'farmLot'?: boolean, 'farmName'?: boolean, 'farmSince'?: boolean, 'farmArea'?: boolean, 'isIrrigated'?: boolean, 'isOrgMember'?: boolean, 'orgName'?: boolean, 'isConventional'?: boolean, 'isSustainable'?: boolean, 'isNatural'?: boolean, 'isIntegrated'?: boolean, 'isMonoculture'?: boolean, 'isOrganic'?: boolean, [key: string]: any }, 'offset'?: number, 'limit'?: number, 'skip'?: number, 'order'?: Array<string> };
+    filter?: any;
   }): Observable<Array<FarmerWithRelations>> {
 
     return this.find$Response(params).pipe(
@@ -365,11 +370,13 @@ export class FarmerControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   updateAll$Response(params?: {
+    where?: any;
     body?: FarmerPartial
-  }): Observable<StrictHttpResponse<{ 'count'?: number }>> {
+  }): Observable<StrictHttpResponse<LoopbackCount>> {
 
     const rb = new RequestBuilder(this.rootUrl, FarmerControllerService.FarmerControllerUpdateAllPath, 'patch');
     if (params) {
+      rb.query('where', params.where, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -379,7 +386,7 @@ export class FarmerControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<{ 'count'?: number }>;
+        return r as StrictHttpResponse<LoopbackCount>;
       })
     );
   }
@@ -391,11 +398,12 @@ export class FarmerControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   updateAll(params?: {
+    where?: any;
     body?: FarmerPartial
-  }): Observable<{ 'count'?: number }> {
+  }): Observable<LoopbackCount> {
 
     return this.updateAll$Response(params).pipe(
-      map((r: StrictHttpResponse<{ 'count'?: number }>) => r.body as { 'count'?: number })
+      map((r: StrictHttpResponse<LoopbackCount>) => r.body as LoopbackCount)
     );
   }
 
