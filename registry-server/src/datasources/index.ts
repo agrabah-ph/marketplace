@@ -1,1 +1,1 @@
-export * from './agdocdb.datasource';
+export * from './db.datasource';

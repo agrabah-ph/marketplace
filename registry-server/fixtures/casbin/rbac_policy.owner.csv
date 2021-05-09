@@ -1,0 +1,8 @@
+p, p1_owner, farm1, show-balance
+p, p1_owner, farm1, donate
+p, p1_owner, farm1, withdraw
+g, john@doe.com, p1_owner
+p, p2_owner, farm2, show-balance
+p, p2_owner, farm2, donate
+p, p2_owner, farm2, withdraw
+g, jane@doe.com, p2_owner

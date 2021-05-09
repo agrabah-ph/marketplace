@@ -2,7 +2,7 @@
 /* eslint-disable */
 
 /**
- * (Schema options: { partial: true })
+ * (tsType: Partial<Farmer>, schemaOptions: { partial: true })
  */
 export interface FarmerPartial {
   address?: string;

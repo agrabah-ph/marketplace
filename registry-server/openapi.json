@@ -1,8 +1,14 @@
+
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "LoopBack Application",
-    "version": "1.0.0"
+    "title": "loopback-io",
+    "version": "0.0.1",
+    "description": "apps",
+    "contact": {
+      "name": "strata",
+      "email": "devops@strata.ph"
+    }
   },
   "paths": {
     "/farmers/count": {
@@ -18,13 +24,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "title": "loopback.Count",
-                  "properties": {
-                    "count": {
-                      "type": "number"
-                    }
-                  }
+                  "$ref": "#/components/schemas/loopback.Count"
                 }
               }
             }
@@ -34,12 +34,15 @@
           {
             "name": "where",
             "in": "query",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "object",
-              "title": "Farmer.WhereFilter",
-              "additionalProperties": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Farmer.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Farmer>"
+                }
+              }
             }
           }
         ],
@@ -55,7 +58,14 @@
         ],
         "responses": {
           "204": {
-            "description": "Farmer PUT success"
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Farmer PUT success"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -88,7 +98,14 @@
         ],
         "responses": {
           "204": {
-            "description": "Farmer PATCH success"
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Farmer PATCH success"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -139,6 +156,17 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Farmer.Filter"
+                }
+              }
+            }
           }
         ],
         "operationId": "FarmerController.findById"
@@ -151,7 +179,14 @@
         ],
         "responses": {
           "204": {
-            "description": "Farmer DELETE success"
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Farmer DELETE success"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -209,18 +244,28 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "title": "loopback.Count",
-                  "properties": {
-                    "count": {
-                      "type": "number"
-                    }
-                  }
+                  "$ref": "#/components/schemas/loopback.Count"
                 }
               }
             }
           }
         },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Farmer.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<Farmer>"
+                }
+              }
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -257,181 +302,319 @@
           {
             "name": "filter",
             "in": "query",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "object",
-              "title": "Farmer.Filter",
-              "properties": {
-                "where": {
-                  "title": "Farmer.WhereFilter",
-                  "type": "object",
-                  "additionalProperties": true
-                },
-                "fields": {
-                  "title": "Farmer.Fields",
-                  "type": "object",
-                  "properties": {
-                    "prefix": {
-                      "type": "boolean"
-                    },
-                    "id": {
-                      "type": "boolean"
-                    },
-                    "firstName": {
-                      "type": "boolean"
-                    },
-                    "middleName": {
-                      "type": "boolean"
-                    },
-                    "lastName": {
-                      "type": "boolean"
-                    },
-                    "suffix": {
-                      "type": "boolean"
-                    },
-                    "mobile": {
-                      "type": "boolean"
-                    },
-                    "gender": {
-                      "type": "boolean"
-                    },
-                    "civil": {
-                      "type": "boolean"
-                    },
-                    "birthdate": {
-                      "type": "boolean"
-                    },
-                    "religion": {
-                      "type": "boolean"
-                    },
-                    "mother": {
-                      "type": "boolean"
-                    },
-                    "isHousehold": {
-                      "type": "boolean"
-                    },
-                    "isPwd": {
-                      "type": "boolean"
-                    },
-                    "isBen": {
-                      "type": "boolean"
-                    },
-                    "isInd": {
-                      "type": "boolean"
-                    },
-                    "address": {
-                      "type": "boolean"
-                    },
-                    "address2": {
-                      "type": "boolean"
-                    },
-                    "barangay": {
-                      "type": "boolean"
-                    },
-                    "province": {
-                      "type": "boolean"
-                    },
-                    "city": {
-                      "type": "boolean"
-                    },
-                    "postalCode": {
-                      "type": "boolean"
-                    },
-                    "education": {
-                      "type": "boolean"
-                    },
-                    "livelihood": {
-                      "type": "boolean"
-                    },
-                    "isAqua": {
-                      "type": "boolean"
-                    },
-                    "isCrop": {
-                      "type": "boolean"
-                    },
-                    "isDairy": {
-                      "type": "boolean"
-                    },
-                    "isFruit": {
-                      "type": "boolean"
-                    },
-                    "isMeat": {
-                      "type": "boolean"
-                    },
-                    "isPoultry": {
-                      "type": "boolean"
-                    },
-                    "farmType": {
-                      "type": "boolean"
-                    },
-                    "farmLot": {
-                      "type": "boolean"
-                    },
-                    "farmName": {
-                      "type": "boolean"
-                    },
-                    "farmSince": {
-                      "type": "boolean"
-                    },
-                    "farmArea": {
-                      "type": "boolean"
-                    },
-                    "isIrrigated": {
-                      "type": "boolean"
-                    },
-                    "isOrgMember": {
-                      "type": "boolean"
-                    },
-                    "orgName": {
-                      "type": "boolean"
-                    },
-                    "isConventional": {
-                      "type": "boolean"
-                    },
-                    "isSustainable": {
-                      "type": "boolean"
-                    },
-                    "isNatural": {
-                      "type": "boolean"
-                    },
-                    "isIntegrated": {
-                      "type": "boolean"
-                    },
-                    "isMonoculture": {
-                      "type": "boolean"
-                    },
-                    "isOrganic": {
-                      "type": "boolean"
-                    }
-                  },
-                  "additionalProperties": true
-                },
-                "offset": {
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "limit": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "example": 100
-                },
-                "skip": {
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "order": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Farmer.Filter1"
                 }
-              },
-              "additionalProperties": false
+              }
             }
           }
         ],
         "operationId": "FarmerController.find"
+      }
+    },
+    "/farming-activities/count": {
+      "get": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "count",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "200": {
+            "description": "FarmingActivity model count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "FarmingActivity.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<FarmingActivity>"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "FarmingActivityController.count"
+      }
+    },
+    "/farming-activities/{id}": {
+      "put": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "replaceById",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "FarmingActivity PUT success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FarmingActivity"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "FarmingActivityController.replaceById"
+      },
+      "patch": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "updateById",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "FarmingActivity PATCH success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FarmingActivityPartial"
+              }
+            }
+          },
+          "x-parameter-index": 1
+        },
+        "operationId": "FarmingActivityController.updateById"
+      },
+      "get": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "findById",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "200": {
+            "description": "FarmingActivity model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FarmingActivityWithRelations"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FarmingActivity.Filter"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "FarmingActivityController.findById"
+      },
+      "delete": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "deleteById",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "FarmingActivity DELETE success"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "operationId": "FarmingActivityController.deleteById"
+      }
+    },
+    "/farming-activities": {
+      "post": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "create",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "200": {
+            "description": "FarmingActivity model instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FarmingActivity"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewFarmingActivity"
+              }
+            }
+          }
+        },
+        "operationId": "FarmingActivityController.create"
+      },
+      "patch": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "updateAll",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "200": {
+            "description": "FarmingActivity PATCH success count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loopback.Count"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "FarmingActivity.WhereFilter",
+                  "additionalProperties": true,
+                  "x-typescript-type": "@loopback/repository#Where<FarmingActivity>"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FarmingActivityPartial"
+              }
+            }
+          }
+        },
+        "operationId": "FarmingActivityController.updateAll"
+      },
+      "get": {
+        "x-controller-name": "FarmingActivityController",
+        "x-operation-name": "find",
+        "tags": [
+          "FarmingActivityController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of FarmingActivity model instances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FarmingActivityWithRelations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FarmingActivity.Filter1"
+                }
+              }
+            }
+          }
+        ],
+        "operationId": "FarmingActivityController.find"
       }
     },
     "/ping": {
@@ -447,27 +630,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "greeting": {
-                      "type": "string"
-                    },
-                    "date": {
-                      "type": "string"
-                    },
-                    "url": {
-                      "type": "string"
-                    },
-                    "headers": {
-                      "type": "object",
-                      "properties": {
-                        "Content-Type": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": true
-                    }
-                  }
+                  "$ref": "#/components/schemas/PingResponse"
                 }
               }
             }
@@ -475,22 +638,128 @@
         },
         "operationId": "PingController.ping"
       }
+    },
+    "/signup": {
+      "post": {
+        "x-controller-name": "UserController",
+        "x-operation-name": "signUp",
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          }
+        },
+        "operationId": "UserController.signUp"
+      }
+    },
+    "/users/login": {
+      "post": {
+        "x-controller-name": "UserController",
+        "x-operation-name": "login",
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "The input of login function",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "UserController.login"
+      }
+    },
+    "/whoAmI": {
+      "get": {
+        "x-controller-name": "UserController",
+        "x-operation-name": "whoAmI",
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return current user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "UserController.whoAmI"
+      }
     }
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "/"
     }
   ],
   "components": {
     "schemas": {
       "Farmer": {
         "title": "Farmer",
+        "type": "object",
         "properties": {
-          "prefix": {
+          "id": {
             "type": "string"
           },
-          "id": {
+          "prefix": {
             "type": "string"
           },
           "firstName": {
@@ -645,7 +914,8 @@
       },
       "NewFarmer": {
         "title": "NewFarmer",
-        "description": "(Schema options: { title: 'NewFarmer', exclude: [ 'id' ] })",
+        "type": "object",
+        "description": "(tsType: Omit<Farmer, 'id'>, schemaOptions: { title: 'NewFarmer', exclude: [ 'id' ] })",
         "properties": {
           "prefix": {
             "type": "string"
@@ -798,16 +1068,18 @@
           "farmSince",
           "farmArea"
         ],
-        "additionalProperties": true
+        "additionalProperties": true,
+        "x-typescript-type": "Omit<Farmer, 'id'>"
       },
       "FarmerWithRelations": {
         "title": "FarmerWithRelations",
-        "description": "(Schema options: { includeRelations: true })",
+        "type": "object",
+        "description": "(tsType: FarmerWithRelations, schemaOptions: { includeRelations: true })",
         "properties": {
-          "prefix": {
+          "id": {
             "type": "string"
           },
-          "id": {
+          "prefix": {
             "type": "string"
           },
           "firstName": {
@@ -958,16 +1230,18 @@
           "farmSince",
           "farmArea"
         ],
-        "additionalProperties": true
+        "additionalProperties": true,
+        "x-typescript-type": "FarmerWithRelations"
       },
       "FarmerPartial": {
         "title": "FarmerPartial",
-        "description": "(Schema options: { partial: true })",
+        "type": "object",
+        "description": "(tsType: Partial<Farmer>, schemaOptions: { partial: true })",
         "properties": {
-          "prefix": {
+          "id": {
             "type": "string"
           },
-          "id": {
+          "prefix": {
             "type": "string"
           },
           "firstName": {
@@ -1098,8 +1372,711 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": true,
+        "x-typescript-type": "Partial<Farmer>"
+      },
+      "FarmingActivity": {
+        "title": "FarmingActivity",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
         "additionalProperties": true
+      },
+      "NewFarmingActivity": {
+        "title": "NewFarmingActivity",
+        "type": "object",
+        "description": "(tsType: Omit<FarmingActivity, 'id'>, schemaOptions: { title: 'NewFarmingActivity', exclude: [ 'id' ] })",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true,
+        "x-typescript-type": "Omit<FarmingActivity, 'id'>"
+      },
+      "FarmingActivityWithRelations": {
+        "title": "FarmingActivityWithRelations",
+        "type": "object",
+        "description": "(tsType: FarmingActivityWithRelations, schemaOptions: { includeRelations: true })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true,
+        "x-typescript-type": "FarmingActivityWithRelations"
+      },
+      "FarmingActivityPartial": {
+        "title": "FarmingActivityPartial",
+        "type": "object",
+        "description": "(tsType: Partial<FarmingActivity>, schemaOptions: { partial: true })",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "x-typescript-type": "Partial<FarmingActivity>"
+      },
+      "User": {
+        "title": "User",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "realm": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "verificationToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "additionalProperties": true
+      },
+      "NewUser": {
+        "title": "NewUser",
+        "type": "object",
+        "description": "(tsType: NewUserRequest, schemaOptions: { title: 'NewUser' })",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "realm": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "verificationToken": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": true,
+        "x-typescript-type": "NewUserRequest"
+      },
+      "NewUserRequest": {
+        "title": "NewUserRequest",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "realm": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "verificationToken": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": true
+      },
+      "loopback.Count": {
+        "type": "object",
+        "title": "loopback.Count",
+        "x-typescript-type": "@loopback/repository#Count",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        }
+      },
+      "Farmer.Filter": {
+        "type": "object",
+        "title": "Farmer.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "prefix": {
+                    "type": "boolean"
+                  },
+                  "firstName": {
+                    "type": "boolean"
+                  },
+                  "middleName": {
+                    "type": "boolean"
+                  },
+                  "lastName": {
+                    "type": "boolean"
+                  },
+                  "suffix": {
+                    "type": "boolean"
+                  },
+                  "mobile": {
+                    "type": "boolean"
+                  },
+                  "gender": {
+                    "type": "boolean"
+                  },
+                  "civil": {
+                    "type": "boolean"
+                  },
+                  "birthdate": {
+                    "type": "boolean"
+                  },
+                  "religion": {
+                    "type": "boolean"
+                  },
+                  "mother": {
+                    "type": "boolean"
+                  },
+                  "isHousehold": {
+                    "type": "boolean"
+                  },
+                  "isPwd": {
+                    "type": "boolean"
+                  },
+                  "isBen": {
+                    "type": "boolean"
+                  },
+                  "isInd": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "boolean"
+                  },
+                  "address2": {
+                    "type": "boolean"
+                  },
+                  "barangay": {
+                    "type": "boolean"
+                  },
+                  "province": {
+                    "type": "boolean"
+                  },
+                  "city": {
+                    "type": "boolean"
+                  },
+                  "postalCode": {
+                    "type": "boolean"
+                  },
+                  "education": {
+                    "type": "boolean"
+                  },
+                  "livelihood": {
+                    "type": "boolean"
+                  },
+                  "isAqua": {
+                    "type": "boolean"
+                  },
+                  "isCrop": {
+                    "type": "boolean"
+                  },
+                  "isDairy": {
+                    "type": "boolean"
+                  },
+                  "isFruit": {
+                    "type": "boolean"
+                  },
+                  "isMeat": {
+                    "type": "boolean"
+                  },
+                  "isPoultry": {
+                    "type": "boolean"
+                  },
+                  "farmType": {
+                    "type": "boolean"
+                  },
+                  "farmLot": {
+                    "type": "boolean"
+                  },
+                  "farmName": {
+                    "type": "boolean"
+                  },
+                  "farmSince": {
+                    "type": "boolean"
+                  },
+                  "farmArea": {
+                    "type": "boolean"
+                  },
+                  "isIrrigated": {
+                    "type": "boolean"
+                  },
+                  "isOrgMember": {
+                    "type": "boolean"
+                  },
+                  "orgName": {
+                    "type": "boolean"
+                  },
+                  "isConventional": {
+                    "type": "boolean"
+                  },
+                  "isSustainable": {
+                    "type": "boolean"
+                  },
+                  "isNatural": {
+                    "type": "boolean"
+                  },
+                  "isIntegrated": {
+                    "type": "boolean"
+                  },
+                  "isMonoculture": {
+                    "type": "boolean"
+                  },
+                  "isOrganic": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Farmer.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Farmer>"
+      },
+      "Farmer.Filter1": {
+        "type": "object",
+        "title": "Farmer.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "Farmer.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "boolean"
+                  },
+                  "prefix": {
+                    "type": "boolean"
+                  },
+                  "firstName": {
+                    "type": "boolean"
+                  },
+                  "middleName": {
+                    "type": "boolean"
+                  },
+                  "lastName": {
+                    "type": "boolean"
+                  },
+                  "suffix": {
+                    "type": "boolean"
+                  },
+                  "mobile": {
+                    "type": "boolean"
+                  },
+                  "gender": {
+                    "type": "boolean"
+                  },
+                  "civil": {
+                    "type": "boolean"
+                  },
+                  "birthdate": {
+                    "type": "boolean"
+                  },
+                  "religion": {
+                    "type": "boolean"
+                  },
+                  "mother": {
+                    "type": "boolean"
+                  },
+                  "isHousehold": {
+                    "type": "boolean"
+                  },
+                  "isPwd": {
+                    "type": "boolean"
+                  },
+                  "isBen": {
+                    "type": "boolean"
+                  },
+                  "isInd": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "boolean"
+                  },
+                  "address2": {
+                    "type": "boolean"
+                  },
+                  "barangay": {
+                    "type": "boolean"
+                  },
+                  "province": {
+                    "type": "boolean"
+                  },
+                  "city": {
+                    "type": "boolean"
+                  },
+                  "postalCode": {
+                    "type": "boolean"
+                  },
+                  "education": {
+                    "type": "boolean"
+                  },
+                  "livelihood": {
+                    "type": "boolean"
+                  },
+                  "isAqua": {
+                    "type": "boolean"
+                  },
+                  "isCrop": {
+                    "type": "boolean"
+                  },
+                  "isDairy": {
+                    "type": "boolean"
+                  },
+                  "isFruit": {
+                    "type": "boolean"
+                  },
+                  "isMeat": {
+                    "type": "boolean"
+                  },
+                  "isPoultry": {
+                    "type": "boolean"
+                  },
+                  "farmType": {
+                    "type": "boolean"
+                  },
+                  "farmLot": {
+                    "type": "boolean"
+                  },
+                  "farmName": {
+                    "type": "boolean"
+                  },
+                  "farmSince": {
+                    "type": "boolean"
+                  },
+                  "farmArea": {
+                    "type": "boolean"
+                  },
+                  "isIrrigated": {
+                    "type": "boolean"
+                  },
+                  "isOrgMember": {
+                    "type": "boolean"
+                  },
+                  "orgName": {
+                    "type": "boolean"
+                  },
+                  "isConventional": {
+                    "type": "boolean"
+                  },
+                  "isSustainable": {
+                    "type": "boolean"
+                  },
+                  "isNatural": {
+                    "type": "boolean"
+                  },
+                  "isIntegrated": {
+                    "type": "boolean"
+                  },
+                  "isMonoculture": {
+                    "type": "boolean"
+                  },
+                  "isOrganic": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "id"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "Farmer.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<Farmer>"
+      },
+      "FarmingActivity.Filter": {
+        "type": "object",
+        "title": "FarmingActivity.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "FarmingActivity.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<FarmingActivity>"
+      },
+      "FarmingActivity.Filter1": {
+        "type": "object",
+        "title": "FarmingActivity.Filter",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 100
+          },
+          "skip": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "where": {
+            "title": "FarmingActivity.WhereFilter",
+            "type": "object",
+            "additionalProperties": true
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "uniqueItems": true
+              }
+            ],
+            "title": "FarmingActivity.Fields"
+          }
+        },
+        "additionalProperties": false,
+        "x-typescript-type": "@loopback/repository#Filter<FarmingActivity>"
+      },
+      "PingResponse": {
+        "type": "object",
+        "title": "PingResponse",
+        "properties": {
+          "greeting": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "properties": {
+              "Content-Type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ]
 }

@@ -2,7 +2,7 @@
 /* eslint-disable */
 
 /**
- * (Schema options: { includeRelations: true })
+ * (tsType: FarmerWithRelations, schemaOptions: { includeRelations: true })
  */
 export interface FarmerWithRelations {
   address: string;

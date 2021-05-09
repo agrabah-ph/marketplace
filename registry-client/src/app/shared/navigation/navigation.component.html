@@ -1,13 +1,12 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
+  <mat-sidenav #drawer class="sidenav" fixedInViewport 
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar><img height="45px" src="assets/logo-ag.png"></mat-toolbar>
+      [opened]="(isHandset$ | async) === false && isLoggedIn()">
+    <mat-toolbar><img height="45px" src="assets/img/logo.png"></mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="/">Home</a>
       <a mat-list-item routerLink="farmers">Farmers</a>
-      <a mat-list-item routerLink="reg-form">New Registation</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -20,7 +19,17 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{ title }}</span>
+      <span (click)="goHome()" >{{ title }}</span>
+      <button mat-button routerLink="reg-form">Farmer Registation</button>
+      <span class="toolbar-spacer"></span>
+      <button mat-button routerLink="login" *ngIf="!isLoggedIn()">Login</button>
+      <button mat-button [matMenuTriggerFor]="me" *ngIf="isLoggedIn()"><mat-icon>face</mat-icon><h6 class="mat-h6"></h6></button>
+      <mat-menu #me="matMenu">
+          <button mat-menu-item><mat-icon>person</mat-icon>Profile</button>
+          <button mat-menu-item><mat-icon>help</mat-icon>Help</button>
+          <button mat-menu-item (click)="logout()"><mat-icon>power_settings_new</mat-icon>Logout</button>
+      </mat-menu>     
+
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

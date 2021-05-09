@@ -1,39 +1,46 @@
+import {authenticate} from '@loopback/authentication';
+import {authorize} from '@loopback/authorization';
 import {
   Count,
   CountSchema,
   Filter,
-  // FilterExcludingWhere,
+  FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  getWhereSchemaFor,
-  getFilterSchemaFor,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+  patch, post,
   put,
-  del,
   requestBody,
+  response
 } from '@loopback/rest';
-import { Farmer } from '../models';
-import { FarmerRepository } from '../repositories';
+import {Farmer} from '../models';
+import {FarmerRepository} from '../repositories';
 
+
+const RESOURCE_NAME = 'farmer';
+const ACL_PROJECT = {
+  'view-all': {
+    resource: `${RESOURCE_NAME}*`,
+    scopes: ['view-all'],
+    allowedRoles: ['admin'],
+  }
+};
+
+
+@authenticate('jwt')
 export class FarmerController {
   constructor(
     @repository(FarmerRepository)
     public farmerRepository: FarmerRepository,
   ) { }
 
-  @post('/farmers', {
-    responses: {
-      '200': {
-        description: 'Farmer model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(Farmer) } },
-      },
-    },
+  @post('/farmers')
+  @response(200, {
+    description: 'Farmer model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Farmer)}},
   })
   async create(
     @requestBody({
@@ -51,97 +58,81 @@ export class FarmerController {
     return this.farmerRepository.create(farmer);
   }
 
-  @get('/farmers/count', {
-    responses: {
-      '200': {
-        description: 'Farmer model count',
-        content: { 'application/json': { schema: CountSchema } },
-      },
-    },
+  @get('/farmers/count')
+  @response(200, {
+    description: 'Farmer model count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(Farmer)) where?: Where<Farmer>, //@param.where(Farmer)
+    @param.where(Farmer) where?: Where<Farmer>,
   ): Promise<Count> {
     return this.farmerRepository.count(where);
   }
 
-  @get('/farmers', {
-    responses: {
-      '200': {
-        description: 'Array of Farmer model instances',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'array',
-              items: getModelSchemaRef(Farmer, { includeRelations: true }),
-            },
-          },
+  @authorize(ACL_PROJECT['view-all'])
+  @get('/farmers')
+  @response(200, {
+    description: 'Array of Farmer model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Farmer, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(Farmer)) filter?: Filter<Farmer>, // @param.filter(Farmer)
+    @param.filter(Farmer) filter?: Filter<Farmer>,
   ): Promise<Farmer[]> {
-    console.log(filter);
     return this.farmerRepository.find(filter);
   }
 
-  @patch('/farmers', {
-    responses: {
-      '200': {
-        description: 'Farmer PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
-      },
-    },
+  @patch('/farmers')
+  @response(200, {
+    description: 'Farmer PATCH success count',
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Farmer, { partial: true }),
+          schema: getModelSchemaRef(Farmer, {partial: true}),
         },
       },
     })
     farmer: Farmer,
-    where?: Where<Farmer>, // @param.where(Farmer)
+    @param.where(Farmer) where?: Where<Farmer>,
   ): Promise<Count> {
     return this.farmerRepository.updateAll(farmer, where);
   }
 
-  @get('/farmers/{id}', {
-    responses: {
-      '200': {
-        description: 'Farmer model instance',
-        content: {
-          'application/json': {
-            schema: getModelSchemaRef(Farmer, { includeRelations: true }),
-          },
-        },
+  @get('/farmers/{id}')
+  @response(200, {
+    description: 'Farmer model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Farmer, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.string('id') id: string,
-    // @param.filter(Farmer, { exclude: 'where' }) filter?: FilterExcludingWhere<Farmer>
-    filter?: Filter<Farmer>
+    @param.filter(Farmer, {exclude: 'where'}) filter?: FilterExcludingWhere<Farmer>
   ): Promise<Farmer> {
     return this.farmerRepository.findById(id, filter);
   }
 
-  @patch('/farmers/{id}', {
-    responses: {
-      '204': {
-        description: 'Farmer PATCH success',
-      },
-    },
+  @patch('/farmers/{id}')
+  @response(204, {
+    description: 'Farmer PATCH success',
   })
   async updateById(
     @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Farmer, { partial: true }),
+          schema: getModelSchemaRef(Farmer, {partial: true}),
         },
       },
     })
@@ -150,12 +141,9 @@ export class FarmerController {
     await this.farmerRepository.updateById(id, farmer);
   }
 
-  @put('/farmers/{id}', {
-    responses: {
-      '204': {
-        description: 'Farmer PUT success',
-      },
-    },
+  @put('/farmers/{id}')
+  @response(204, {
+    description: 'Farmer PUT success',
   })
   async replaceById(
     @param.path.string('id') id: string,
@@ -164,12 +152,9 @@ export class FarmerController {
     await this.farmerRepository.replaceById(id, farmer);
   }
 
-  @del('/farmers/{id}', {
-    responses: {
-      '204': {
-        description: 'Farmer DELETE success',
-      },
-    },
+  @del('/farmers/{id}')
+  @response(204, {
+    description: 'Farmer DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.farmerRepository.deleteById(id);

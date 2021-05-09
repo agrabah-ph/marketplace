@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider, forwardRef } from '@angular/core';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,12 +25,27 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
-import {HttpClientModule} from '@angular/common/http';
+
 import { FarmersComponent } from './pages/farmers/farmers.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoginComponent } from './pages/login/login.component';
+import { ApiInterceptor } from './helpers/api.interceptor';
+
+import { HighchartsChartModule } from 'highcharts-angular';
+import { FarmComponent } from './pages/farm/farm.component';
+import { FarmerComponent } from './pages/farmer/farmer.component';
+
+
+export const API_INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useExisting: forwardRef(() => ApiInterceptor),
+  multi: true
+};
 
 @NgModule({
   declarations: [
@@ -37,7 +53,10 @@ import { MatSortModule } from '@angular/material/sort';
     NavigationComponent,
     HomeComponent,
     RegFormComponent,
-    FarmersComponent
+    FarmersComponent,
+    LoginComponent,
+    FarmComponent,
+    FarmerComponent
   ],
   imports: [
     BrowserModule,
@@ -62,9 +81,15 @@ import { MatSortModule } from '@angular/material/sort';
     HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule,
+    HighchartsChartModule
   ],
-  providers: [],
+  providers: [
+    ApiInterceptor,
+    API_INTERCEPTOR_PROVIDER
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
