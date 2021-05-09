@@ -1,18 +1,19 @@
-import { Entity, model, property } from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Farm} from './farm.model';
 
-@model({ settings: { strict: false } })
+@model({settings: {strict: false}})
 export class Farmer extends Entity {
-  @property({
-    type: 'string',
-  })
-  prefix?: string;
-
   @property({
     type: 'string',
     id: true,
     generated: true,
   })
   id?: string;
+
+  @property({
+    type: 'string',
+  })
+  prefix?: string;
 
   @property({
     type: 'string',
@@ -137,129 +138,8 @@ export class Farmer extends Entity {
   })
   education: string;
 
-  @property({
-    type: 'string',
-  })
-  livelihood?: string;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isAqua?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isCrop?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isDairy?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isFruit?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isMeat?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isPoultry?: boolean;
-
-  @property({
-    type: 'string',
-  })
-  farmType?: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  farmLot: number;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  farmName: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  farmSince: number;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  farmArea: number;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isIrrigated?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isOrgMember?: boolean;
-
-  @property({
-    type: 'string',
-  })
-  orgName?: string;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isConventional?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isSustainable?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isNatural?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isIntegrated?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isMonoculture?: boolean;
-
-  @property({
-    type: 'boolean',
-    default: false,
-  })
-  isOrganic?: boolean;
-
+  @hasMany(() => Farm, {keyTo: 'ownerId'})
+  farms: Farm[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

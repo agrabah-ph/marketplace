@@ -5,7 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { FarmerControllerService } from './services/farmer-controller.service';
+import { FarmingActivityControllerService } from './services/farming-activity-controller.service';
 import { PingControllerService } from './services/ping-controller.service';
+import { UserControllerService } from './services/user-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -16,7 +18,9 @@ import { PingControllerService } from './services/ping-controller.service';
   declarations: [],
   providers: [
     FarmerControllerService,
+    FarmingActivityControllerService,
     PingControllerService,
+    UserControllerService,
     ApiConfiguration
   ],
 })

@@ -1,76 +1,74 @@
 {
-  "name": "registry-server",
-  "version": "1.0.0",
-  "description": "Agrabah Registry API",
+  "name": "loopback-io",
+  "version": "0.0.1",
+  "description": "apps",
   "keywords": [
     "loopback-application",
     "loopback"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=8.9"
+    "node": ">=10.16"
   },
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean dist *.tsbuildinfo",
-    "lint": "npm run prettier:check && npm run eslint",
+    "lint": "npm run eslint && npm run prettier:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
     "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run rebuild",
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
-    "docker:build": "docker build -t registry-server .",
-    "docker:run": "docker run -p 3000:3000 -d registry-server",
+    "docker:build": "docker build -t loopback-io .",
+    "docker:run": "docker run -p 3000:3000 -d loopback-io",
+    "premigrate": "npm run build",
     "migrate": "node ./dist/migrate",
-    "prestart": "npm run build",
+    "preopenapi-spec": "npm run build",
+    "openapi-spec": "node ./dist/openapi-spec",
+    "rebuild": "npm run clean && npm run build",
+    "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
-    "prepublishOnly": "npm run test"
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": ""
   },
-  "author": "",
+  "author": "strata <devops@strata.ph>",
   "license": "",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/authentication": "^7.0.5",
-    "@loopback/authentication-jwt": "^0.7.5",
-    "@loopback/authorization": "^0.7.5",
-    "@loopback/boot": "^1.5.12",
-    "@loopback/context": "^1.24.0",
-    "@loopback/core": "^1.11.0",
-    "@loopback/openapi-v3": "^1.10.2",
-    "@loopback/repository": "^1.15.5",
-    "@loopback/rest": "^1.24.0",
-    "@loopback/rest-explorer": "^1.4.5",
-    "@loopback/service-proxy": "^1.3.12",
-    "loopback-connector-mongodb": "^5.5.0"
+    "@loopback/authentication": "^7.0.6",
+    "@loopback/authentication-jwt": "^0.7.6",
+    "@loopback/authorization": "^0.7.6",
+    "@loopback/boot": "^3.2.0",
+    "@loopback/core": "^2.14.0",
+    "@loopback/repository": "^3.4.0",
+    "@loopback/rest": "^9.1.2",
+    "@loopback/rest-explorer": "^3.0.6",
+    "@loopback/service-proxy": "^3.0.6",
+    "casbin": "^5.3.1",
+    "loopback-connector-mongodb": "^5.5.0",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.1.0",
-    "source-map-support": "^0.5.16",
-    "@loopback/testlab": "^1.9.5",
-    "@types/node": "^10.17.5",
-    "@typescript-eslint/parser": "^2.9.0",
-    "@typescript-eslint/eslint-plugin": "^2.9.0",
-    "@loopback/eslint-config": "^4.1.5",
-    "eslint": "^6.7.1",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-eslint-plugin": "^2.1.0",
-    "eslint-plugin-mocha": "^6.2.2",
-    "typescript": "~3.7.2"
+    "@loopback/build": "^6.2.9",
+    "source-map-support": "^0.5.19",
+    "@loopback/testlab": "^3.2.11",
+    "@types/node": "^10.17.51",
+    "@loopback/eslint-config": "^10.0.5",
+    "eslint": "^7.18.0",
+    "typescript": "~4.1.3"
   }
 }

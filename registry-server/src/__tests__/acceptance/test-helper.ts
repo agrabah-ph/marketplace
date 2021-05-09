@@ -1,4 +1,4 @@
-import {RegistryServerApplication} from '../..';
+import {LoopbackIoApplication} from '../..';
 import {
   createRestAppClient,
   givenHttpServerConfig,
@@ -14,7 +14,7 @@ export async function setupApplication(): Promise<AppWithClient> {
     // port: +process.env.PORT,
   });
 
-  const app = new RegistryServerApplication({
+  const app = new LoopbackIoApplication({
     rest: restConfig,
   });
 
@@ -27,6 +27,6 @@ export async function setupApplication(): Promise<AppWithClient> {
 }
 
 export interface AppWithClient {
-  app: RegistryServerApplication;
+  app: LoopbackIoApplication;
   client: Client;
 }

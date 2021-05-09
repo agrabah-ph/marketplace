@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { PingResponse } from '../models/ping-response';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class PingControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   ping$Response(params?: {
-  }): Observable<StrictHttpResponse<{ 'greeting'?: string, 'date'?: string, 'url'?: string, 'headers'?: { 'Content-Type'?: string, [key: string]: any } }>> {
+  }): Observable<StrictHttpResponse<PingResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, PingControllerService.PingControllerPingPath, 'get');
     if (params) {
@@ -45,7 +46,7 @@ export class PingControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<{ 'greeting'?: string, 'date'?: string, 'url'?: string, 'headers'?: { 'Content-Type'?: string, [key: string]: any } }>;
+        return r as StrictHttpResponse<PingResponse>;
       })
     );
   }
@@ -57,10 +58,10 @@ export class PingControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   ping(params?: {
-  }): Observable<{ 'greeting'?: string, 'date'?: string, 'url'?: string, 'headers'?: { 'Content-Type'?: string, [key: string]: any } }> {
+  }): Observable<PingResponse> {
 
     return this.ping$Response(params).pipe(
-      map((r: StrictHttpResponse<{ 'greeting'?: string, 'date'?: string, 'url'?: string, 'headers'?: { 'Content-Type'?: string, [key: string]: any } }>) => r.body as { 'greeting'?: string, 'date'?: string, 'url'?: string, 'headers'?: { 'Content-Type'?: string, [key: string]: any } })
+      map((r: StrictHttpResponse<PingResponse>) => r.body as PingResponse)
     );
   }
 

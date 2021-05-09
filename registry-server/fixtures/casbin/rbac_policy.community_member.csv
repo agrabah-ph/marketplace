@@ -1,0 +1,7 @@
+p, p1_community, farm1, show-balance
+p, p1_community, farm1, donate
+g, john@doe.com, p1_community
+g, jane@doe.com, p1_community
+p, p2_team, farm2, show-balance
+p, p2_team, farm2, donate
+g, jane@doe.com, p2_community

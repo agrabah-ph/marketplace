@@ -1,9 +1,9 @@
 import {Client} from '@loopback/testlab';
-import {RegistryServerApplication} from '../..';
+import {LoopbackIoApplication} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('HomePage', () => {
-  let app: RegistryServerApplication;
+  let app: LoopbackIoApplication;
   let client: Client;
 
   before('setupApplication', async () => {

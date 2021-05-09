@@ -10,6 +10,10 @@ Agrabah knows that with a better marketplace, we can help our Filipino farmers a
 
 # Getting Started - Local Development
 
+The technology stack
+
+
+
 **INSTALL THE FOLLOWING GLOBAL DEPENDENCIES**
 
 * **node**
