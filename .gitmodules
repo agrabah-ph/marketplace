@@ -1,3 +1,6 @@
 [submodule "loans"]
 	path = loans
 	url = https://github.com/agrabah-ph/loans.git
+[submodule "traceability"]
+	path = traceability
+	url = https://github.com/agrabah-ph/traceability.git
