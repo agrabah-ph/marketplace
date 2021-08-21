@@ -1,0 +1,49 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-primary: 'Work Sans';
+$font-family-secondary: 'Source Sans Pro', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+
+$white: #fff;
+$black: #000;
+$gray: #eee;
+$gray-2: #dadada;
+$default: #948b96;
+
+
+//Primary
+
+$primary-1: #9ed35a;
+$primary-2: #548714;
+$primary-3: #3a8cdd;
+$primary-4: #094e9d;
+$primary-5: #084d91;
+
+$primary-darken: darken($primary-4, 6%);
+$lighten-blue: lighten($primary-4, 10%);
+
+//Secondary
+$secondry-1: #f6be47;
+$secondry-2: #e15c21;
+$secondry-3: #a7165e;
+
+
+//Greys
+$grey-1: #7f9bb5;
+$grey-2: #c3cedb;
+$grey-3: #e4e8ed;

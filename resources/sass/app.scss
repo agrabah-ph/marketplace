@@ -1,0 +1,220 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// DataTables
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+
+.profile-pic {
+    height: 48px;
+    width: 48px;
+}
+
+.no-resize {
+    resize: vertical;
+    overflow: auto;
+    height: 106px !important;
+}
+
+.agravah {
+
+}
+
+.has-error-box {
+    border: 1px solid #fd4d4d;
+    padding: 2px 10px;
+}
+
+#acceptTerms-error {
+    width: 180px;
+    padding: 20px;
+}
+
+.page-forms form .form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #dadada !important;
+    outline: none;
+    font-size: 1.3rem
+}
+
+.farmer-login {
+
+    //border: 2px solid #808080;
+    max-width: 500px;
+    width: 90%;
+    margin: auto;
+    input {
+        border: none;
+        border-bottom: 2px solid #808080;
+        background-color: transparent;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        &:focus {
+            background-color: transparent;
+        }
+    }
+}
+
+.farmer-id {
+    border: 2px solid #808080;
+    background-color: #FFFFFF;
+    max-width: 300px;
+    width: 50%;
+    margin: auto;
+    img {
+        &.logo {
+            width: 150px;
+        }
+        &.qr{
+            border: 1px solid #3d3d3d;
+            padding: 5px;
+            width: 200px;
+        }
+    }
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: 37px !important;
+}
+
+.project-title a {
+    font-size: 14px;
+    color: #676a6c;
+    font-weight: 600;
+}
+
+.field-icon {
+    float: right;
+    position: relative;
+    z-index: 2;
+    margin-right: 2px;
+    top: -56px;
+    font-size: 20px !important;
+    padding: 18px 36px 18px 20px;
+}
+
+#loan-app-detail {
+    .nav-tabs {
+        li {
+            a {
+                &.active {
+                    color: #FFFFFF;
+                    background: #072e5c !important;
+                }
+                &:hover {
+                    color: #FFFFFF;
+                }
+                &:active {
+                    color: #FFFFFF;
+                }
+            }
+        }
+    }
+}
+
+#preview-crop-image {
+    background:#9d9d9d;
+    width:300px;
+    padding: 25px;
+    height:300px;
+
+    img {
+        width: 250px;
+        height: 250px;
+    }
+
+}
+
+.has-error #image-upload {
+    border-color: #ed5565;
+}
+
+#image-upload {
+    position: relative;
+    border: 1px solid #DDDDDD;
+    margin: 0 auto;
+    max-width: 100%;
+    //width: 250px;
+    //height: 250px;
+    //background: #FFFFFF url('/img/blank-profile.jpg') center center no-repeat;
+    //background-size: 250px 250px;
+
+    &.landscape-img {
+        height: 250px;
+        width: 400px !important;
+        background: #FFFFFF url('/img/blank-landscape.jpg') center center no-repeat;
+        background-size: 400px 250px;
+
+        img {
+            position: absolute;
+            width: 400px;
+            height: 250px;
+            left: 0;
+        }
+    }
+
+    &.portrait-img {
+        height: 250px;
+        width: 250px;
+        background: #FFFFFF url('/img/blank-profile.jpg') center center no-repeat;
+        background-size: 250px 250px;
+
+        img {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            left: 0;
+        }
+    }
+
+    &.portrait-img-sm {
+        height: 150px;
+        width: 150px;
+        background: #FFFFFF url('/img/blank-profile.jpg') center center no-repeat;
+        background-size: 150px 150px;
+
+        img {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: 0;
+        }
+    }
+
+    input[type="file"] {
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        -moz-opacity: 0;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+        left: 0;
+    }
+
+    input[type="file"]:hover {
+        cursor: pointer;
+    }
+
+}
+
+//#image-upload.branch-info-approval {
+//  height: 250px;
+//  width: 400px !important;
+//  background: #FFFFFF url('/img/img-icon.png') center center no-repeat !important;
+//  background-size: 250px 250px;
+//}
+
+#image-upload-demo {
+    width: 250px;
+    height: 250px;
+}

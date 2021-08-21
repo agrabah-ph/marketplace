@@ -1,0 +1,35 @@
+
+.panel-success {
+  .panel-heading {
+    background: $primary-3 !important;
+    border-color: $primary-3 !important;
+  }
+}
+
+.dropdown-menu {
+  li {
+    a {
+      color: $black !important;
+    }
+  }
+}
+
+.btn-primary {
+  background-color: $primary-4 !important;
+  border-color: $primary-4 !important;
+  font-size: 1rem !important;
+
+  &:hover {
+    background-color: $primary-darken !important;
+
+  }
+}
+
+
+.ibox-title h5 {
+  font-size: 15px !important;
+}
+
+.form-control {
+  font-size: 1rem !important;
+}
