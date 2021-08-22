@@ -1,4 +1,4 @@
-@extends(subdomain_name().'.master')
+@extends('wharf.master')
 @section('title', 'Profile')
 
 @section('content')
@@ -101,13 +101,17 @@
             {{-- });--}}
 
             {{--table.ajax.reload();--}}
-            loadProfile();
-            function loadProfile(){
-                $.get('{!! route('get-my-profile') !!}', function(data){
-                    console.log(data);
-                    $('#profile-info-box').empty().append(displayLoanApplicationDetails(data.profile, null));
-                });
-            }
+            @if(!auth()->user()->hasRole(['buyer']))
+                loadProfile();
+                function loadProfile(){
+                    $.get('{!! route('get-my-profile') !!}', function(data){
+                        if(data.profile){
+                            $('#profile-info-box').empty().append(displayLoanApplicationDetails(data.profile, null));
+                        }
+                    });
+                }
+            @endif
+
 
         });
     </script>

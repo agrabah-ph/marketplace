@@ -99,6 +99,13 @@ Route::domain(config('dev.domain_ext'))->group(function () {
 
 
     Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
+
+        Route::resource('profile', 'ProfileController');
+        Route::get('my-profile', 'ProfileController@myProfile')->name('my-profile');
+        Route::get('select-profile', 'ProfileController@selectProfile')->name('select-profile');
+        Route::get('get-my-profile', 'ProfileController@getMyProfile')->name('get-my-profile');
+
+
         Route::resource('purchase-order', 'PurchaseOrderController');
         Route::resource('spot-market', 'SpotMarketController');
         Route::get('spot-market-cart', 'SpotMarketController@cart')->name('spot-market.cart');
@@ -114,6 +121,8 @@ Route::domain(config('dev.domain_ext'))->group(function () {
         Route::post('spot-market-make-winner', 'SpotMarketController@makeWinner')->name('spot-market.make_winner');
         Route::get('spot-market-winning-bids', 'SpotMarketController@winningBids')->name('spot-market.winning_bids');
         Route::post('spot-market-complete-bid', 'SpotMarketController@completeBid')->name('spot-market.complete_bid');
+        
+        Route::resource('reverse-bidding', 'SpotMarketController');
     });
 });
 

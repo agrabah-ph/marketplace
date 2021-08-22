@@ -13,6 +13,16 @@
             @endif
         </ul>
     </li>
+    <li class="{{ (request()->is('reverse-bidding*')) ? 'active' : '' }}">
+        <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">Reverse Bidding</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li class="{{ (request()->is('reverse-bidding/')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.index') !!}">My List</a></li>
+
+            @if(auth()->user()->can('add-reverse-bidding'))
+            <li class="{{ (request()->is('reverse-bidding/create')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.create') !!}">Create</a></li>
+            @endif
+        </ul>
+    </li>
     <li class="{{ (request()->is('spot-market-winning-bids')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.winning_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">Winning Bids</span></a>
     </li>
