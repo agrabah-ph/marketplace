@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
+use App\ReverseBidding;
 use App\Services\LoanService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
@@ -43,11 +44,11 @@ class ReverseBiddingController extends Controller
         $isCommunityLeader = false;
         if($roleName == 'farmer'){
             if(isCommunityLeader()){
+                $list = auth()->user()->reveseBiddings;
                 $isCommunityLeader = true;
             }
         }
-
-        return view('wharf.spot-market.browse', compact('list', 'isCommunityLeader', 'areas'));
+        return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
 
     }
 
@@ -60,8 +61,7 @@ class ReverseBiddingController extends Controller
     public function create()
     {
 
-
-        return view('wharf.spot-market.create', compact('farmers', 'defaultArea'));
+        return view('wharf.reverse-bidding.create');
     }
     /**
      * Show the form for creating a new resource.
@@ -134,37 +134,23 @@ class ReverseBiddingController extends Controller
             'quantity' => 'numeric|max:1000000',
             'selling_price' => 'numeric',
         ]);
-
-
-        $roleName = auth()->user()->roles->first()->name;
         $array = $request->except('_token');
-        if($roleName == 'farmer'){
-            $farmerModel = auth()->user()->farmer;
-
-            $array = array_merge($array,[
-                'model_id' => $farmerModel->id,
-                'model_type' => 'App\Farmer',
-            ]);
-            $array["original_price"] = preg_replace('/,/','', $array['selling_price']);
-            $array["selling_price"] = preg_replace('/,/','', $array['selling_price']);
-
-            $spotMarket = SpotMarket::create($array);
-
-            $expiration = Carbon::parse($spotMarket['created_at']);
-            if($spotMarket['duration']){
-                $duration = explode(':',$spotMarket['duration']);
-                $expiration->addHour($duration[0]);
-                $expiration->addMinute($duration[1]);
-                $expiration->second(0);
-            }
-            $spotMarket->expiration_time = $expiration;
-            $spotMarket->save();
-            $spotMarket->addMedia($request->file('image'))
-                ->toMediaCollection('spot-market');
-            $farmerModel->spotMarket()->save($spotMarket);
+        $array['user_id'] = auth()->user()->id;
+        $array["asking_price"] = preg_replace('/,/','', $array['selling_price']);
+        $model = ReverseBidding::create($array);
+        $expiration = Carbon::parse($model['created_at']);
+        if($model['duration']){
+            $duration = explode(':',$model['duration']);
+            $expiration->addHour($duration[0]);
+            $expiration->addMinute($duration[1]);
+            $expiration->second(0);
         }
+        $model->expiration_time = $expiration;
+        $model->save();
+        $model->addMedia($request->file('image'))
+            ->toMediaCollection('reverse-bidding');
 
-        return redirect()->route('spot-market.index');
+        return redirect()->route('reverse-bidding.index');
     }
 
     /**
@@ -187,10 +173,9 @@ class ReverseBiddingController extends Controller
      */
     public function edit($id)
     {
-        $data = SpotMarket::find($id);
-        $farmers = Farmer::with('user')->where('community_leader', 0)->get();
+        $data = ReverseBidding::find($id);
 
-        return view('wharf.spot-market.edit', compact('data','farmers'));
+        return view('wharf.reverse-bidding.edit', compact('data'));
     }
 
     /**
@@ -207,10 +192,11 @@ class ReverseBiddingController extends Controller
             'selling_price' => 'regex:/^[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)*$/',
         ]);
 
-        $data = SpotMarket::find($id);
+        $data = ReverseBidding::find($id);
         $request->merge([
-            'selling_price' => preg_replace('/,/','',$request->selling_price)
+            'asking_price' => preg_replace('/,/','',$request->selling_price)
         ]);
+
         $data->update($request->except(['_token', 'image']));
 
         $expiration = Carbon::parse($data['created_at']);
@@ -222,11 +208,11 @@ class ReverseBiddingController extends Controller
         $data->expiration_time = $expiration;
         $data->save();
         if($request->hasFile('image')){
-            $media = $data->getFirstMedia('spot-market');
+            $media = $data->getFirstMedia('reverse-bidding');
             if($media){
                 $media->delete();
             }
-            $data->addMedia($request->file('image'))->toMediaCollection('spot-market');
+            $data->addMedia($request->file('image'))->toMediaCollection('reverse-bidding');
         }
 
         return redirect()->back();

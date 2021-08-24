@@ -63,4 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(SpotMarketCart::class, 'user_id');
     }
+
+    public function reveseBiddings()
+    {
+        return $this->hasMany(ReverseBidding::class, 'user_id');
+    }
 }

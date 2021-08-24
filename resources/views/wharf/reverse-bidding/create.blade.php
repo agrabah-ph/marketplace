@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Edit '.$data->name )
+@section('title', 'Add Listing')
 
 @section('content')
 
@@ -21,99 +21,105 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                <button type="button" class="btn btn-primary btn-action" data-action="store">Update</button>
+                <button type="button" class="btn btn-primary btn-action" data-action="store">Store</button>
             </div>
         </div>
     </div>
 
     <div id="app" class="wrapper wrapper-content">
-        {{ Form::open(['route'=>['spot-market.update', $data->id],'id'=>'form','method'=>'put','files'=>true]) }}
+        {{--        {{ Form::open(array('route'=>array('farmer.store'), array('id'=>'form'))) }}--}}
+        {{--        {{ Form::open(array('route'=>array('farmer.store'), 'method'=>'post', 'id'=>'form')) }}--}}
+
+        {{ Form::open(['route'=>'reverse-bidding.store', 'class'=>'','id'=>'form','files'=>true]) }}
         <div class="row">
             <div class="col-sm-12">
                 @csrf
-                @include('alerts.validation')
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Product Information
+                        Product Listing
                     </div>
                     <div class="panel-body">
-
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <img src="{{url('/').$data->getFirstMediaUrl('spot-market')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
+                                    <img src="{{url('img/blank-landscape.jpg')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
                                     <label class="w-100">Photo</label>
                                     <input accept="image/*" type="file" class="form-control" id="image" name="image">
                                 </div>
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input type="text" class="form-control" name="name" value="{{$data->name}}">
+                                    <input type="text" class="form-control" name="name" required>
                                 </div>
                             </div>
                             <div class="col-6">
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Area</label>--}}
+{{--                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>--}}
+{{--                                </div>--}}
                                 <div class="form-group">
-                                    <label>From Farmer</label>
-                                    <select class="form-control" id="from_user_id" name="from_user_id">
-                                        @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <label>Starting Bid</label>
+                                    <input type="text" class="form-control money" name="selling_price" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Duration (Hours & Minutes)</label>
                                     <div style="position: relative">
-                                        <input type="text" id="time" class="form-control" name="duration"
-                                               autocomplete="off" value="{{$data->duration}}">
+                                        <input type="text" id="time" class="form-control" name="duration" required
+                                               autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>How many Kilos?</label>
-                                    <input type="number" class="form-control" name="quantity" value="{{$data->quantity}}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Starting Bid</label>
-                                    <input type="text" class="form-control money" name="selling_price"
-                                           value="{{$data->selling_price}}">
+                                    <input type="number" class="form-control" name="quantity" required>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <textarea class="summernote" name="description">
-                                    {!! $data->description !!}
-                                </textarea>
+                                    <textarea class="summernote" name="description" required>
+                                        <h3>Product Details</h3>
+                                        Ang produktong ito ay dekalidad at matibay. It a galing sa pag sisikap nang ating mga natatangin magsasaka. Tangkilikin ang sariling atin.
+                                        <br/>
+                                        <br/>
+                                        <ul>
+                                            <li>High quality</li>
+                                            <li>Authentic</li>
+                                            <li>Legit</li>
+                                        </ul>
+                                    </textarea>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        {{ Form::close() }}
+
+        <div class="modal inmodal fade" id="modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
+             data-category="" data-variant="" data-bal="">
+            <div id="modal-size">
+                <div class="modal-content">
+                    <div class="modal-header" style="padding: 15px;">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                    class="sr-only">Close</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="modal-save-btn">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
-        {{ Form::close() }}
-
     </div>
-
-    <div class="modal inmodal fade" id="modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
-         data-category="" data-variant="" data-bal="">
-        <div id="modal-size">
-            <div class="modal-content">
-                <div class="modal-header" style="padding: 15px;">
-                    <button type="button" class="close" data-dismiss="modal"><span
-                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="modal-save-btn">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
+
 
 @section('styles')
     {!! Html::style('/css/template/plugins/iCheck/custom.css') !!}
@@ -122,10 +128,6 @@
     {!! Html::style('/css/template/plugins/select2/select2.min.css') !!}
     {!! Html::style('/css/template/plugins/select2/select2-bootstrap4.min.css') !!}
 
-    {{--    {!! Html::style('/css/template/plugins/dropzone/dropzone.css') !!}--}}
-    {{--{!! Html::style('') !!}--}}
-    {{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">--}}
-    {{--    {!! Html::style('/css/template/plugins/sweetalert/sweetalert.css') !!}--}}
 @endsection
 
 @section('scripts')
@@ -139,12 +141,6 @@
     {!! Html::script('/packages/jquery.datetimepicker.full.min.js') !!}
     {!! Html::script('/js/template/plugins/select2/select2.full.min.js') !!}
 
-    {{--    {!! Html::script('/js/template/plugins/dropzone/dropzone.js') !!}--}}
-    {{--    {!! Html::script('') !!}--}}
-    {{--    {!! Html::script(asset('vendor/datatables/buttons.server-side.js')) !!}--}}
-    {{--    {!! $dataTable->scripts() !!}--}}
-    {{--    {!! Html::script('/js/template/plugins/sweetalert/sweetalert.min.js') !!}--}}
-    {{--    {!! Html::script('/js/template/moment.js') !!}--}}
     <script>
 
         // Dropzone.options.dropz
@@ -162,9 +158,9 @@
 
             $('#time').datetimepicker({
                 datepicker: false,
-                step: 5,
-                minTime: '00:05',
-                defaultTime: '00:05',
+                step: 30,
+                minTime: '00:30',
+                defaultTime: '00:30',
                 format: 'H:i'
             });
 

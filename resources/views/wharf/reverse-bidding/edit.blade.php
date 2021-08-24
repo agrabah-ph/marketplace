@@ -12,7 +12,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('spot-market.index') }}">Lists</a>
+                    <a href="{{ route('reverse-bidding.index') }}">Lists</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@yield('title')</strong>
@@ -27,7 +27,7 @@
     </div>
 
     <div id="app" class="wrapper wrapper-content">
-        {{ Form::open(['route'=>['spot-market.update', $data->id],'id'=>'form','method'=>'put','files'=>true]) }}
+        {{ Form::open(['route'=>['reverse-bidding.update', $data->id],'id'=>'form','method'=>'put','files'=>true]) }}
         <div class="row">
             <div class="col-sm-12">
                 @csrf
@@ -41,7 +41,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <img src="{{url('/').$data->getFirstMediaUrl('spot-market')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
+                                    <img src="{{url('/').$data->getFirstMediaUrl('reverse-bidding')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
                                     <label class="w-100">Photo</label>
                                     <input accept="image/*" type="file" class="form-control" id="image" name="image">
                                 </div>
@@ -51,14 +51,6 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="form-group">
-                                    <label>From Farmer</label>
-                                    <select class="form-control" id="from_user_id" name="from_user_id">
-                                        @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label>Duration (Hours & Minutes)</label>
                                     <div style="position: relative">
@@ -73,7 +65,7 @@
                                 <div class="form-group">
                                     <label>Starting Bid</label>
                                     <input type="text" class="form-control money" name="selling_price"
-                                           value="{{$data->selling_price}}">
+                                           value="{{$data->asking_price}}">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -162,9 +154,9 @@
 
             $('#time').datetimepicker({
                 datepicker: false,
-                step: 5,
-                minTime: '00:05',
-                defaultTime: '00:05',
+                step: 30,
+                minTime: '00:30',
+                defaultTime: '00:30',
                 format: 'H:i'
             });
 

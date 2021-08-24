@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                    <a href="{!! route('spot-market.create') !!}" class="btn btn-primary">Create</a>
+                    <a href="{!! route('reverse-bidding.create') !!}" class="btn btn-primary">Create</a>
             </div>
         </div>
     </div>
@@ -48,10 +48,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($spotMarketList as $data)
+                            @forelse($list as $data)
                                 <tr>
-                                    <td width="200px">{!! ($data->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('spot-market')."'>":'')  !!}  </td>
-                                    <td>{{$data->getFirstMediaUrl('spot-market')}}</td>
+                                    <td width="200px">{!! ($data->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}  </td>
                                     <td>{{ $data->name }} </td>
                                     <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
@@ -64,7 +63,7 @@
                                     <td class="text-right">
                                         <div class="btn-group text-right">
                                             @if($isCommunityLeader)
-                                                <a href="{{route('spot-market.edit', $data->id)}}" class="action btn-white btn btn-xs"><i class="fa fa-search text-success"></i> View/Edit</a>
+                                                <a href="{{route('reverse-bidding.edit', $data->id)}}" class="action btn-white btn btn-xs"><i class="fa fa-search text-success"></i> View/Edit</a>
                                             @else
                                                 <button class="add-to-cart btn-white btn btn-xs"  data-name="{{$data->name}}" data-id="{{$data->id}}">
                                                     <i class="fa fa-plus text-success"></i> Add to Cart</button>
@@ -75,7 +74,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="99" class="text-center"><a class="btn btn-sm btn-primary" href="{{route('spot-market.create')}}">Add Item</a></td>
+                                    <td colspan="99" class="text-center"><a class="btn btn-sm btn-primary" href="{{route('reverse-bidding.create')}}">Add Item</a></td>
                                 </tr>
                             @endforelse
                             </tbody>

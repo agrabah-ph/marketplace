@@ -62,7 +62,6 @@
                             @forelse($spotMarketList as $data)
                                 <tr>
                                     <td width="200px">{!! ($data->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('spot-market')."'>":'')  !!}  </td>
-                                    <td>{{$data->getFirstMediaUrl('spot-market')}}</td>
                                     <td>{{ $data->name }} </td>
                                     <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>

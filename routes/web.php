@@ -122,7 +122,7 @@ Route::domain(config('dev.domain_ext'))->group(function () {
         Route::get('spot-market-winning-bids', 'SpotMarketController@winningBids')->name('spot-market.winning_bids');
         Route::post('spot-market-complete-bid', 'SpotMarketController@completeBid')->name('spot-market.complete_bid');
         
-        Route::resource('reverse-bidding', 'SpotMarketController');
+        Route::resource('reverse-bidding', 'ReverseBiddingController');
     });
 });
 
