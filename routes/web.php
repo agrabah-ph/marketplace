@@ -123,6 +123,15 @@ Route::domain(config('dev.domain_ext'))->group(function () {
         Route::post('spot-market-complete-bid', 'SpotMarketController@completeBid')->name('spot-market.complete_bid');
         
         Route::resource('reverse-bidding', 'ReverseBiddingController');
+
+
+        Route::post('reverse-bidding-post-bid', 'ReverseBiddingController@postBid')->name('reverse-bidding.post_bid');
+        Route::post('reverse-bidding-refresh-bid', 'ReverseBiddingController@refreshBid')->name('reverse-bidding.refresh_bid');
+
+        Route::get('reverse-bidding-my-bids', 'ReverseBiddingController@myBids')->name('reverse-bidding.my_bids');
+        Route::post('reverse-bidding-make-winner', 'ReverseBiddingController@makeWinner')->name('reverse-bidding.make_winner');
+        Route::get('reverse-bidding-winning-bids', 'ReverseBiddingController@winningBids')->name('reverse-bidding.winning_bids');
+        Route::post('reverse-bidding-complete-bid', 'ReverseBiddingController@completeBid')->name('reverse-bidding.complete_bid');
     });
 });
 

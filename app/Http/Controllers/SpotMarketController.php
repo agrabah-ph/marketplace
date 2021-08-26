@@ -176,7 +176,7 @@ class SpotMarketController extends Controller
 
         $bids = SpotMarketBid::where('spot_market_id', $request->id)->orderBy('bid','desc')->pluck('bid')->toArray();
 
-        event(new \App\Events\UpdateBidBrowse($request->id));
+        event(new \App\Events\UpdateBidBrowse('spot-market',$request->id));
 
         return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, '$current_bid'=>$current_bid, 'value'=>$value]);
     }

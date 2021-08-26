@@ -6,6 +6,7 @@ use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
 use App\ReverseBidding;
+use App\ReverseBiddingBid;
 use App\Services\LoanService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
@@ -46,9 +47,22 @@ class ReverseBiddingController extends Controller
             if(isCommunityLeader()){
                 $list = auth()->user()->reveseBiddings;
                 $isCommunityLeader = true;
+                return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
             }
         }
-        return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
+
+        $listQuery = ReverseBidding::query();
+
+//        $spotMarketListwhen($request->area,function($q) use ($request){
+//            if($request->area != '_all'){
+//                $q->where('area',$request->area);
+//            }
+//        })
+        $list = $listQuery->where('expiration_time','>=',Carbon::now())->get();
+
+
+        return view('wharf.reverse-bidding.browse', compact('list', 'isCommunityLeader', 'areas'));
+
 
     }
 
@@ -70,9 +84,9 @@ class ReverseBiddingController extends Controller
      */
     public function postBid(Request $request)
     {
-        $spotMarketBid = SpotMarket::find($request->id);
-        $current_bid = $spotMarketBid->current_bid;
-        $bids = $spotMarketBid->spot_market_bids;
+        $model = ReverseBidding::find($request->id);
+        $current_bid = $model->current_bid;
+        $bids = $model->bids;
         $value = floatval(preg_replace('/,/','',$request->value));
 
         if(count($bids) > 0){
@@ -84,17 +98,17 @@ class ReverseBiddingController extends Controller
             return response()->json(['status' => false,'$current_bid'=>$current_bid,'value'=>$value]);
         }
 
-        $spotMarketBid = new SpotMarketBid();
-        $spotMarketBid->spot_market_id = $request->id;
-        $spotMarketBid->user_id = $request->user()->id;
-        $spotMarketBid->bid = $request->value;
-        $spotMarketBid->save();
+        $model = new ReverseBiddingBid();
+        $model->reverse_bidding_id = $request->id;
+        $model->user_id = $request->user()->id;
+        $model->bid = $request->value;
+        $model->save();
 
         $nextBid = $request->value + settings('spot_market_next_bid');
 
-        $bids = SpotMarketBid::where('spot_market_id', $request->id)->orderBy('bid','desc')->pluck('bid')->toArray();
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','desc')->pluck('bid')->toArray();
 
-        event(new \App\Events\UpdateBidBrowse($request->id));
+        event(new \App\Events\UpdateBidBrowse('reverse-bidding',$request->id));
 
         return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, '$current_bid'=>$current_bid, 'value'=>$value]);
     }
@@ -109,14 +123,14 @@ class ReverseBiddingController extends Controller
 
         $array = $request->all();
 
-        $spotMarketBid = SpotMarket::find($request->id);
-        $current_bid = $spotMarketBid->current_bid;
+        $model = ReverseBidding::find($request->id);
+        $current_bid = $model->current_bid;
 
         $value = floatval(preg_replace('/,/','',$current_bid));
 
         $nextBid = $value + settings('spot_market_next_bid');
 
-        $bids = SpotMarketBid::where('spot_market_id', $request->id)->orderBy('bid','desc')->pluck('bid');
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','desc')->pluck('bid');
 
         return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, 'current_bid'=>$current_bid, 'value'=>$value]);
     }

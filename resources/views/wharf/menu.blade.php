@@ -31,6 +31,9 @@
     <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Spot Market</span></a>
     </li>
+    <li class="{{ (request()->is('reverse-bidding')) ? 'active' : '' }}">
+        <a href="{!! route('reverse-bidding.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Reverse Bidding</span></a>
+    </li>
     <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>
     </li>
