@@ -52,7 +52,6 @@
                     <div class="ibox-content product-box">
                         <a href="{{route('reverse-bidding.show', $data['id'])}}" class="">
                         <div class="product-imitation" style="background-image: url('{!! ($data->hasMedia('reverse-bidding')? url('/').$data->getFirstMediaUrl('reverse-bidding'):'')  !!}')">
-{{--                            {{$data->name}}--}}
                         </div>
                         </a>
                         <div class="product-desc">
