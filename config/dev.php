@@ -12,6 +12,7 @@ return [
     */
 
     'domain_ext' => env('APP_DOMAIN_EXT', 'com'),
+    'app_module' => env('APP_MODULE', ''),
 
 
 
