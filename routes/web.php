@@ -99,6 +99,8 @@ Route::get('profile/create', 'PublicController@farmerProfileCreate')->name('prof
 Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
     Route::resource('profile', 'ProfileController')->except(['create','store']);
+    Route::resource('farmer', 'FarmerController');
+
 
     Route::get('my-profile', 'ProfileController@myProfile')->name('my-profile');
     Route::get('select-profile', 'ProfileController@selectProfile')->name('select-profile');
