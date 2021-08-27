@@ -23,7 +23,7 @@ class EnsureProviderInfo
         if(auth()->user()->hasRole('farmer')){
             if(is_null(Auth::user()->farmer->profile)){
 
-                return redirect()->route('profile-create');
+                return redirect()->route('profile.create');
             }
         }
 
