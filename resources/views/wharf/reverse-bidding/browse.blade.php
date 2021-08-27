@@ -112,7 +112,6 @@
             <div class="toast-header">
                 <i class="fa fa-cart-plus"> </i>
                 <strong class="mr-auto m-l-sm">Add to Cart</strong>
-{{--                <small>2 seconds ago</small>--}}
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
