@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Reverse Bidding List')
+@section('title', 'Purchase Orders')
 
 @section('content')
 

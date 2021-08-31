@@ -4,7 +4,7 @@
 
 @if(auth()->user()->can('read-spot-market')  && isCommunityLeader())
     <li class="{{ (request()->is('spot-market*')) && !request()->is('spot-market-winning-bids') ? 'active' : '' }}">
-        <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">My Spot Market</span><span class="fa arrow"></span></a>
+        <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">My Auctions</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}"><a href="{!! route('spot-market.index') !!}">My List</a></li>
 
@@ -13,15 +13,9 @@
             @endif
         </ul>
     </li>
-    <li class="{{ (request()->is('reverse-bidding*')) ? 'active' : '' }}">
-        <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">Reverse Bidding</span><span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse">
-            <li class="{{ (request()->is('reverse-bidding/')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.index') !!}">My List</a></li>
 
-            @if(auth()->user()->can('add-reverse-bidding'))
-            <li class="{{ (request()->is('reverse-bidding/create')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.create') !!}">Create</a></li>
-            @endif
-        </ul>
+    <li class="{{ (request()->is('reverse-bidding')) ? 'active' : '' }}">
+        <a href="{!! route('reverse-bidding.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Purchase Orders</span></a>
     </li>
     <li class="{{ (request()->is('spot-market-winning-bids')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.winning_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">Winning Bids</span></a>
@@ -29,10 +23,14 @@
 @endif
 @if(auth()->user()->can('browse-spot-market')  && !isCommunityLeader())
     <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}">
-        <a href="{!! route('spot-market.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Spot Market</span></a>
+        <a href="{!! route('spot-market.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Auctions</span></a>
     </li>
-    <li class="{{ (request()->is('reverse-bidding')) ? 'active' : '' }}">
-        <a href="{!! route('reverse-bidding.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Reverse Bidding</span></a>
+    <li class="{{ (request()->is('reverse-bidding*')) ? 'active' : '' }}">
+        <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">Purchase Orders</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li class="{{ (request()->is('reverse-bidding/')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.index') !!}">List</a></li>
+            <li class="{{ (request()->is('reverse-bidding/create')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.create') !!}">Create</a></li>
+        </ul>
     </li>
     <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>

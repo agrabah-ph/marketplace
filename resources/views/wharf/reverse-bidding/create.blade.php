@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Add Listing')
+@section('title', 'Add Purchase Order')
 
 @section('content')
 
@@ -68,8 +68,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>How many Kilos?</label>
+                                    <label>Quantity</label>
                                     <input type="number" class="form-control" name="quantity" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Unit of Measure</label>
+                                    <select name="unit_of_measure" id="unit_of_measure" class="form-control">
+                                        <option value="kilos">Kilos</option>
+                                        <option value="pieces">Pieces</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">

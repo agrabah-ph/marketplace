@@ -77,8 +77,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>How many Kilos?</label>
+                                    <label>Quantity</label>
                                     <input type="number" class="form-control" name="quantity" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Unit of Measure</label>
+                                    <select name="unit_of_measure" id="unit_of_measure" class="form-control">
+                                        <option value="kilos">Kilos</option>
+                                        <option value="banyera">Banyera</option>
+                                        <option value="lot">Lot</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">
