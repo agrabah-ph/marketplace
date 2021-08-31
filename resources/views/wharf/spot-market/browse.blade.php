@@ -335,7 +335,7 @@
             cluster: 'ap1'
         });
 
-        var channel = pusher.subscribe('bid-browse');
+        var channel = pusher.subscribe('bid-browse-spot-market');
         channel.bind('update-bid', function(data) {
             console.log('pusher data');
             console.log(data);
