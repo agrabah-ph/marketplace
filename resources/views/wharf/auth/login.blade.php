@@ -30,6 +30,7 @@
                     <small>Log on using your login and password or use social media login to enter</small>
 
                     <form method="POST" action="{{ route('login') }}">
+                        @include('alerts.validation')
                         @csrf
                         <div class="form-group">
                             <label for="">Please type your email address</label>

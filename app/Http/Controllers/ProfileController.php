@@ -114,18 +114,22 @@ class ProfileController extends Controller
         $profile->gender = $inputs[0][6][2];
         $profile->landline = $inputs[0][7][2];
         $profile->mobile = $inputs[0][8][2];
-        $profile->tin = $inputs[0][9][2];
-        $profile->sss_gsis = $inputs[0][10][2];
-        $profile->education = $inputs[0][11][2];
-        $profile->image = $inputs[0][0][2];
-        $profile->secondary_info = serialize($inputs[1]);
-        $profile->spouse_comaker_info = serialize($inputs[2]);
-        $profile->farming_info = serialize($inputs[3]);
-        $profile->employment_info = serialize($inputs[4]);
-        $profile->income_asset_info = serialize($inputs[5]);
+        try{
+            $profile->tin = $inputs[0][9][2];
+            $profile->sss_gsis = $inputs[0][10][2];
+            $profile->education = $inputs[0][11][2];
+            $profile->image = $inputs[0][0][2];
+            $profile->secondary_info = serialize($inputs[1]);
+            $profile->spouse_comaker_info = serialize($inputs[2]);
+            $profile->farming_info = serialize($inputs[3]);
+            $profile->employment_info = serialize($inputs[4]);
+            $profile->income_asset_info = serialize($inputs[5]);
 
-        $profile->qr_image = $userType->account_id.'.png';
-        $profile->qr_image_path = '/images/'.$type.'/'.$userType->account_id.'.png';
+            $profile->qr_image = $userType->account_id.'.png';
+            $profile->qr_image_path = '/images/'.$type.'/'.$userType->account_id.'.png';
+        }catch (\Exception $e){
+
+        }
         if($userType->profile()->save($profile)){
             $user = User::find($userType->user_id);
             $user->name = $profile->first_name.' '.$profile->last_name;

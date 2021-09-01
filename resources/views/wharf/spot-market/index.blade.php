@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Spot Market List')
+@section('title', 'My Auctions')
 
 @section('content')
 

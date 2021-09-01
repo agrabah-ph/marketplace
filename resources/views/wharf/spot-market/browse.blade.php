@@ -288,17 +288,20 @@
     <script>
         function finishBid(id){
             console.log(id)
-            $.ajax({
-                url: "{{route('spot-market.make_winner')}}",
-                type:"POST",
-                data:{
-                    id:id,
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success:function(response){
-                    console.log(response)
-                },
-            });
+
+            $("#btn_bid_"+id).hide();
+            $("#bid_value_"+id).hide();
+            {{--$.ajax({--}}
+            {{--    url: "{{route('spot-market.make_winner')}}",--}}
+            {{--    type:"POST",--}}
+            {{--    data:{--}}
+            {{--        id:id,--}}
+            {{--        _token: $('meta[name="csrf-token"]').attr('content')--}}
+            {{--    },--}}
+            {{--    success:function(response){--}}
+            {{--        console.log(response)--}}
+            {{--    },--}}
+            {{--});--}}
         }
         $(document).ready(function(){
             @foreach($spotMarketList as $data)

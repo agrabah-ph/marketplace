@@ -261,9 +261,7 @@ class PublicController extends Controller
                     $farmer = new Farmer();
                     $farmer->account_id = $number;
                     $farmer->user_id = $data->id;
-                    if($type == 'community-leader'){
-                        $farmer->community_leader = 1;
-                    }
+                    $farmer->community_leader = 1;
                     $farmer->save();
                     break;
                 case 'loan-provider':
@@ -281,8 +279,8 @@ class PublicController extends Controller
             }
 
             $data->sendEmailVerificationNotification();
-            Auth::loginUsingId($data->id);
-            return redirect()->route('home');
+//            Auth::loginUsingId($data->id);
+            return redirect()->route('login')->with('success','Please verify your account, verification sent to '.$request->input('email'));
         }
 
     }

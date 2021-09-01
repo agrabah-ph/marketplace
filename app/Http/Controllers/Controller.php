@@ -15,8 +15,11 @@ class Controller extends BaseController
 
     public function registration()
     {
-        $app_registrant = AppRegistrant::where('app', subdomain_name())->get();
+        $app_registrant = [
+            'community-leader'=>'Community Leader',
+            'buyer'=>'Buyer'
+        ];
 
-        return view(subdomain_name().'.auth.register', compact('app_registrant'));
+        return view('wharf.auth.register', compact('app_registrant'));
     }
 }

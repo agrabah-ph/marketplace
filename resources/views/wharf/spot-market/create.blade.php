@@ -57,11 +57,11 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>From Farmer</label>
+                                    <label>Supplier</label>
                                     <select class="form-control" id="from_user_id" name="from_user_id" required>
                                         <option value="" disabled selected></option>
                                         @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}">{{$farmer->user->name}}</option>
+                                            <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
                                         @endforeach
                                     </select>
                                 </div>

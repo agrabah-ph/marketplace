@@ -41,25 +41,24 @@ class ReverseBiddingController extends Controller
         $list = [];
         $areas = [];
 
+        $areas = ReverseBidding::whereNotNull('area')->distinct('area')->pluck('area')->toArray();
+
         $roleName = auth()->user()->roles->first()->name;
         $isCommunityLeader = false;
-        if($roleName == 'farmer'){
-            if(isCommunityLeader()){
-                $list = auth()->user()->reveseBiddings;
-                $isCommunityLeader = true;
-                return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
-            }
+        if($roleName == 'buyer'){
+            $list = auth()->user()->reveseBiddings;
+            $isCommunityLeader = true;
+            return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
         }
 
         $listQuery = ReverseBidding::query();
 
-//        $spotMarketListwhen($request->area,function($q) use ($request){
-//            if($request->area != '_all'){
-//                $q->where('area',$request->area);
-//            }
-//        })
+        $listQuery->when($request->area,function($q) use ($request){
+            if($request->area != '_all'){
+                $q->where('area',$request->area);
+            }
+        });
         $list = $listQuery->where('expiration_time','>=',Carbon::now())->get();
-
 
         return view('wharf.reverse-bidding.browse', compact('list', 'isCommunityLeader', 'areas'));
 
@@ -74,8 +73,13 @@ class ReverseBiddingController extends Controller
      */
     public function create()
     {
+        $defaultAreaQuery = ReverseBidding::where('user_id', auth()->user()->id)->whereNotNull('area')->first();
+        $defaultArea = "";
+        if($defaultAreaQuery){
+            $defaultArea = $defaultAreaQuery->area;
+        }
 
-        return view('wharf.reverse-bidding.create');
+        return view('wharf.reverse-bidding.create',compact('defaultArea'));
     }
     /**
      * Show the form for creating a new resource.

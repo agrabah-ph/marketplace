@@ -47,6 +47,10 @@
                                     <input accept="image/*" type="file" class="form-control" id="image" name="image">
                                 </div>
                                 <div class="form-group">
+                                    <label>PO Number</label>
+                                    <input type="text" class="form-control" name="po_num" required>
+                                </div>
+                                <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" required>
                                 </div>
@@ -59,6 +63,10 @@
                                 <div class="form-group">
                                     <label>Starting Bid</label>
                                     <input type="text" class="form-control money" name="selling_price" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Area</label>
+                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Duration (Hours & Minutes)</label>

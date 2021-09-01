@@ -12,6 +12,7 @@ class ReverseBidding extends Model implements HasMedia
     use HasMediaTrait;
 
     protected $fillable= [
+        'po_num',
         'user_id',
         'name',
         'description',
@@ -23,6 +24,7 @@ class ReverseBidding extends Model implements HasMedia
         'area',
         'method',
         'status',
+        'unit_of_measure',
     ];
 
     public function bids()

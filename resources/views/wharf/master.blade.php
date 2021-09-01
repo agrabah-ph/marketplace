@@ -63,15 +63,18 @@
                             {{--<span class="text-muted text-xs block"> {{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--                            <span class="text-muted text-xs block"> {!! Auth::user()->name !!} <b class="caret"></b></span>--}}
                             <span class="block m-t-xs font-bold">{!! Auth::user()->name !!}</span>
-                            <small class="text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></small>
+{{--                            <small class="text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></small>--}}
                         </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="dropdown-item" href="{{ route('my-profile') }}">Profile</a></li>
-                            {{--                            <li><a class="dropdown-item" href="#">Contacts</a></li>--}}
-                            {{--                            <li><a class="dropdown-item" href="#">Mailbox</a></li>--}}
-                            <li class="dropdown-divider"></li>
-                            <li><a class="dropdown-item btn-logout" href="#" id="">Logout</a></li>
-                        </ul>
+                        <div style="position:relative;">
+
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" href="{{ route('my-profile') }}">Profile</a></li>
+                                {{--                            <li><a class="dropdown-item" href="#">Contacts</a></li>--}}
+                                {{--                            <li><a class="dropdown-item" href="#">Mailbox</a></li>--}}
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item btn-logout" href="#" id="">Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="logo-element">
                         Wharf

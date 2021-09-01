@@ -46,11 +46,24 @@
                                     <input accept="image/*" type="file" class="form-control" id="image" name="image">
                                 </div>
                                 <div class="form-group">
+                                    <label>PO Number</label>
+                                    <input type="text" class="form-control" name="name" value="{{$data->po_num}}">
+                                </div>
+                                <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" value="{{$data->name}}">
                                 </div>
                             </div>
                             <div class="col-6">
+                                <div class="form-group">
+                                    <label>Starting Bid</label>
+                                    <input type="text" class="form-control money" name="selling_price"
+                                           value="{{$data->asking_price}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Area</label>
+                                    <input type="text" class="form-control" name="area" value="{{$data->area}}" required>
+                                </div>
                                 <div class="form-group">
                                     <label>Duration (Hours & Minutes)</label>
                                     <div style="position: relative">
@@ -59,13 +72,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>How many Kilos?</label>
+                                    <label>Quantity</label>
                                     <input type="number" class="form-control" name="quantity" value="{{$data->quantity}}">
                                 </div>
                                 <div class="form-group">
-                                    <label>Starting Bid</label>
-                                    <input type="text" class="form-control money" name="selling_price"
-                                           value="{{$data->asking_price}}">
+                                    <label>Unit of Measure</label>
+                                    <select name="unit_of_measure" id="unit_of_measure" class="form-control">
+                                        <option value="kilos"{{$data->unit_of_measure=='kilos'?'selected':''}}>Kilos</option>
+                                        <option value="pieces"{{$data->unit_of_measure=='pieces'?'selected':''}}>Pieces</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">

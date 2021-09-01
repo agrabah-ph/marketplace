@@ -85,7 +85,7 @@
                                 @if(count($data->bids)>0)
                                     <ol id="bids_list_{{$data->id}}" style="height: 6.38em;overflow-y: auto;padding-left: 1.5em">
                                         @foreach($data->bids as $bids)
-                                            <li>₱{{$bids->bid}}</li>
+                                            <li>₱{{$bids->bid}}{{$bids->user_id == auth()->user()->id?' (your bid)':''}}</li>
                                         @endforeach
                                     </ol>
                                 @else
@@ -286,17 +286,18 @@
     <script>
         function finishBid(id){
             console.log(id)
-            $.ajax({
-                url: "{{route('reverse-bidding.make_winner')}}",
-                type:"POST",
-                data:{
-                    id:id,
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success:function(response){
-                    console.log(response)
-                },
-            });
+            {{--$.ajax({--}}
+            {{--    url: "{{route('reverse-bidding.make_winner')}}",--}}
+            {{--    type:"POST",--}}
+            {{--    data:{--}}
+            {{--        id:id,--}}
+            {{--        _token: $('meta[name="csrf-token"]').attr('content')--}}
+            {{--    },--}}
+            {{--    success:function(response){--}}
+                    $("#btn_bid_"+id).hide();
+                    $("#bid_value_"+id).hide();
+                // },
+            // });
         }
         $(document).ready(function(){
             @foreach($list as $data)

@@ -33,12 +33,13 @@
 
 
                     {!! Form::open(array('route'=>array('wharf-user-registration-store'))) !!}
+                    @include('alerts.validation')
                     <div class="form-group">
                         <label>User type</label>
                         <select name="type" class="form-control" style="height: 48px !important;">
                             <option value="">Select</option>
-                            @foreach($app_registrant as $role)
-                            <option value="{{$role->role->name}}">{{$role->role->display_name}}</option>
+                            @foreach($app_registrant as $role => $roleName)
+                                    <option value="{{$role}}">{{$roleName}}</option>
                             @endforeach
                         </select>
                         @if($errors->has('type'))
