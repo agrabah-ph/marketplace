@@ -45,6 +45,7 @@ class SpotMarket extends Model implements HasMedia
         $array['is_expired'] = Carbon::parse($this->expiration_time)->isPast();
         $array['in_minutes'] = null;
         $array['in_hours'] = null;
+        $array['unit_of_measure_short'] = $this->getUnitOfMeasureShortAttribute();
         return $array;
     }
 
@@ -64,6 +65,33 @@ class SpotMarket extends Model implements HasMedia
         }
         return $minutes;
     }
+
+    public function getUnitOfMeasureShortAttribute()
+    {
+        $uom = '';
+        if($this['unit_of_measure']){
+            switch ($this['unit_of_measure']){
+                case 'kilos':
+                    $uom = 'kg(s)';
+                    break;
+                case 'bayera':
+                    $uom = ' bayera';
+                    break;
+                case 'lot':
+                    $uom = ' lot';
+                    break;
+                case 'pieces':
+                    $uom = 'pc(s)';
+                    break;
+                default:
+                    $uom = $this['unit_of_measure'];
+                    break;
+            }
+        }
+        return $uom;
+    }
+
+
     public function getIsExpiredAttribute()
     {
         return Carbon::parse($this->expiration_time)->isPast();

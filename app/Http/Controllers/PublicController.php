@@ -279,7 +279,7 @@ class PublicController extends Controller
             }
 
             $data->sendEmailVerificationNotification();
-//            Auth::loginUsingId($data->id);
+            Auth::loginUsingId($data->id);
             return redirect()->route('login')->with('success','Please verify your account, verification sent to '.$request->input('email'));
         }
 

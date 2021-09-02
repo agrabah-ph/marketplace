@@ -51,6 +51,7 @@
                                 <th>Area</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
+                                <th>Unit of Measure</th>
                                 <th>Starting Bid</th>
                                 <th>Added At</th>
                                 <th>Expiration</th>
@@ -66,7 +67,8 @@
                                     <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
                                     <td>{!!  $data->description  !!} </td>
-                                    <td>{!!  $data->quantity?floatval($data->quantity).'kg':''  !!} </td>
+                                    <td>{!!  $data->quantity  !!} </td>
+                                    <td>{!!  ucfirst($data->unit_of_measure)  !!} </td>
                                     <td class="text-right">{!!  $data->selling_price  !!} </td>
                                     <td style="white-space: nowrap">{!!  \Carbon\Carbon::parse($data->created_at)->format('M d, Y H:i:s')  !!} </td>
                                     <td style="white-space: nowrap">{{ \Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s')  }} </td>

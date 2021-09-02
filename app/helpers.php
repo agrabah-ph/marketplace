@@ -315,3 +315,37 @@ if (!function_exists('getSpotMarketOrderStatuses')) {
     }
 }
 
+if (!function_exists('getServiceFee')) {
+    function getServiceFee($uom, $quantity, $bid, $type = 'reverse')
+    {
+
+        $serviceFee = 0;
+        if($uom && $quantity && $bid){
+            if($type == 'reverse'){
+                $serviceFee = $bid - ($bid / 100) ;
+            }elseif($type == 'spot_market'){
+                switch ($uom){
+                    case 'kilos':
+                        $serviceFee = $quantity;
+                        break;
+                    case 'lot':
+                    case 'bayera':
+                        $serviceFee = $bid - ($bid / 100) ;
+                        break;
+                }
+            }else{
+                switch ($uom){
+                    case 'kilos':
+                        $serviceFee = $quantity;
+                        break;
+                    case 'lot':
+                    case 'bayera':
+                        $serviceFee = $bid - ($bid / 100) ;
+                        break;
+                }
+            }
+        }
+        return $serviceFee;
+    }
+}
+

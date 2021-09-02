@@ -38,7 +38,7 @@
                                 <tbody>
                                 @foreach($winningBids as $item)
                                 <tr>
-                                    <td width="90">
+                                    <td>
                                         <div class="cart-product-imitation">
                                             {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
                                         </div>
@@ -56,10 +56,25 @@
                                             {{$item->quantity}}kg(s)
                                         </h4>
                                     </td>
-                                    <td>
-                                        <h4>
-                                            ₱{{number_format($item->spot_market_bids->first()->bid, 2)}}
-                                        </h4>
+                                    <td style="width: 250px;">
+                                        @php
+                                            $winningBid = $item->spot_market_bids->first()->bid;
+                                            $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
+                                        @endphp
+                                        <div class="tabulation">
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Sub Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Service Fee</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row total">
+                                                <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid, 2)}}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -78,9 +93,9 @@
                                 <tbody>
                                 @foreach($losingBids as $item)
                                 <tr>
-                                    <td width="90">
+                                    <td>
                                         <div class="cart-product-imitation">
-                                            {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                            {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
                                         </div>
                                     </td>
                                     <td class="desc">
@@ -93,8 +108,28 @@
                                     </td>
                                     <td>
                                         <h4>
-                                            ₱{{number_format($item->spot_market_bids->first()->bid, 2)}}
+                                            {{$item->quantity}}{{$item->unit_of_measure_short}}
                                         </h4>
+                                    </td>
+                                    <td style="width: 250px;">
+                                        @php
+                                            $winningBid = $item->spot_market_bids->first()->bid;
+                                            $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
+                                        @endphp
+                                        <div class="tabulation">
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Sub Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Service Fee</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row total">
+                                                <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid, 2)}}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -211,6 +246,16 @@
     <style>
         .cart-product-imitation{
             padding: 0!important;
+        }
+        .no-wrap{
+            white-space: nowrap;
+        }
+        .tabulation{
+            font-size: 14px;
+        }
+        .total{
+            font-size: 16px;
+            font-weight: 700;
         }
     </style>
     {{--{!! Html::style('') !!}--}}

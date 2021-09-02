@@ -207,12 +207,13 @@
             $('.btn-bid').on('click', function(e){
                 e.preventDefault();
                 var itemId = $(this).data('id');
-                var itemValue = $('#bid_value_'+itemId).val();
-                var min = $(this).data('min');
-                console.log(numberRemoveCommas(min))
-                console.log(numberRemoveCommas(itemValue))
-                if(numberRemoveCommas(min) <= numberRemoveCommas(itemValue)){
+                var itemValue = numberRemoveCommas($('#bid_value_'+itemId).val());
+                var min = numberRemoveCommas($(this).data('min'));
+                if(parseFloat(min) <= parseFloat(itemValue)){
+                    // console.log('post bid')
                     postBid(itemId, numberRemoveCommas(itemValue));
+                }else{
+                    // console.log('not bid')
                 }
             })
         });

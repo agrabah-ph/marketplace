@@ -207,9 +207,7 @@
                 var itemId = $(this).data('id');
                 var itemValue = $('#bid_value_'+itemId).val();
                 var min = $(this).data('min');
-                console.log(numberRemoveCommas(min))
-                console.log(numberRemoveCommas(itemValue))
-                if(numberRemoveCommas(min) <= numberRemoveCommas(itemValue)){
+                if(parseFloat(numberRemoveCommas(min)) <= parseFloat(numberRemoveCommas(itemValue))){
                     postBid(itemId, numberRemoveCommas(itemValue));
                 }
             })
