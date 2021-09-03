@@ -67,6 +67,32 @@ class ReverseBiddingController extends Controller
 
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function myBids()
+    {
+        $spotMarketBidsWinsQuery = ReverseBiddingBid::query();
+        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
+        $spotMarketBidsWins = $spotMarketBidsWinsQuery->pluck('reverse_bidding_id')->toArray();
+
+        $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
+
+        $spotMarketBidsLoseQuery = ReverseBiddingBid::query();
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
+        $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('reverse_bidding_id')->toArray();
+        $losingBids = ReverseBidding::whereIn('id', $spotMarketBidsLose)
+            ->whereNotIn('id', $winningBids)
+            ->get();
+
+        return view('wharf.reverse-bidding.my_bids', compact('winningBids', 'losingBids'));
+
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

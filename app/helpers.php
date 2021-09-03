@@ -322,7 +322,7 @@ if (!function_exists('getServiceFee')) {
         $serviceFee = 0;
         if($uom && $quantity && $bid){
             if($type == 'reverse'){
-                $serviceFee = $bid - ($bid / 100) ;
+                $serviceFee = $bid * .01 ;
             }elseif($type == 'spot_market'){
                 switch ($uom){
                     case 'kilos':
@@ -330,7 +330,7 @@ if (!function_exists('getServiceFee')) {
                         break;
                     case 'lot':
                     case 'bayera':
-                        $serviceFee = $bid - ($bid / 100) ;
+                        $serviceFee = $bid * .01 ;
                         break;
                 }
             }else{
@@ -340,7 +340,7 @@ if (!function_exists('getServiceFee')) {
                         break;
                     case 'lot':
                     case 'bayera':
-                        $serviceFee = $bid - ($bid / 100) ;
+                        $serviceFee = $bid * .01 ;
                         break;
                 }
             }

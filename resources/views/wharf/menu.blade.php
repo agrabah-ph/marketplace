@@ -20,6 +20,9 @@
     <li class="{{ (request()->is('spot-market-winning-bids')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.winning_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">Winning Bids</span></a>
     </li>
+    <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
+        <a href="{!! route('reverse-bidding.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>
+    </li>
 @endif
 @if(auth()->user()->can('browse-spot-market')  && !isCommunityLeader())
     <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}">
