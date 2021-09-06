@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col-6 text-right">
                                     Expiring At <br>
-                                    <span>{{\Carbon\Carbon::parse($data->expiration_time)->format('H:i:s a')}}</span>
+                                    <span>{{\Carbon\Carbon::parse($data->expiration_time)->format('m/d H:i:s a')}}</span>
                                 </div>
                             </small>
                             <pre class="d-none">
@@ -303,16 +303,22 @@
             var x{{$data->id}} = setInterval(function() {
                 var now = new Date().getTime();
                 var distance = countDownDate{{$data->id}} - now;
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
+                if(days < 1){
+                    days = "";
+                }else{
+                    days = days > 1 ? days+' days' : days+ 'day';
+                }
                 hours = hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                document.getElementById("expiration_{{$data->id}}").innerHTML =  hours + ":" + minutes + ":" + seconds;
+                document.getElementById("expiration_{{$data->id}}").innerHTML =  days+" "+hours + ":" + minutes + ":" + seconds;
                 if (distance < 0) {
                     clearInterval(x{{$data->id}});
                     finishBid('{{$data->id}}');

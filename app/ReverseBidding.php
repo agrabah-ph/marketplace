@@ -17,6 +17,7 @@ class ReverseBidding extends Model implements HasMedia
         'name',
         'description',
         'quantity',
+        'days',
         'duration',
         'expiration_time',
         'asking_price',

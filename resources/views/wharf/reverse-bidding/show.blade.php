@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <h2>@yield('title')</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -19,7 +19,7 @@
                 </li>
             </ol>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <div class="title-action">
             </div>
         </div>
@@ -64,18 +64,42 @@
                                 <h2 class="font-bold m-b-xs">
                                     {{$data->name}}
                                 </h2>
-{{--                                <small>Many desktop publishing packages and web page editors now.</small>--}}
                                 <div class="m-t-md">
-                                    <h2 class="product-main-price"> ₱{{$data->selling_price}} <small class="text-muted" style="text-decoration: line-through">₱{{$data->original_price}}</small> </h2>
+                                    <h2 class="product-main-price"> ₱ {{number_format($data->current_bid,2)}} </h2>
                                 </div>
                                 <hr>
                                 {!! $data->description !!}
                                 <hr>
-
+                                <div class="row">
+                                    <div class="col-6">
+                                        Highest Bid
+                                    </div>
+                                    <div class="col-6">
+                                        @php
+                                            $winningBid = $data->asking_price;
+                                            if($data->bids){
+                                                $winningBid = $data->bids->first()->bid;
+                                            }
+                                        @endphp
+                                        ₱{{currency_format($winningBid)}}
+                                    </div>
+                                    <div class="col-6">
+                                        Starting Bid
+                                    </div>
+                                    <div class="col-6">
+                                        ₱{{currency_format($data->asking_price)}}
+                                    </div>
+                                    <div class="col-6">
+                                        Expiration Time
+                                    </div>
+                                    <div class="col-6">
+                                        {{\Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s a')}}
+                                    </div>
+                                </div>
                                 <div>
                                     <div class="btn-group">
-                                        <button class="btn btn-primary btn-sm add-to-cart" data-name="{{$data->name}}" data-id="{{$data->id}}"><i class="fa fa-cart-plus"></i> Add to cart</button>
-                                        <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Add to wishlist <small>Coming Soon!</small></button>
+{{--                                        <button class="btn btn-primary btn-sm add-to-cart" data-name="{{$data->name}}" data-id="{{$data->id}}"><i class="fa fa-cart-plus"></i> Add to cart</button>--}}
+{{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Add to wishlist <small>Coming Soon!</small></button>--}}
 {{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with author </button>--}}
                                     </div>
                                 </div>

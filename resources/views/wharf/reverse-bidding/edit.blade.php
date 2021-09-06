@@ -65,10 +65,20 @@
                                     <input type="text" class="form-control" name="area" value="{{$data->area}}" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Duration (Hours & Minutes)</label>
-                                    <div style="position: relative">
-                                        <input type="text" id="time" class="form-control" name="duration"
-                                               autocomplete="off" value="{{$data->duration}}">
+                                    <label>Expiration (Days, Hours : Minutes)</label>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <select name="days" id="days" class="form-control">
+                                                @foreach(range(1,30) as $day)
+                                                    <option value="{{$day}}" {{$data->days == $day}}>{{$day}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-2">
+                                            <div style="position: relative">
+                                                <input type="text" id="time" class="form-control" name="duration" required autocomplete="off" value="{{$data->duration}}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

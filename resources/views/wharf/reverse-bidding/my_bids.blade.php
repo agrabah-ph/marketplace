@@ -98,13 +98,13 @@
                                 <tr>
                                     <td>
                                         <div class="cart-product-imitation">
-                                            {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                            {!! ($item->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}
                                         </div>
                                     </td>
                                     <td class="desc">
                                         <h3>
                                             <a href="#" class="text-navy">
-                                                <a href="{{route('spot-market.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
+                                                <a href="{{route('reverse-bidding.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
                                             </a>
                                         </h3>
                                         {!! $item->description !!}

@@ -78,13 +78,16 @@ class ReverseBiddingController extends Controller
         $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
         $spotMarketBidsWins = $spotMarketBidsWinsQuery->pluck('reverse_bidding_id')->toArray();
 
-        $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
+        $winningBids = ReverseBidding::whereIn('id', $spotMarketBidsWins)
+            ->where('expiration_time', '<',now())
+            ->get();
 
         $spotMarketBidsLoseQuery = ReverseBiddingBid::query();
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
         $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('reverse_bidding_id')->toArray();
         $losingBids = ReverseBidding::whereIn('id', $spotMarketBidsLose)
+            ->where('expiration_time', '<',now())
             ->whereNotIn('id', $winningBids)
             ->get();
 
@@ -176,7 +179,6 @@ class ReverseBiddingController extends Controller
 
         $request->validate([
             'quantity' => 'numeric|max:1000000',
-            'selling_price' => 'numeric',
         ]);
         $array = $request->except('_token');
         $array['user_id'] = auth()->user()->id;
@@ -185,8 +187,9 @@ class ReverseBiddingController extends Controller
         $expiration = Carbon::parse($model['created_at']);
         if($model['duration']){
             $duration = explode(':',$model['duration']);
-            $expiration->addHour($duration[0]);
-            $expiration->addMinute($duration[1]);
+            $expiration->addDays($request->days);
+            $expiration->hours($duration[0]);
+            $expiration->minute($duration[1]);
             $expiration->second(0);
         }
         $model->expiration_time = $expiration;
@@ -205,8 +208,8 @@ class ReverseBiddingController extends Controller
      */
     public function show($id)
     {
-        $data = SpotMarket::find($id);
-        return view('wharf.spot-market.show', compact('data'));
+        $data = ReverseBidding::find($id);
+        return view('wharf.reverse-bidding.show', compact('data'));
     }
 
     /**

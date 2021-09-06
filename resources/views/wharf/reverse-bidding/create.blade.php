@@ -33,6 +33,7 @@
         {{ Form::open(['route'=>'reverse-bidding.store', 'class'=>'','id'=>'form','files'=>true]) }}
         <div class="row">
             <div class="col-sm-12">
+                @include('alerts.validation')
                 @csrf
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -69,10 +70,20 @@
                                     <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Duration (Hours & Minutes)</label>
-                                    <div style="position: relative">
-                                        <input type="text" id="time" class="form-control" name="duration" required
-                                               autocomplete="off">
+                                    <label>Expiration (Days, Hours : Minutes)</label>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <select name="days" id="days" class="form-control">
+                                                @foreach(range(1,30) as $day)
+                                                    <option value="{{$day}}">{{$day}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-2">
+                                            <div style="position: relative">
+                                                <input type="text" id="time" class="form-control" name="duration" required autocomplete="off">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -174,8 +185,8 @@
             $('#time').datetimepicker({
                 datepicker: false,
                 step: 30,
-                minTime: '00:30',
-                defaultTime: '00:30',
+                minTime: '00:00',
+                defaultTime: '00:00',
                 format: 'H:i'
             });
 
