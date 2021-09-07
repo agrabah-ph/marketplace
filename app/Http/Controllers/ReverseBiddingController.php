@@ -73,6 +73,15 @@ class ReverseBiddingController extends Controller
      */
     public function myBids()
     {
+
+        $spotMarketBidsActiveQuery = ReverseBiddingBid::query();
+        $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('reverse_bidding_id')->toArray();
+
+        $activeBids = ReverseBidding::whereIn('id', $spotMarketBidsActive)
+            ->where('expiration_time', '>',now())
+            ->get();
+
         $spotMarketBidsWinsQuery = ReverseBiddingBid::query();
         $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
@@ -91,7 +100,7 @@ class ReverseBiddingController extends Controller
             ->whereNotIn('id', $winningBids)
             ->get();
 
-        return view('wharf.reverse-bidding.my_bids', compact('winningBids', 'losingBids'));
+        return view('wharf.reverse-bidding.my_bids', compact('activeBids', 'winningBids', 'losingBids'));
 
     }
 

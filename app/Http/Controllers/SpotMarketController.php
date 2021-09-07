@@ -40,6 +40,14 @@ class SpotMarketController extends Controller
      */
     public function myBids()
     {
+        $spotMarketBidsActiveQuery = SpotMarketBid::query();
+        $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('spot_market_id')->toArray();
+
+        $activeBids = SpotMarket::whereIn('id', $spotMarketBidsActive)
+            ->where('expiration_time', '>',now())
+            ->get();
+
         $spotMarketBidsWinsQuery = SpotMarketBid::query();
         $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
@@ -58,7 +66,7 @@ class SpotMarketController extends Controller
             ->whereNotIn('id', $winningBids)
             ->get();
 
-        return view('wharf.spot-market.my_bids', compact('winningBids', 'losingBids'));
+        return view('wharf.spot-market.my_bids', compact('activeBids', 'winningBids', 'losingBids'));
 
     }
 
@@ -217,7 +225,7 @@ class SpotMarketController extends Controller
 
         $request->validate([
             'quantity' => 'numeric|max:1000000',
-            'selling_price' => 'numeric',
+            'selling_price' => 'regex:/^[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)*$/',
         ]);
 
 

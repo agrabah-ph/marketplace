@@ -30,6 +30,64 @@
 
                 <div class="ibox">
                     <div class="ibox-title pr-3">
+                        <h5>Active Bids</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table class="table shoping-cart-table">
+                                <tbody>
+                                @foreach($activeBids as $item)
+                                <tr>
+                                    <td>
+                                        <div class="cart-product-imitation">
+                                            {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                        </div>
+                                    </td>
+                                    <td class="desc">
+                                        <h3>
+                                            <a href="#" class="text-navy">
+                                                <a href="{{route('spot-market.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
+                                            </a>
+                                        </h3>
+                                        {!! $item->description !!}
+                                    </td>
+                                    <td>
+                                        <h4>
+                                            {{$item->quantity}}kg(s)
+                                        </h4>
+                                    </td>
+                                    <td style="width: 250px;">
+                                        @php
+                                            $winningBid = $item->asking_price;
+                                            if($item->bids){
+                                                $winningBid = $item->bids->first()->bid;
+                                            }
+                                            $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
+                                        @endphp
+                                        <div class="tabulation">
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Sub Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4 no-wrap text-muted text-left">Service Fee</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($serviceFee, 2)}}</div>
+                                            </div>
+                                            <div class="row total">
+                                                <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                <div class="col-8 no-wrap text-right">₱{{number_format($winningBid, 2)}}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-title pr-3">
                         <h5>Winning Bids</h5>
                     </div>
                     <div class="ibox-content">

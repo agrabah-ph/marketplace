@@ -62,7 +62,7 @@
                             {{--                            <span class="text-muted text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--<span class="text-muted text-xs block"> {{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--                            <span class="text-muted text-xs block"> {!! Auth::user()->name !!} <b class="caret"></b></span>--}}
-                            <span class="block m-t-xs font-bold">{!! Auth::user()->name !!}</span>
+                            <span class="block m-t-xs font-bold">{!! Auth::user()->name??Auth::user()->email !!}</span>
 {{--                            <small class="text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></small>--}}
                         </a>
                         <div style="position:relative;">
