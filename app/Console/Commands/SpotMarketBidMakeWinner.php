@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\MarketPlace;
+use App\ReverseBidding;
 use App\Settings;
 use App\SpotMarket;
 use Carbon\Carbon;
@@ -54,7 +56,35 @@ class SpotMarketBidMakeWinner extends Command
                 }
             }
         }
-        $this->info('Generating Winners');
+        $this->info('Generating Spot market Winners');
         Log::info('Generating Spot market Winners');
+
+        $spotMarkets = MarketPlace::where('expiration_time','<', Carbon::now())->get();
+        foreach($spotMarkets as $spotMarket){
+            $this->info($spotMarket->expiration_time);
+            if(Carbon::parse($spotMarket->expiration_time)->isPast()){
+                $winningBid = $spotMarket->bids->first();
+                if($winningBid){
+                    $winningBid->winner = 1;
+                    $winningBid->save();
+                }
+            }
+        }
+        $this->info('Generating Marketplace Winners');
+        Log::info('Generating Marketplace Winners');
+
+        $spotMarkets = ReverseBidding::where('expiration_time','<', Carbon::now())->get();
+        foreach($spotMarkets as $spotMarket){
+            $this->info($spotMarket->expiration_time);
+            if(Carbon::parse($spotMarket->expiration_time)->isPast()){
+                $winningBid = $spotMarket->bids->first();
+                if($winningBid){
+                    $winningBid->winner = 1;
+                    $winningBid->save();
+                }
+            }
+        }
+        $this->info('Generating Reverse Bidding Winners');
+        Log::info('Generating Reverse Bidding Winners');
     }
 }

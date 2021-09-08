@@ -53,6 +53,14 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::get('select-profile', 'ProfileController@selectProfile')->name('select-profile');
     Route::get('get-my-profile', 'ProfileController@getMyProfile')->name('get-my-profile');
 
+    Route::resource('market-place', 'MarketPlaceController');
+    Route::post('market-place-post-bid', 'MarketPlaceController@postBid')->name('market-place.post_bid');
+    Route::post('market-place-refresh-bid', 'MarketPlaceController@refreshBid')->name('market-place.refresh_bid');
+
+    Route::get('market-place-my-bids', 'MarketPlaceController@myBids')->name('market-place.my_bids');
+    Route::post('market-place-make-winner', 'MarketPlaceController@makeWinner')->name('market-place.make_winner');
+    Route::get('market-place-winning-bids', 'MarketPlaceController@winningBids')->name('market-place.winning_bids');
+    Route::post('market-place-complete-bid', 'MarketPlaceController@completeBid')->name('market-place.complete_bid');
 
     Route::resource('purchase-order', 'PurchaseOrderController');
     Route::resource('spot-market', 'SpotMarketController');

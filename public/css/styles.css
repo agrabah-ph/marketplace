@@ -170,12 +170,15 @@ body {
 }
 .template-loan .navbar-minimalize:hover {
   background: #467111 !important;
+  color: #fff;
 }
 .template-loan .nav li a:hover, .template-loan .nav li a:focus {
   background: #467111 !important;
+  color: #fff;
 }
 .template-loan .nav li.active {
   background: #467111 !important;
+  color: #fff;
 }
 .template-loan .nav li.active > a {
   border-left-color: #9ed35a !important;

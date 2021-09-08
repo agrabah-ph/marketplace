@@ -41,6 +41,11 @@ class Farmer extends Model
         return $this->morphMany(SpotMarket::class, 'model');
     }
 
+    public function marketPlace()
+    {
+        return $this->morphMany(MarketPlace::class, 'model');
+    }
+
     public function loans()
     {
         return $this->morphMany(Loan::class, 'borrower')->with('payment_schedules', 'product', 'provider');
