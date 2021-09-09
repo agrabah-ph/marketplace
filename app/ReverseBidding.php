@@ -40,4 +40,14 @@ class ReverseBidding extends Model implements HasMedia
         return $currentBid;
     }
 
+    public function getWinnerAttribute()
+    {
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','desc')->first();
+        $user = null;
+        if($bids){
+            $user = $bids->user;
+        }
+        return $user;
+    }
+
 }

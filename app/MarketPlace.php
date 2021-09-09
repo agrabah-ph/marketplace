@@ -98,4 +98,15 @@ class MarketPlace extends Model implements HasMedia
     {
         return Carbon::parse($this->expiration_time)->isPast();
     }
+
+
+    public function getWinnerAttribute()
+    {
+        $bids = MarketPlaceBid::where('market_place_id', $this->id)->orderBy('bid','desc')->first();
+        $user = null;
+        if($bids){
+            $user = $bids->user;
+        }
+        return $user;
+    }
 }

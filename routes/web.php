@@ -88,6 +88,9 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::post('reverse-bidding-make-winner', 'ReverseBiddingController@makeWinner')->name('reverse-bidding.make_winner');
     Route::get('reverse-bidding-winning-bids', 'ReverseBiddingController@winningBids')->name('reverse-bidding.winning_bids');
     Route::post('reverse-bidding-complete-bid', 'ReverseBiddingController@completeBid')->name('reverse-bidding.complete_bid');
+
+
+    Route::resource('report', 'ReportController');
 });
 
 

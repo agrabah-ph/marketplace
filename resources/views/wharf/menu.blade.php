@@ -33,6 +33,9 @@
     <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
         <a href="{!! route('reverse-bidding.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>
     </li>
+    <li class="{{ (request()->is('report')) ? 'active' : '' }}">
+        <a href="{!! route('report.index') !!}"><i class="fa fa-table"></i> <span class="nav-label">Report</span></a>
+    </li>
 @endif
 @if(auth()->user()->can('browse-spot-market')  && !isCommunityLeader())
     <li class="{{ (request()->is('market-place')) ? 'active' : '' }}">

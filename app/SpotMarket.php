@@ -96,4 +96,14 @@ class SpotMarket extends Model implements HasMedia
     {
         return Carbon::parse($this->expiration_time)->isPast();
     }
+
+    public function getWinnerAttribute()
+    {
+        $bids = SpotMarketBid::where('spot_market_id', $this->id)->orderBy('bid','desc')->first();
+        $user = null;
+        if($bids){
+            $user = $bids->user;
+        }
+        return $user;
+    }
 }

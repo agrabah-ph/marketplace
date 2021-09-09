@@ -44,7 +44,7 @@
                                         <div class="table-responsive">
                                             <table class="table shoping-cart-table">
                                                 <tbody>
-                                                @foreach($activeBids as $item)
+                                                @foreach($activeMarketplaceBids as $item)
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
@@ -102,7 +102,7 @@
                                         <div class="table-responsive">
                                             <table class="table shoping-cart-table">
                                                 <tbody>
-                                                @foreach($winningBids as $item)
+                                                @foreach($winningMarketplaceBids as $item)
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
@@ -157,7 +157,7 @@
                                         <div class="table-responsive">
                                             <table class="table shoping-cart-table">
                                                 <tbody>
-                                                @foreach($losingBids as $item)
+                                                @foreach($losingMarketplaceBids as $item)
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
@@ -457,6 +457,9 @@
         .total{
             font-size: 16px;
             font-weight: 700;
+        }
+        .table{
+            width: 99%;
         }
     </style>
     {{--{!! Html::style('') !!}--}}

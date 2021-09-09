@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
+use App\MarketPlace;
+use App\MarketPlaceBid;
 use App\Services\LoanService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
@@ -65,8 +67,35 @@ class SpotMarketController extends Controller
             ->where('expiration_time', '<',now())
             ->whereNotIn('id', $winningBids)
             ->get();
+        
+        
+        $spotMarketBidsActiveQuery = MarketPlaceBid::query();
+        $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('market_place_id')->toArray();
 
-        return view('wharf.spot-market.my_bids', compact('activeBids', 'winningBids', 'losingBids'));
+        $activeMarketplaceBids = MarketPlace::whereIn('id', $spotMarketBidsActive)
+            ->where('expiration_time', '>',now())
+            ->get();
+
+        $spotMarketBidsWinsQuery = MarketPlaceBid::query();
+        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
+        $spotMarketBidsWins = $spotMarketBidsWinsQuery->pluck('market_place_id')->toArray();
+
+        $winningMarketplaceBids = MarketPlace::whereIn('id', $spotMarketBidsWins)
+            ->where('expiration_time', '<',now())
+            ->get();
+
+        $spotMarketBidsLoseQuery = MarketPlaceBid::query();
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
+        $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('market_place_id')->toArray();
+        $losingMarketplaceBids = MarketPlace::whereIn('id', $spotMarketBidsLose)
+            ->where('expiration_time', '<',now())
+            ->whereNotIn('id', $winningBids)
+            ->get();
+
+        return view('wharf.spot-market.my_bids', compact('activeBids', 'winningBids', 'losingBids', 'activeMarketplaceBids','winningMarketplaceBids','losingMarketplaceBids'));
 
     }
 
