@@ -75,7 +75,7 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
     Route::get('spot-market-my-bids', 'SpotMarketController@myBids')->name('spot-market.my_bids');
     Route::post('spot-market-make-winner', 'SpotMarketController@makeWinner')->name('spot-market.make_winner');
-    Route::get('spot-market-winning-bids', 'SpotMarketController@winningBids')->name('spot-market.winning_bids');
+    Route::get('winning-bids', 'SpotMarketController@winningBids')->name('spot-market.winning_bids');
     Route::post('spot-market-complete-bid', 'SpotMarketController@completeBid')->name('spot-market.complete_bid');
 
     Route::resource('reverse-bidding', 'ReverseBiddingController');

@@ -20,8 +20,16 @@ class EnsureProviderInfo
             return $next($request);
         }
 
-        if(auth()->user()->hasRole('farmer')){
-            if(is_null(Auth::user()->farmer->profile)){
+        if(auth()->user()->hasRole('farmer') ){
+            if(Auth::user()->farmer->community_leader == 1 ){
+                if(is_null(Auth::user()->farmer->profile)){
+                    return redirect()->route('profile-create');
+                }
+            }
+        }
+
+        if(auth()->user()->hasRole('buyer')){
+            if(is_null(Auth::user()->profile)){
 
                 return redirect()->route('profile-create');
             }

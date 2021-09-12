@@ -33,6 +33,11 @@ class ReverseBidding extends Model implements HasMedia
         return $this->hasMany(ReverseBiddingBid::class, 'reverse_bidding_id')->orderBy('bid','desc');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function getCurrentBidAttribute()
     {
         $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','desc')->first();

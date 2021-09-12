@@ -68,4 +68,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ReverseBidding::class, 'user_id');
     }
+
+    public function profile()
+    {
+        return $this->morphOne(Profile::class, 'model');
+    }
 }
