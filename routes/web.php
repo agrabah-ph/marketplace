@@ -15,9 +15,24 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 // GLOBAL ROUTES START
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+
+//LANDING PAGE
+Route::get('/', 'LandingController@index')->name('home-index');
+Route::get('/about-us', 'LandingController@page_about')->name('page_about');
+Route::get('/privacy-policy', 'LandingController@page_privacy')->name('page_privacy');
+Route::get('/terms-condition', 'LandingController@page_terms')->name('page_terms');
+Route::get('/contacts', 'LandingController@page_contacts')->name('page_contacts');
+Route::post('post_mail','LandingController@post_mail')->name('post_mail');
+
+
+
+//----------------------------------------------
+
+
 
 Route::get('/admin-generate-permissions', function () {
     echo "Generating Spot Market Permission<br>";
