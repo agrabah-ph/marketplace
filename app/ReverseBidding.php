@@ -54,5 +54,29 @@ class ReverseBidding extends Model implements HasMedia
         }
         return $user;
     }
+    public function getUnitOfMeasureShortAttribute()
+    {
+        $uom = '';
+        if($this['unit_of_measure']){
+            switch ($this['unit_of_measure']){
+                case 'kilos':
+                    $uom = 'kg(s)';
+                    break;
+                case 'bayera':
+                    $uom = ' bayera';
+                    break;
+                case 'lot':
+                    $uom = ' lot';
+                    break;
+                case 'pieces':
+                    $uom = 'pc(s)';
+                    break;
+                default:
+                    $uom = $this['unit_of_measure'];
+                    break;
+            }
+        }
+        return $uom;
+    }
 
 }

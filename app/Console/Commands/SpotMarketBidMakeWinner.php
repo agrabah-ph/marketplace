@@ -53,8 +53,8 @@ class SpotMarketBidMakeWinner extends Command
                     $winningBid->winner = 1;
                     $winningBid->save();
                 }
-                $spotMarket->status = 1;
-                $spotMarket->save();
+//                $spotMarket->status = 1;
+//                $spotMarket->save();
             }
         }
         $this->info('Generating Spot market Winners');
@@ -68,8 +68,8 @@ class SpotMarketBidMakeWinner extends Command
                     $winningBid->winner = 1;
                     $winningBid->save();
                 }
-                $spotMarket->status = 1;
-                $spotMarket->save();
+//                $spotMarket->status = 1;
+//                $spotMarket->save();
             }
         }
         $this->info('Generating Marketplace Winners');
@@ -83,8 +83,8 @@ class SpotMarketBidMakeWinner extends Command
                     $winningBid->winner = 1;
                     $winningBid->save();
                 }
-                $spotMarket->status = 1;
-                $spotMarket->save();
+//                $spotMarket->status = 1;
+//                $spotMarket->save();
             }
         }
         $this->info('Generating Reverse Bidding Winners');

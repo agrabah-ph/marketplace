@@ -34,7 +34,7 @@
                         <li><a class="nav-link" data-toggle="tab" href="#tab-2"> Auctions</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div role="tabpanel" id="tab-1" class="tab-pane">
+                        <div role="tabpanel" id="tab-1" class="tab-pane active">
                             <div class="panel-body">
                                 <div class="ibox">
                                     <div class="ibox-title pr-3">
@@ -48,13 +48,13 @@
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
-                                                                {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                                {!! ($item->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('market-place')."'>":'')  !!}
                                                             </div>
                                                         </td>
                                                         <td class="desc">
                                                             <h3>
                                                                 <a href="#" class="text-navy">
-                                                                    <a href="{{route('spot-market.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
+                                                                    <a href="{{route('market-place.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
                                                                 </a>
                                                             </h3>
                                                             {!! $item->description !!}
@@ -106,13 +106,13 @@
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
-                                                                {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                                {!! ($item->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('market-place')."'>":'')  !!}
                                                             </div>
                                                         </td>
                                                         <td class="desc">
                                                             <h3>
                                                                 <a href="#" class="text-navy">
-                                                                    <a href="{{route('spot-market.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
+                                                                    <a href="{{route('market-place.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
                                                                 </a>
                                                             </h3>
                                                             {!! $item->description !!}
@@ -124,7 +124,10 @@
                                                         </td>
                                                         <td style="width: 250px;">
                                                             @php
-                                                                $winningBid = $item->spot_market_bids->first()->bid;
+                                                                $winningBid = $item->asking_price;
+                                                                if($item->bids){
+                                                                    $winningBid = $item->bids->first()->bid;
+                                                                }
                                                                 $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                                             @endphp
                                                             <div class="tabulation">
@@ -161,13 +164,13 @@
                                                     <tr>
                                                         <td>
                                                             <div class="cart-product-imitation">
-                                                                {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                                {!! ($item->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('market-place')."'>":'')  !!}
                                                             </div>
                                                         </td>
                                                         <td class="desc">
                                                             <h3>
                                                                 <a href="#" class="text-navy">
-                                                                    <a href="{{route('spot-market.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
+                                                                    <a href="{{route('market-place.show', $item->id)}}" class="product-name"> {{$item->name}}</a>
                                                                 </a>
                                                             </h3>
                                                             {!! $item->description !!}
@@ -179,7 +182,10 @@
                                                         </td>
                                                         <td style="width: 250px;">
                                                             @php
-                                                                $winningBid = $item->spot_market_bids->first()->bid;
+                                                                $winningBid = $item->asking_price;
+                                                                if($item->bids){
+                                                                    $winningBid = $item->bids->first()->bid;
+                                                                }
                                                                 $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                                             @endphp
                                                             <div class="tabulation">
@@ -206,7 +212,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" id="tab-2" class="tab-pane active">
+                        <div role="tabpanel" id="tab-2" class="tab-pane">
                             <div class="panel-body">
 
                                 <div class="ibox">
@@ -239,9 +245,9 @@
                                                         </td>
                                                         <td style="width: 250px;">
                                                             @php
-                                                                $winningBid = $item->asking_price;
-                                                                if($item->bids){
-                                                                    $winningBid = $item->bids->first()->bid;
+                                                                $winningBid = $item->selling_price;
+                                                                if($item->spot_market_bids){
+                                                                    $winningBid = $item->spot_market_bids->first()->bid;
                                                                 }
                                                                 $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                                             @endphp
@@ -297,7 +303,10 @@
                                                         </td>
                                                         <td style="width: 250px;">
                                                             @php
-                                                                $winningBid = $item->spot_market_bids->first()->bid;
+                                                                $winningBid = $item->selling_price;
+                                                                if($item->spot_market_bids){
+                                                                    $winningBid = $item->spot_market_bids->first()->bid;
+                                                                }
                                                                 $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                                             @endphp
                                                             <div class="tabulation">
@@ -352,7 +361,10 @@
                                                         </td>
                                                         <td style="width: 250px;">
                                                             @php
-                                                                $winningBid = $item->spot_market_bids->first()->bid;
+                                                                $winningBid = $item->selling_price;
+                                                                if($item->spot_market_bids){
+                                                                    $winningBid = $item->spot_market_bids->first()->bid;
+                                                                }
                                                                 $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                                             @endphp
                                                             <div class="tabulation">

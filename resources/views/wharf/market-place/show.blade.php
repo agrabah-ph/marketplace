@@ -12,7 +12,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="{{ route('spot-market.index') }}">Spot Market</a>
+                    <a href="{{ route('market-place.index') }}">Marketplace</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@yield('title')</strong>
@@ -41,7 +41,7 @@
 
                                     <div>
                                         <div class="image-imitation">
-                                            {!! ($data->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                            {!! ($data->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('market-place')."'>":'')  !!}
                                         </div>
                                     </div>
 {{--                                    <div>--}}

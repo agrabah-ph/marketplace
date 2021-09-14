@@ -71,6 +71,21 @@ class ReverseBiddingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function completeBid(Request $request)
+    {
+        $spotMarket = ReverseBidding::find($request->id);
+        $method = $request->input('method');
+        $spotMarket->method = $method;
+        $spotMarket->status = 1;
+        $spotMarket->save();
+
+        return redirect()->back();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function myBids()
     {
 

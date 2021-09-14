@@ -7,6 +7,8 @@ use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
 use App\MarketPlace;
 use App\MarketPlaceBid;
+use App\ReverseBidding;
+use App\ReverseBiddingBid;
 use App\Services\LoanService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
@@ -115,7 +117,23 @@ class SpotMarketController extends Controller
 
         $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
 
-        return view('wharf.spot-market.winning_bids', compact('winningBids'));
+        $marketplaceList = auth()->user()->farmer->marketPlace->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
+
+        $marketplaceBidsWinsQuery = MarketPlaceBid::query();
+        $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->Where('winner', 1);
+        $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->WhereIn('market_place_id', $marketplaceList);
+        $marketplaceBidsWins = $marketplaceBidsWinsQuery->pluck('market_place_id')->toArray();
+
+        $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
+
+        $reverseBiddingQuery = ReverseBiddingBid::query();
+        $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
+        $reverseBiddingQuery = $reverseBiddingQuery->where('user_id', auth()->user()->id);
+        $reverseBiddingBidsWins = $reverseBiddingQuery->pluck('reverse_bidding_id')->toArray();
+
+        $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
+
+        return view('wharf.spot-market.winning_bids', compact('winningBids', 'winningBidsMarketplace', 'winningBidsReverseBidding'));
 
     }
 

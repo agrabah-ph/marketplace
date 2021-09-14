@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Spot Market')
+@section('title', 'Marketplace')
 
 @section('content')
 
@@ -247,7 +247,7 @@
                         $('#btn_bid_'+id).attr('data-min', response.next_bid);
 
                     }else{
-
+                        window.location.reload();
                     }
                 },
             });

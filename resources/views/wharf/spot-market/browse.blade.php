@@ -247,6 +247,7 @@
                         $('#btn_bid_'+id).attr('data-min', response.next_bid);
 
                     }else{
+                        window.location.reload();
 
                     }
                 },

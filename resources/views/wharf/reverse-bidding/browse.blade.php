@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Purchase Order')
+@section('title', 'Purchase Orders')
 
 @section('content')
 
@@ -242,7 +242,7 @@
                         $('#btn_bid_'+id).attr('data-min', response.next_bid);
 
                     }else{
-
+                        window.location.reload();
                     }
                 },
             });
