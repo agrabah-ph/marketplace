@@ -43,7 +43,7 @@ class AddSettingCommand extends Command
         $name = $this->argument('name');
         $value = $this->argument('value');
 
-        $settings = Settings::firstOrNew();
+        $settings = Settings::firstOrNew(['name' => $name]);
         $settings->name = $name;
         $settings->display_name = $name;
         $settings->value = $value;
