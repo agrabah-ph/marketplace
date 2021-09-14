@@ -2,25 +2,19 @@
     <a href="{!! route('home') !!}"><i class="fa fa-tachometer"></i> <span class="nav-label">Home</span></a>
 </li>
 
-@if(auth()->user()->can('read-spot-market')  && isCommunityLeader())
+@if(isCommunityLeader())
     <li class="{{ (request()->is('market-place*')) && !request()->is('market-place-winning-bids') ? 'active' : '' }}">
         <a href="#"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Marketplace</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="{{ (request()->is('market-place')) ? 'active' : '' }}"><a href="{!! route('market-place.index') !!}">My List</a></li>
-
-            @if(auth()->user()->can('add-spot-market'))
-                <li class="{{ (request()->is('market-place/create')) ? 'active' : '' }}"><a href="{!! route('market-place.create') !!}">Create</a></li>
-            @endif
+            <li class="{{ (request()->is('market-place/create')) ? 'active' : '' }}"><a href="{!! route('market-place.create') !!}">Create</a></li>
         </ul>
     </li>
     <li class="{{ (request()->is('spot-market*')) && !request()->is('spot-market-winning-bids') ? 'active' : '' }}">
         <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">My Auctions</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}"><a href="{!! route('spot-market.index') !!}">My List</a></li>
-
-            @if(auth()->user()->can('add-spot-market'))
             <li class="{{ (request()->is('spot-market/create')) ? 'active' : '' }}"><a href="{!! route('spot-market.create') !!}">Create</a></li>
-            @endif
         </ul>
     </li>
 
@@ -37,7 +31,7 @@
         <a href="{!! route('report.index') !!}"><i class="fa fa-table"></i> <span class="nav-label">Report</span></a>
     </li>
 @endif
-@if(auth()->user()->can('browse-spot-market')  && !isCommunityLeader())
+@if(!isCommunityLeader())
     <li class="{{ (request()->is('market-place')) ? 'active' : '' }}">
         <a href="{!! route('market-place.index') !!}"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Marketplace</span></a>
     </li>
