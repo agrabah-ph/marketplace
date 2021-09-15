@@ -91,6 +91,7 @@ class SpotMarketController extends Controller
         $spotMarketBidsLoseQuery = MarketPlaceBid::query();
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->whereNotIn('winner', $spotMarketBidsWins);
         $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('market_place_id')->toArray();
         $losingMarketplaceBids = MarketPlace::whereIn('id', $spotMarketBidsLose)
             ->where('expiration_time', '<',now())

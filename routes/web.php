@@ -73,7 +73,7 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::post('spot-market-post-bid', 'SpotMarketController@postBid')->name('spot-market.post_bid');
     Route::post('spot-market-refresh-bid', 'SpotMarketController@refreshBid')->name('spot-market.refresh_bid');
 
-    Route::get('spot-market-my-bids', 'SpotMarketController@myBids')->name('spot-market.my_bids');
+    Route::get('my-bids', 'SpotMarketController@myBids')->name('spot-market.my_bids');
     Route::post('spot-market-make-winner', 'SpotMarketController@makeWinner')->name('spot-market.make_winner');
     Route::get('winning-bids', 'SpotMarketController@winningBids')->name('spot-market.winning_bids');
     Route::post('spot-market-complete-bid', 'SpotMarketController@completeBid')->name('spot-market.complete_bid');
