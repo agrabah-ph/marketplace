@@ -36,7 +36,6 @@
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Farmer</th>
                                 <th>Area</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
@@ -52,7 +51,6 @@
                                 <tr>
                                     <td width="200px">{!! ($data->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}  </td>
                                     <td>{{ $data->name }} </td>
-                                    <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
                                     <td>{!!  $data->description  !!} </td>
                                     <td>{!!  $data->quantity?floatval($data->quantity).'kg':''  !!} </td>

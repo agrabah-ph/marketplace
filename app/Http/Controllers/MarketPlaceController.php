@@ -233,6 +233,7 @@ class MarketPlaceController extends Controller
             $expiration = Carbon::parse($spotMarket['created_at']);
             if($spotMarket['duration']){
                 $duration = explode(':',$spotMarket['duration']);
+                $expiration->addDays($request->days);
                 $expiration->addHour($duration[0]);
                 $expiration->addMinute($duration[1]);
                 $expiration->second(0);
@@ -296,8 +297,10 @@ class MarketPlaceController extends Controller
         $expiration = Carbon::parse($data['created_at']);
         if($data['duration']){
             $duration = explode(':',$data['duration']);
+            $expiration->addDays($request->days);
             $expiration->addHour($duration[0]);
             $expiration->addMinute($duration[1]);
+            $expiration->second(0);
         }
         $data->expiration_time = $expiration;
         $data->save();

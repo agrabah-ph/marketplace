@@ -24,6 +24,7 @@ class MarketPlace extends Model implements HasMedia
         'from_user_id',
         'area',
         'duration',
+        'days',
         'expiration_time',
         'quantity',
         'method',
