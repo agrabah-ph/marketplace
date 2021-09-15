@@ -90,6 +90,38 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td class="text-left">
+                                                    @if($item->status == 0)
+                                                        <form action="{{route('reverse-bidding.complete_bid')}}"
+                                                              method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                   value="{{$item->id}}">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_local"
+                                                                       value="local" checked="">
+                                                                <label class="form-check-label"
+                                                                       for="method_local">
+                                                                    Local
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_transport"
+                                                                       value="transport">
+                                                                <label class="form-check-label"
+                                                                       for="method_transport">
+                                                                    Transport
+                                                                </label>
+                                                            </div>
+                                                            <button class="btn btn-primary mt-3">Complete
+                                                            </button>
+                                                        </form>
+                                                    @elseif($item->status == 1)
+                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -152,6 +184,38 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td class="text-left">
+                                                    @if($item->status == 0)
+                                                        <form action="{{route('reverse-bidding.complete_bid')}}"
+                                                              method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                   value="{{$item->id}}">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_local"
+                                                                       value="local" checked="">
+                                                                <label class="form-check-label"
+                                                                       for="method_local">
+                                                                    Local
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_transport"
+                                                                       value="transport">
+                                                                <label class="form-check-label"
+                                                                       for="method_transport">
+                                                                    Transport
+                                                                </label>
+                                                            </div>
+                                                            <button class="btn btn-primary mt-3">Complete
+                                                            </button>
+                                                        </form>
+                                                    @elseif($item->status == 1)
+                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -213,6 +277,38 @@
                                                                 ₱{{number_format($winningBid, 2)}}</div>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td class="text-left">
+                                                    @if($item->status == 0)
+                                                        <form action="{{route('reverse-bidding.complete_bid')}}"
+                                                              method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                   value="{{$item->id}}">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_local"
+                                                                       value="local" checked="">
+                                                                <label class="form-check-label"
+                                                                       for="method_local">
+                                                                    Local
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="method" id="method_transport"
+                                                                       value="transport">
+                                                                <label class="form-check-label"
+                                                                       for="method_transport">
+                                                                    Transport
+                                                                </label>
+                                                            </div>
+                                                            <button class="btn btn-primary mt-3">Complete
+                                                            </button>
+                                                        </form>
+                                                    @elseif($item->status == 1)
+                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
