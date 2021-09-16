@@ -108,7 +108,7 @@ class HomeController extends Controller
         }
         $myBidsSpotMarket = [];
         $myBidsMarketplace = [];
-        if($products){
+        if(!$products){
             $spotMarketBidsActiveQuery = SpotMarketBid::query();
 //            $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
             $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('spot_market_id')->toArray();
