@@ -351,6 +351,50 @@
                         </div>
                     </div>
                 @else
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <div class="ibox-tools">
+                            </div>
+                            <h5>Marketplace</h5>
+                        </div>
+                        <div class="ibox-content">
+                            @foreach($myBidsMarketplace as $item)
+                                @php
+                                    $winner = $item->bids->first()->user;
+                                    $winningBid = $item->bids->first()->bid;
+                                    $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'market_place');
+                                @endphp
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a href="" class="float-left mr-2 d-block">
+                                            <img src="{{url('/').$item->getFirstMediaUrl('market-place')}}" alt=""
+                                                 class="img-md"></a>
+                                        <div class="ml-1">
+                                            @if($item->status)
+                                                <small class="text-muted float-right">{{\Carbon\Carbon::parse($item->expiration_time)->diffForHumans()}} </small>
+                                            @else
+                                                <a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>
+                                            @endif
+
+                                            <strong>{{$winner->name??$winner->email}}</strong> won the
+                                            <strong>{{$item->name}}</strong> for
+                                            <strong>₱{{number_format($winningBid, 2)}}</strong>. <br>
+
+                                            @if($item->status == 0)
+                                                <small class="text-muted">Please complete via clicking the award button. </small>
+                                            @else
+                                                <small class="text-muted">Transaction completed </small><br>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                     <div class="ibox">
                         <div class="ibox-title">
                             <div class="ibox-tools">
