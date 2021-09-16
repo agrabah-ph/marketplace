@@ -43,6 +43,11 @@ Route::get('profile/create', 'PublicController@farmerProfileCreate')->name('prof
 
 
 Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
+    Route::get('bfar/trace', 'BfarController@traceIndex')->name('trace-bfar');
+    Route::get('bfar/trace/{id}', 'BfarController@traceShow')->name('trace-bfar-show');
+});
+
+Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('profile', 'ProfileController')->except(['create','store']);
