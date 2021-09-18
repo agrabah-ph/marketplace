@@ -1,17 +1,50 @@
 <?php
 
 use App\LoanType;
+use App\Mail\TraceShipped;
 use App\Profile;
+use App\Settings;
+use App\Trace;
 use App\User;
 use App\Farmer;
 use App\Inventory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 
 if (!function_exists('emailNotification')) {
-    function emailNotification($type)
+    function emailNotification($type, $id)
     {
+        switch ($type) {
+            case 'trace-created':
+                $data = Trace::find($id);
+                $details = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-tracking', array('code'=>$data->reference)),
+                    'body' => '<p>Please present this CODE upon receiving your package.</p><br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr></tbody></table><br><br><br>',
+                    'code' => $data->code
+                ];
+                $details2 = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-bfar-show', array('id'=>$data->id)),
+                    'body' => '<br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr></tbody></table><br><br><br>',
+                    'code' => ''
+                ];
+                Mail::to($data->receiver->value_1)->send(new TraceShipped($details));
+                Mail::to(emailAddress('bfar', null))->send(new TraceShipped($details2));
+                break;
+            case 'trace-status-update':
+                $data = Trace::find($id);
+                $details = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-bfar-show', array('id'=>$data->id)),
+                    'body' => '<br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr><tr><td align="left">Status</td><td align="left"><strong>'. $data->status .'</strong></td></tr></tbody></table><br><br><br>',
+                    'code' => ''
+                ];
 
+                Mail::to(emailAddress('bfar', null))->send(new TraceShipped($details));
+                break;
+        }
     }
 }
 
@@ -19,6 +52,28 @@ if (!function_exists('smsNotification')) {
     function smsNotification($type)
     {
 
+    }
+}
+
+if (!function_exists('emailAddress')) {
+    function emailAddress($recipient, $id)
+    {
+        $email = null;
+        switch ($recipient){
+            case 'bfar':
+                $data = Settings::where('name', 'bfar')->with('profile')->first();
+                if($data->profile->landline !== null){
+                    $email = $data->profile->landline;
+                }
+                break;
+            case 'provider':
+
+                break;
+            case 'borrower':
+
+                break;
+        }
+        return $email;
     }
 }
 
@@ -282,6 +337,7 @@ if (!function_exists('loanStatInfo')) {
         return $data;
     }
 }
+
 if (!function_exists('isCommunityLeader')) {
     function isCommunityLeader()
     {
@@ -294,6 +350,7 @@ if (!function_exists('isCommunityLeader')) {
         return $isCommunityLeader;
     }
 }
+
 if (!function_exists('getUserSpotMarketCartCount')) {
     function getUserSpotMarketCartCount()
     {

@@ -38,6 +38,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->hasRole('bfar')){
+            return view('trace.bfar.dashboard');
+        }
 
         $marketplace = MarketPlace::get();
         $marketplaceIncome = 0;
