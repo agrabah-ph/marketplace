@@ -234,8 +234,8 @@ class MarketPlaceController extends Controller
             if($spotMarket['duration']){
                 $duration = explode(':',$spotMarket['duration']);
                 $expiration->addDays($request->days);
-                $expiration->addHour($duration[0]);
-                $expiration->addMinute($duration[1]);
+                $expiration->hours($duration[0]);
+                $expiration->minute($duration[1]);
                 $expiration->second(0);
             }
             $spotMarket->expiration_time = $expiration;
@@ -298,8 +298,8 @@ class MarketPlaceController extends Controller
         if($data['duration']){
             $duration = explode(':',$data['duration']);
             $expiration->addDays($request->days);
-            $expiration->addHour($duration[0]);
-            $expiration->addMinute($duration[1]);
+            $expiration->hourssecond($duration[0]);
+            $expiration->minute($duration[1]);
             $expiration->second(0);
         }
         $data->expiration_time = $expiration;

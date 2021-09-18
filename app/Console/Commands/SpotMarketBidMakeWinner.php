@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\WinningNotification;
 use App\MarketPlace;
 use App\ReverseBidding;
 use App\Settings;
@@ -9,6 +10,7 @@ use App\SpotMarket;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -50,8 +52,11 @@ class SpotMarketBidMakeWinner extends Command
             if(Carbon::parse($spotMarket->expiration_time)->isPast()){
                 $winningBid = $spotMarket->spot_market_bids->first();
                 if($winningBid){
-                    $winningBid->winner = 1;
-                    $winningBid->save();
+                    if($winningBid->winner == 0){
+                        Mail::to($winningBid->user->email)->send(new WinningNotification(['name'=>$spotMarket->name, 'price' => $winningBid->bid]));
+                        $winningBid->winner = 1;
+                        $winningBid->save();
+                    }
                 }
 //                $spotMarket->status = 1;
 //                $spotMarket->save();
@@ -60,28 +65,31 @@ class SpotMarketBidMakeWinner extends Command
         $this->info('Generating Spot market Winners');
         Log::info('Generating Spot market Winners');
 
-        $spotMarkets = MarketPlace::where('expiration_time','<', Carbon::now())->get();
-        foreach($spotMarkets as $spotMarket){
-            if(Carbon::parse($spotMarket->expiration_time)->isPast()){
-                $winningBid = $spotMarket->bids->first();
-                if($winningBid){
-                    $winningBid->winner = 1;
-                    $winningBid->save();
-                }
-//                $spotMarket->status = 1;
-//                $spotMarket->save();
-            }
-        }
-        $this->info('Generating Marketplace Winners');
-        Log::info('Generating Marketplace Winners');
+//        $spotMarkets = MarketPlace::where('expiration_time','<', Carbon::now())->get();
+//        foreach($spotMarkets as $spotMarket){
+//            if(Carbon::parse($spotMarket->expiration_time)->isPast()){
+//                $winningBid = $spotMarket->bids->first();
+//                if($winningBid){
+//                    $winningBid->winner = 1;
+//                    $winningBid->save();
+//                }
+////                $spotMarket->status = 1;
+////                $spotMarket->save();
+//            }
+//        }
+//        $this->info('Generating Marketplace Winners');
+//        Log::info('Generating Marketplace Winners');
 
         $spotMarkets = ReverseBidding::where('expiration_time','<', Carbon::now())->get();
         foreach($spotMarkets as $spotMarket){
             if(Carbon::parse($spotMarket->expiration_time)->isPast()){
                 $winningBid = $spotMarket->bids->first();
                 if($winningBid){
-                    $winningBid->winner = 1;
-                    $winningBid->save();
+                    if($winningBid->winner == 0){
+                        Mail::to($winningBid->user->email)->send(new WinningNotification(['name'=>$spotMarket->name, 'price' => $winningBid->bid]));
+                        $winningBid->winner = 1;
+                        $winningBid->save();
+                    }
                 }
 //                $spotMarket->status = 1;
 //                $spotMarket->save();

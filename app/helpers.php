@@ -134,7 +134,7 @@ if (!function_exists('stringSlug')) {
 }
 
 if (!function_exists('getRoleName')) {
-    function getRoleName($data)
+    function getRoleName($data = 'name')
     {
         $info = null;
         switch($data){

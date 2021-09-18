@@ -41,6 +41,7 @@ Route::post('user-profile-store', 'ProfileController@profileStore')->name('user-
 Route::post('profile/store', 'FarmerController@profileStore')->name('profile-store');
 Route::get('profile/create', 'PublicController@farmerProfileCreate')->name('profile-create');
 
+Route::view('email/wharf/notification', 'emails/wharf/notification');
 
 Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');

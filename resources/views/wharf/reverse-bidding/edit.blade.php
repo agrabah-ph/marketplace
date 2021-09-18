@@ -53,16 +53,20 @@
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" value="{{$data->name}}">
                                 </div>
-                            </div>
-                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Starting Bid</label>
                                     <input type="text" class="form-control money" name="selling_price"
                                            value="{{$data->asking_price}}">
                                 </div>
+                            </div>
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Area</label>
                                     <input type="text" class="form-control" name="area" value="{{$data->area}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Delivery Address</label>
+                                    <textarea name="delivery_address" class="form-control no-resize">{!! $data->delivery_address !!}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Expiration (Days, Hours : Minutes)</label>

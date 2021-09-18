@@ -16,6 +16,7 @@ class Controller extends BaseController
     public function registration()
     {
         $app_registrant = [
+            'enterprise-client'=>'Enterprise Client',
             'community-leader'=>'Community Leader',
             'buyer'=>'Buyer'
         ];

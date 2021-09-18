@@ -45,6 +45,11 @@ class AddSpotMarketPermission extends Command
             'display_name' => 'Buyer',
             'guard_name' => 'web',
         ]);
+        $addBuyerRole = Role::firstOrCreate([
+            'name' => 'enterprise_client',
+            'display_name' => 'Enterprise Client',
+            'guard_name' => 'web',
+        ]);
         $spotMarketPermissions = [
             [
                 'read-spot-market',

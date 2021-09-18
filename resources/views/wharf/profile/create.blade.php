@@ -47,15 +47,15 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <input name="first_name" type="text" data-title="First name" class="profile_info form-control required" id="first_name">
+                                        <input name="first_name" type="text" data-title="First name" class="profile_info form-control required" id="first_name" required>
                                         <label for="first_name">First name *</label>
                                     </div>
                                     <div class="form-group">
-                                        <input name="middle_name" type="text" data-title="Middle name" class="profile_info form-control required" id="middle_name">
+                                        <input name="middle_name" type="text" data-title="Middle name" class="profile_info form-control required" id="middle_name" required>
                                         <label for="middle_name">Middle name *</label>
                                     </div>
                                     <div class="form-group">
-                                        <input name="last_name" type="text" data-title="Last name" class="profile_info form-control required" id="last_name">
+                                        <input name="last_name" type="text" data-title="Last name" class="profile_info form-control required" id="last_name" required>
                                         <label for="last_name">Last name *</label>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="form-group">
-                                                <input name="dob" type="text" data-title="Date of Birth" class="profile_info dob-input form-control required" id="dob">
+                                                <input name="dob" type="text" data-title="Date of Birth" class="profile_info dob-input form-control required" id="dob" required>
                                                 <label for="dob">Date of Birth *</label>
                                             </div>
                                         </div>
@@ -79,7 +79,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <select name="civil_status" data-title="Civil Status" class="profile_info form-control required" id="civil_status">
+                                                <select name="civil_status" data-title="Civil Status" class="profile_info form-control required" id="civil_status" required>
                                                     <option value="" readonly></option>
                                                     <option value="Single">Single</option>
                                                     <option value="Married">Married</option>
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <select name="gender" data-title="Gender" class="profile_info form-control required" id="gender">
+                                                <select name="gender" data-title="Gender" class="profile_info form-control required" id="gender" required>
                                                     <option value="" readonly></option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -109,7 +109,7 @@
                                         <label for="land-line">Land Line</label>
                                     </div>
                                     <div class="form-group">
-                                        <input name="mobile" type="text" data-title="Mobile" class="profile_info form-control" id="mobile">
+                                        <input name="mobile" type="text" data-title="Mobile" class="profile_info form-control" id="mobile" required>
                                         <label for="mobile">Mobile</label>
                                     </div>
                                 </div>

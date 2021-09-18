@@ -102,7 +102,7 @@ class HomeController extends Controller
 
                 $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
 
-                $products = ReverseBidding::where('status', 0)->get();
+                $products = ReverseBidding::where('status', 0)->where('expiration_time', '>', now())->get();
                 $isCommunityLeader = true;
             }
         }

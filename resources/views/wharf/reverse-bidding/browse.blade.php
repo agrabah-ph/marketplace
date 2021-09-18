@@ -45,7 +45,7 @@
         <div class="row">
             @forelse($list as $data)
             @php
-              $allowCurrentBid = floatval($data['current_bid'])+settings('spot_market_next_bid');
+              $allowCurrentBid = floatval($data['current_bid'])-settings('spot_market_next_bid');
             @endphp
             <div class="col-md-3 col-sm-6">
                 <div class="ibox">
@@ -106,7 +106,7 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -207,7 +207,7 @@
                 var itemId = $(this).data('id');
                 var itemValue = $('#bid_value_'+itemId).val();
                 var min = $(this).data('min');
-                if(parseFloat(numberRemoveCommas(min)) <= parseFloat(numberRemoveCommas(itemValue))){
+                if(parseFloat(numberRemoveCommas(min)) >= parseFloat(numberRemoveCommas(itemValue))){
                     postBid(itemId, numberRemoveCommas(itemValue));
                 }
             })
@@ -230,10 +230,12 @@
                 },
                 success:function(response){
                     var bids = response.bids;
+                    console.log(response)
                     if(response.status){
                         $('#bids_list_'+id).empty();
                         for (let i = 0; i < bids.length; i++) {
                             const bid = bids[i];
+                            console.log(bid)
                             $('#bids_list_'+id).append("<li>"+bid+"</li>");
                         }
                         $('#bid_value_'+id).val(response.next_bid);
@@ -242,7 +244,7 @@
                         $('#btn_bid_'+id).attr('data-min', response.next_bid);
 
                     }else{
-                        window.location.reload();
+                        // window.location.reload();
                     }
                 },
             });

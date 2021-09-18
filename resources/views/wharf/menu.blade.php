@@ -31,13 +31,18 @@
         <a href="{!! route('report.index') !!}"><i class="fa fa-table"></i> <span class="nav-label">Report</span></a>
     </li>
 @endif
-@if(!isCommunityLeader())
+@if(getRoleName() == 'buyer')
     <li class="{{ (request()->is('market-place')) ? 'active' : '' }}">
         <a href="{!! route('market-place.index') !!}"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Marketplace</span></a>
     </li>
     <li class="{{ (request()->is('spot-market')) ? 'active' : '' }}">
         <a href="{!! route('spot-market.index') !!}"><i class="fa fa-list"></i> <span class="nav-label">Auctions</span></a>
     </li>
+    <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
+        <a href="{!! route('spot-market.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>
+    </li>
+@endif
+@if(getRoleName() == 'enterprise-client')
     <li class="{{ (request()->is('reverse-bidding*')) ? 'active' : '' }}">
         <a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">Purchase Orders</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
@@ -45,8 +50,8 @@
             <li class="{{ (request()->is('reverse-bidding/create')) ? 'active' : '' }}"><a href="{!! route('reverse-bidding.create') !!}">Create</a></li>
         </ul>
     </li>
-    <li class="{{ (request()->is('spot-market-my-orders')) ? 'active' : '' }}">
-        <a href="{!! route('spot-market.my_bids') !!}"><i class="fa fa-trophy"></i> <span class="nav-label">My Bids</span></a>
+    <li class="{{ (request()->is('report')) ? 'active' : '' }}">
+        <a href="{!! route('report.index') !!}"><i class="fa fa-table"></i> <span class="nav-label">Report</span></a>
     </li>
 @endif
 {{--@if(auth()->user()->can('buy-spot-market'))--}}

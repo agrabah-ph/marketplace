@@ -279,36 +279,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-left">
-                                                    @if($item->status == 0)
-                                                        <form action="{{route('reverse-bidding.complete_bid')}}"
-                                                              method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="id"
-                                                                   value="{{$item->id}}">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="method" id="method_local"
-                                                                       value="local" checked="">
-                                                                <label class="form-check-label"
-                                                                       for="method_local">
-                                                                    Local
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="method" id="method_transport"
-                                                                       value="transport">
-                                                                <label class="form-check-label"
-                                                                       for="method_transport">
-                                                                    Transport
-                                                                </label>
-                                                            </div>
-                                                            <button class="btn btn-primary mt-3">Complete
-                                                            </button>
-                                                        </form>
-                                                    @elseif($item->status == 1)
-                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
-                                                    @endif
+                                                    <span class="text-danger">Unsuccessful </span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -405,7 +376,7 @@
             </div>
         </div>
 
-        <div style="position: absolute; top: 20px; right: 20px;">
+        <div style="position: absolute; top: 60px; right: 20px;">
 
             <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive"
                  aria-atomic="true">
