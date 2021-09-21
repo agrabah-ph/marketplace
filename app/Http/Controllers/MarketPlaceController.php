@@ -326,9 +326,12 @@ class MarketPlaceController extends Controller
         return redirect()->back();
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        //
+        $data = MarketPlace::find($id);
+        $data->delete();
+
+        return redirect()->route('market-place.index')->with('success', 'Product Deleted!');
     }
 
     public function lockInOrder(Request $request)
