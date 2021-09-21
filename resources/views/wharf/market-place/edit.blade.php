@@ -66,7 +66,7 @@
                                             I'm the supplier
                                         </option>
                                         @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name}}</option>
+                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name??$farmer->user->email}}</option>
                                         @endforeach
                                     </select>
                                 </div>
