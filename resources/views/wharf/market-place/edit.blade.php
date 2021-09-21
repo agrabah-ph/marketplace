@@ -146,6 +146,7 @@
                         <tr>
                             <th class="text-right">Qty</th>
                             <th>User</th>
+                            <th>Remarks</th>
                             <th>Timestamp</th>
                         </tr>
                         </thead>
@@ -154,6 +155,7 @@
                             <tr>
                                 <td class="text-right">{{number_format($inventory->quantity)}}</td>
                                 <td>{{$inventory->user->name??$inventory->user->email}}</td>
+                                <td>{{$inventory->remarks}}</td>
                                 <td style="white-space: nowrap">{{$inventory->created_at}}</td>
                             </tr>
                         @endforeach
