@@ -22,6 +22,11 @@
     {!! Html::style('/css/template/animate.css') !!}
     {!! Html::style('/css/template/style.css') !!}
     <style>
+        @media screen and (min-width: 700px) {
+            .table-responsive{
+                overflow-x: initial;
+            }
+        }
         @media screen {
             #printable {
                 display: none;
@@ -38,6 +43,18 @@
                 display: none;
             }
         }
+        .text-wrap{
+            white-space: break-spaces!important;
+        }
+        #side-menu li a:not(.dropdown-item){
+            position: relative;
+            display: block;
+        }
+        .dropdown-toggle::after{
+            position: absolute;
+            top: 12px;
+            right: 0;
+        }
 
     </style>
 
@@ -52,17 +69,17 @@
             <ul class="nav metismenu" id="side-menu">
 
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
+                    <div class="dropdown">
                         {{--                        <img alt="image" class="rounded-circle" src="/img/profile_small.jpg"/>--}}
                         {{--                        <img alt="image" class="rounded-circle profile-pic" src="{{ authProfilePic(Auth::user()->id) }}"/>--}}
                         {{--<img alt="image" class="rounded-circle profile-pic" src="/img/blank-profile.jpg"/>--}}
-                        <img alt="image" class="img-fluid" src="{{ asset('images/logo.png') }}"/>
+                        <img alt="image" class="img-fluid rounded-circle profile-pic" src="{{authProfilePic()}}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             {{--                            <span class="block m-t-xs font-bold">{!! Auth::user()->name !!}</span>--}}
                             {{--                            <span class="text-muted text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--<span class="text-muted text-xs block"> {{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--                            <span class="text-muted text-xs block"> {!! Auth::user()->name !!} <b class="caret"></b></span>--}}
-                            <span class="block m-t-xs font-bold">{!! Auth::user()->name??Auth::user()->email !!}</span>
+                            <span class="block m-t-xs font-bold text-wrap">{!! Auth::user()->name??Auth::user()->email !!}</span>
 {{--                            <small class="text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></small>--}}
                         </a>
                         <div style="position:relative;">
@@ -86,7 +103,16 @@
             </ul>
 
         </div>
-        <div class="version"><div class="long">Agrabah Finance v.01</div><div class="short">v.01</div></div>
+        <div class="version profile-element">
+{{--            <div class="long">Agrabah Finance v.01</div>--}}
+{{--            <div class="short">v.01</div>--}}
+            <div class="long px-3 py-2">
+                <img alt="image" class="img-fluid" src="{{ asset('images/logo.png') }}"/>
+            </div>
+            <div class="short">
+                <img alt="image" class="img-fluid" src="{{ asset('images/agrabah-logo.png') }}"/>
+            </div>
+        </div>
     </nav>
 
     <div id="page-wrapper" class="gray-bg">
@@ -127,8 +153,8 @@
 
         <div class="footer">
             <div class="copyright">
-                <p>Powered by Agrabah Ventures</p>
-                <p>Powered by Agrabah Loan</p>
+                <p>Powered by Agrabah</p>
+                <p>Powered by Agrabah</p>
             </div>
         </div>
 

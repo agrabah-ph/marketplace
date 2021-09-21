@@ -1,1 +1,1 @@
-<a href="{!! route('spot-market.cart') !!}" class="btn btn-primary count-info"><i class="fa fa-shopping-cart"></i> Cart<span class="label label-primary" id="spot_market_cart_count">{{getUserSpotMarketCartCount()}}</span></a>
+<a href="{!! route('market-place-cart') !!}" class="btn btn-primary count-info"><i class="fa fa-shopping-cart"></i> Cart<span class="label label-primary" id="spot_market_cart_count">{{getUserMarketplaceCartCount()}}</span></a>

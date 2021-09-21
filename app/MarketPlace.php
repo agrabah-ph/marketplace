@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Services\MarketplaceInventoryService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Integer;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
@@ -39,6 +41,16 @@ class MarketPlace extends Model implements HasMedia
     public function bids()
     {
         return $this->hasMany(MarketPlaceBid::class, 'market_place_id')->orderBy('bid','desc');
+    }
+
+    public function inventory()
+    {
+        return $this->hasMany(MarketplaceInventory::class, 'market_place_id');
+    }
+
+    public function getQuantityAttribute()
+    {
+        return $this->inventory()->sum('quantity');
     }
 
 

@@ -42,17 +42,17 @@
                         <div class="ibox-title">
                             <div class="ibox-tools">
                             </div>
-                            <h5>Winning Bids</h5>
+                            <h5>Winning Bids</h5>.
                         </div>
                         <div class="ibox-content">
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> Marketplace</a></li>
-                                    <li><a class="nav-link" data-toggle="tab" href="#tab-2"> Auctions</a></li>
+{{--                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> Marketplace</a></li>--}}
+                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-2"> Auctions</a></li>
                                     <li><a class="nav-link" data-toggle="tab" href="#tab-3"> Purchase Order</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div role="tabpanel" id="tab-1" class="tab-pane active">
+                                    <div role="tabpanel" id="tab-1" class="tab-pane ">
                                         <div class="panel-body">
                                             <div class="table-responsive">
                                                 <table class="table shoping-cart-table">
@@ -150,7 +150,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div role="tabpanel" id="tab-2" class="tab-pane">
+                                    <div role="tabpanel" id="tab-2" class="tab-pane active">
                                         <div class="panel-body">
                                             <div class="table-responsive">
                                                 <table class="table shoping-cart-table">
@@ -352,7 +352,7 @@
                     </div>
                 @else
 
-                    <div class="ibox">
+                    <div class="ibox d-none">
                         <div class="ibox-title">
                             <div class="ibox-tools">
                             </div>

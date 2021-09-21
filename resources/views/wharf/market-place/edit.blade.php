@@ -21,6 +21,7 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
+                <button type="button" class="btn btn-primary btn-action" data-action="inventory">Inventory</button>
                 <button type="button" class="btn btn-primary btn-action" data-action="store">Update</button>
             </div>
         </div>
@@ -41,49 +42,49 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <img src="{{url('/').$data->getFirstMediaUrl('market-place')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
+                                    <img src="{{url('/').$data->getFirstMediaUrl('market-place')}}" alt=""
+                                         id="image_preview" class="mb-2" style="height: 174px;">
                                     <label class="w-100">Photo</label>
                                     <input accept="image/*" type="file" class="form-control" id="image" name="image">
                                 </div>
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input type="text" class="form-control" name="name" value="{{$data->name}}">
+                                    <input type="text" class="form-control" name="name" value="{{$data->name}}"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Selling Bid</label>
+                                    <input type="text" class="form-control money" name="selling_price"
+                                           value="{{$data->selling_price}}" required>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>From Farmer</label>
+                                    <label>Supplier</label>
                                     <select class="form-control" id="from_user_id" name="from_user_id">
+                                        <option value="{{auth()->user()->id}}" {{$data->from_user_id==auth()->user()->id?'selected':''}}>
+                                            I'm the supplier
+                                        </option>
                                         @foreach($farmers as $farmer)
                                             <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Expiration (Days, Hours : Minutes)</label>
-                                    <div class="row">
-                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 pb-xs-3">
-                                            <select name="days" id="days" class="form-control">
-                                                @foreach(range(1,30) as $day)
-                                                    <option value="{{$day}}" {{$data->days == $day}}>{{$day}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 ">
-                                            <div style="position: relative">
-                                                <input type="text" id="time" class="form-control" name="duration" required autocomplete="off" value="{{$data->duration}}">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <label>Inventory</label>
+                                    <input type="number" class="form-control" name="quantity" disabled required
+                                           value="{{$data->quantity}}">
                                 </div>
                                 <div class="form-group">
-                                    <label>How many Kilos?</label>
-                                    <input type="number" class="form-control" name="quantity" value="{{$data->quantity}}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Starting Bid</label>
-                                    <input type="text" class="form-control money" name="selling_price"
-                                           value="{{$data->selling_price}}">
+                                    <label>Unit of Measure</label>
+                                    <select name="unit_of_measure" id="unit_of_measure" class="form-control">
+                                        <option value="kilos" {{$data->unit_of_measure=='kilos'?'selected':''}}>Kilos
+                                        </option>
+                                        <option value="banyera" {{$data->unit_of_measure=='banyera'?'selected':''}}>
+                                            Banyera
+                                        </option>
+                                        <option value="lot" {{$data->unit_of_measure=='lot'?'selected':''}}>Lot</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -101,6 +102,69 @@
         </div>
         {{ Form::close() }}
 
+    </div>
+
+    <div class="modal inmodal fade" id="inventory" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
+         data-category="" data-variant="" data-bal="">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 15px;">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Inventory</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-12">
+                                    <form action="{{route('market-place-inventory-actions')}}" method="post">
+                                        @csrf
+                                        <input type="hidden" value="{{$data->id}}" name="id">
+                                        <div class="form-group">
+                                            <label for="">Add / Remove</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('int_qty').stepDown()"><i class="fa fa-minus"></i></button>
+                                                </div>
+                                                <input type="number" class="form-control text-center" id="int_qty" value="0" name="int_qty">
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-sm btn-green" onclick="document.getElementById('int_qty').stepUp()"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            <small class="">*Note: Add <b>minus sign (-)</b> to remove quantity</small>
+                                        </div>
+                                        Current Inventory: {{number_format($data->quantity)}}
+                                        <button type="submit" class="btn btn-primary float-right">Apply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-right">Qty</th>
+                            <th>User</th>
+                            <th>Timestamp</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($data->inventory as $inventory)
+                            <tr>
+                                <td class="text-right">{{number_format($inventory->quantity)}}</td>
+                                <td>{{$inventory->user->name??$inventory->user->email}}</td>
+                                <td style="white-space: nowrap">{{$inventory->created_at}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal inmodal fade" id="modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
@@ -172,9 +236,9 @@
 
             $('#time').datetimepicker({
                 datepicker: false,
-                step: 5,
-                minTime: '00:05',
-                defaultTime: '00:05',
+                step: 30,
+                minTime: '00:00',
+                defaultTime: '00:00',
                 format: 'H:i'
             });
 
@@ -194,11 +258,9 @@
                 switch ($(this).data('action')) {
                     case 'store':
                         $('#form').submit();
-
-                        // console.log($('input[name=four_ps]').val());
-                        // console.log($('input[name=pwd]').val());
-                        // console.log($('input[name=indigenous]').val());
-                        // console.log($('input[name=livelihood]').val());
+                        break;
+                    case 'inventory':
+                        $('#inventory').modal('show');
                         break;
                 }
             });

@@ -12,7 +12,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="{{ route('spot-market.index') }}">Spot Market</a>
+                    <a href="{{ route('market-place-listing') }}">Marketplace</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@yield('title')</strong>
@@ -45,14 +45,14 @@
                                     <tr>
                                         <td width="90">
                                             <div class="cart-product-imitation">
-                                                {!! ($cartItem->hasMedia('spot-market')? "<img class='img-thumbnail' src='".$cartItem->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                {!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}
 
                                             </div>
                                         </td>
                                         <td class="desc">
                                             <h3>
                                                 <a href="#" class="text-navy">
-                                                    <a href="{{route('spot-market.show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>
+                                                    <a href="{{route('market-place.show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>
                                                 </a>
                                             </h3>
                                             <p class="small d-none">
@@ -64,7 +64,7 @@
                                             <div class="m-t-sm">
 {{--                                                <a href="#" class="text-muted"><i class="fa fa-gift"></i> Add gift package</a>--}}
 {{--                                                |--}}
-                                                <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove item</a>
+                                                <a href="#" class="text-muted remove-item" data-id="{{$cartItem->cart_id}}"><i class="fa fa-trash"></i> Remove item</a>
                                             </div>
                                         </td>
 
@@ -73,11 +73,11 @@
                                             <s class="small text-muted"> ₱{{$cartItem->original_price}}</s>
                                         </td>
                                         <td width="65">
-                                            <input type="text" class="form-control changeSummaryTotal"  data-id="{{$cartItem->id}}" data-cart_id="{{$cartItem->cart_id}}" data-target="#sub_total_{{$cartItem->id}}" data-price="{{$cartItem->selling_price}}" value="{{$cartItem->quantity}}" placeholder="1">
+                                            <input type="text" class="form-control changeSummaryTotal"  data-id="{{$cartItem->id}}" data-cart_id="{{$cartItem->cart_id}}" data-target="#sub_total_{{$cartItem->id}}" data-price="{{$cartItem->selling_price}}" value="{{$cartItem->cart_quantity}}" placeholder="1">
                                         </td>
                                         <td>
                                             <h4>
-                                                ₱<span class="sub_total_per_item" id="sub_total_{{$cartItem->id}}">{{$cartItem->selling_price * $cartItem->quantity}}</span>
+                                                ₱<span class="sub_total_per_item" id="sub_total_{{$cartItem->id}}">{{$cartItem->selling_price * $cartItem->cart_quantity}}</span>
                                             </h4>
                                         </td>
                                     </tr>
@@ -93,7 +93,7 @@
                     <div class="ibox-content">
 
                         <button class="btn btn-primary float-right show_confirm_modal"><i class="fa fa fa-shopping-cart"></i> Confirm Order</button>
-                        <a  href="{{route('spot-market.index')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</a>
+                        <a  href="{{route('market-place-listing')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</a>
 
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                     <h4 class="modal-title">Order Confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    @include('wharf.spot-market.includes.how_to_pay')
+                    @include('wharf.market-place.includes.how_to_pay')
                     <hr>
                     <div class="card">
                         <div class="card card-body">
@@ -226,17 +226,36 @@
 
         let lockInFields = [];
         $(document).on('click', '#modal-save-btn', function(){
-            //spot-market.lock_in_order
+            //market-place.lock_in_order
             console.log(lockInFields)
             $.ajax({
-                url: "{{route('spot-market.lock_in_order')}}",
+                url: "{{route('market-place-lock_in_order')}}",
                 type:"POST",
                 data:{
                     form: JSON.stringify(lockInFields),
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success:function(response){
-                    window.location.replace("{{route('spot-market.my_orders')}}");
+                    window.location.replace("{{route('market-place-my_orders')}}");
+                },
+            });
+        });
+        $(document).on('click', '.remove-item', function(){
+            //market-place.lock_in_order
+            var id = $(this).data('id');
+            var item = $(this);
+            // return 1;
+            $.ajax({
+                url: "{{route('market-place-remove_item')}}",
+                type:"POST",
+                data:{
+                    id: id,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success:function(response){
+                    item.closest('.ibox-content').remove()
+                    computeTotalSummary()
+                    computeTotalCount();
                 },
             });
         });

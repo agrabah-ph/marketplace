@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'My Orders')
+@section('title', 'Orders')
 
 @section('content')
 
@@ -31,6 +31,10 @@
                 @foreach($orders as  $order)
                     @php
                         $order_number = $order->order_number;
+                        $proof = "";
+                        if($order->payment){
+                            $proof = ($order->payment->hasMedia('market-place-proof-payment')? "<a href='".url('/').$order->payment->getFirstMediaUrl('market-place-proof-payment')."' target='_blank'><img class='img-thumbnail img-md' src='".url('/').$order->payment->getFirstMediaUrl('market-place-proof-payment')."'></a>":'');
+                        }
                     @endphp
 
                     <div class="ibox">
@@ -106,8 +110,9 @@
                             </div>
                         @endforeach
                         <div class="ibox-content">
+
                             <div class="row justify-content-around">
-                                <div class="col-xs-12 px-3" >
+                                <div class="col-xs-12 px-3">
                                     <span class="font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
                                     <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
@@ -124,14 +129,15 @@
                                 </div>
                                 <div class="col text-right">
                                     <strong>Grand Total: ₱{{number_format($order->total)}}</strong>
-                                    @if(!array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)))
-                                        <div>
-                                            <button class="btn btn-primary  show_confirm_modal"
-                                                    data-order_number="{{$order->id}}"><i class="fa fa fa-money"></i> Verify
-                                                Payment
+                                    @if($order->status->status == 'approved')
+                                        <form action="{{route('market-place-deliver')}}" method="post"
+                                              enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" value="{{$order->id}}" name="id">
+                                            <button class="btn btn-primary float-right"><i class="fa fa fa-truck"></i>
+                                                Deliver
                                             </button>
-                                        </div>
-
+                                        </form>
                                     @endif
                                     @if($order->status->status == 'delivery')
                                         <form action="{{route('market-place-delivered')}}" method="post"
@@ -144,24 +150,49 @@
                                         </form>
                                     @endif
                                 </div>
+
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <h3>Status History</h3>
-                            <table class="table table-condensed">
-                                <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Timestamp</th>
-                                </tr>
-                                </thead>
-                                @foreach($order->statuses as $status)
-                                    <tr>
-                                        <td>{{$status->name}}</td>
-                                        <td>{{$status->created_at}}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Status History</h3>
+                                    <table class="table table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Timestamp</th>
+                                        </tr>
+                                        </thead>
+                                        @foreach($order->statuses as $status)
+                                            <tr>
+                                                <td>{{$status->name}}</td>
+                                                <td>{{$status->created_at}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                                @if($order->payment)
+                                    <div class="col">
+                                        <div class="ibox-content">
+                                            <h2>Proof of payment</h2>
+                                            {!! $proof !!}
+                                            {{--                            <pre>{{json_encode($order->payment,128)}}</pre>--}}
+                                            <table>
+                                                <tr>
+                                                    <td>Payment Date</td>
+                                                    <td>{{optional($order->payment)->payment_date}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pr-3">Reference Number</td>
+                                                    <td>{{optional($order->payment)->reference_number}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @endforeach

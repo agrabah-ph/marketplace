@@ -16,9 +16,9 @@
             </ol>
         </div>
         <div class="col-sm-8">
-            {{--            <div class="title-action">--}}
-            {{--                <a href="#" class="btn btn-primary">This is action area</a>--}}
-            {{--            </div>--}}
+            <div class="title-action">
+                <a href="{{route('edit-profile')}}" class="btn btn-primary">Edit</a>
+            </div>
         </div>
     </div>
 
@@ -33,7 +33,8 @@
                             <h2 class="text-success"><strong>Personal Information</strong></h2>
                             <div class="row">
                                 <div class="col-3">
-                                    <img src="{{$profile->image??'/img/img-icon.png'}}" alt="profile-picture" class="img-fluid">
+                                    <img src="{{$profile->image??'/img/img-icon.png'}}" alt="profile-picture"
+                                         class="img-fluid">
                                 </div>
                                 <div class="col">
                                     <div class="row">
@@ -103,11 +104,13 @@
 
     </div>
 
-    <div class="modal inmodal fade" id="modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true" data-category="" data-variant="" data-bal="">
+    <div class="modal inmodal fade" id="modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
+         data-category="" data-variant="" data-bal="">
         <div id="modal-size">
             <div class="modal-content">
                 <div class="modal-header" style="padding: 15px;">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
@@ -148,7 +151,7 @@
             var content = ''
             return content;
         };
-        $(document).ready(function(){
+        $(document).ready(function () {
             {{--var modal = $('#modal');--}}
             {{--$(document).on('click', '', function(){--}}
             {{--    modal.modal({backdrop: 'static', keyboard: false});--}}
@@ -175,8 +178,9 @@
 
             {{--table.ajax.reload();--}}
             loadProfile();
-            function loadProfile(){
-                $.get('{!! route('get-my-profile') !!}', function(data){
+
+            function loadProfile() {
+                $.get('{!! route('get-my-profile') !!}', function (data) {
                     console.log(data);
                     // $('#profile-info-box').empty().append(displayLoanApplicationDetails(data.profile, null));
                 });

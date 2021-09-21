@@ -106,6 +106,29 @@
         </div>
     </div>
 
+    <div class="modal inmodal fade" id="bidding_disclosure" data-type="" tabindex="-1" role="dialog" aria-hidden="true" data-category="" data-variant="" data-bal="">
+        <div id="modal-size" class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 15px;">
+{{--                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>--}}
+                    <h4 class="modal-title">Bid Disclosure</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card card-body">
+                            <p>I agree to deliver the quality and quantity required by the client. I hereby acknowledge that the product required will be delivered on time specified in this bid document.</p>
+                            <p>Failure to deliver expectation may result to cancellation of order or penalty.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="dis_i_agree">I Agree</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
@@ -201,14 +224,24 @@
                 delay: 5000,
                 animation: true
             });
+            var itemId;
+            var itemValue;
+            var min;
 
             $('.btn-bid').on('click', function(e){
+                itemId = $(this).data('id');
+                itemValue = $('#bid_value_'+itemId).val();
+                min = $(this).data('min');
                 e.preventDefault();
-                var itemId = $(this).data('id');
-                var itemValue = $('#bid_value_'+itemId).val();
-                var min = $(this).data('min');
+                $('#bidding_disclosure').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            })
+            $('#dis_i_agree').on('click', function(e){
                 if(parseFloat(numberRemoveCommas(min)) >= parseFloat(numberRemoveCommas(itemValue))){
                     postBid(itemId, numberRemoveCommas(itemValue));
+                    $('#bidding_disclosure').modal('hide');
                 }
             })
         });

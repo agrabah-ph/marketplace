@@ -52,7 +52,7 @@
                                     <input type="text" class="form-control" name="name" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Starting Bid</label>
+                                    <label>Selling Price</label>
                                     <input type="text" class="form-control money" name="selling_price" required>
                                 </div>
                             </div>
@@ -60,35 +60,35 @@
                                 <div class="form-group">
                                     <label>Supplier</label>
                                     <select class="form-control" id="from_user_id" name="from_user_id" required>
-                                        <option value="" disabled selected></option>
+                                        <option value="{{auth()->user()->id}}">I'm the supplier</option>
                                         @foreach($farmers as $farmer)
                                             <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
                                         @endforeach
                                     </select>
                                 </div>
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Area</label>--}}
+{{--                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>--}}
+{{--                                </div>--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Expiration (Days, Hours : Minutes)</label>--}}
+{{--                                    <div class="row">--}}
+{{--                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 pb-xs-3">--}}
+{{--                                            <select name="days" id="days" class="form-control">--}}
+{{--                                                @foreach(range(1,30) as $day)--}}
+{{--                                                    <option value="{{$day}}">{{$day}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 ">--}}
+{{--                                            <div style="position: relative">--}}
+{{--                                                <input type="text" id="time" class="form-control" name="duration" required autocomplete="off">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div class="form-group">
-                                    <label>Area</label>
-                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Expiration (Days, Hours : Minutes)</label>
-                                    <div class="row">
-                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 pb-xs-3">
-                                            <select name="days" id="days" class="form-control">
-                                                @foreach(range(1,30) as $day)
-                                                    <option value="{{$day}}">{{$day}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 ">
-                                            <div style="position: relative">
-                                                <input type="text" id="time" class="form-control" name="duration" required autocomplete="off">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Quantity</label>
+                                    <label>Initial Inventory</label>
                                     <input type="number" class="form-control" name="quantity" required>
                                 </div>
                                 <div class="form-group">
@@ -186,9 +186,9 @@
 
             $('#time').datetimepicker({
                 datepicker: false,
-                step: 5,
-                minTime: '00:05',
-                defaultTime: '00:05',
+                step: 30,
+                minTime: '00:00',
+                defaultTime: '00:00',
                 format: 'H:i'
             });
 

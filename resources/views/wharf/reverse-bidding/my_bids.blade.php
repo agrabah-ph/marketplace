@@ -58,7 +58,7 @@
                                                 </td>
                                                 <td>
                                                     <h4>
-                                                        {{$item->quantity}}kg(s)
+                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}
                                                     </h4>
                                                 </td>
                                                 <td style="width: 250px;">
@@ -152,7 +152,7 @@
                                                 </td>
                                                 <td>
                                                     <h4>
-                                                        {{$item->quantity}}kg(s)
+                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}
                                                     </h4>
                                                 </td>
                                                 <td style="width: 250px;">

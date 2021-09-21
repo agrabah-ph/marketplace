@@ -50,12 +50,12 @@
                                 <th>Farmer</th>
                                 <th>Area</th>
                                 <th>Description</th>
-                                <th>Quantity</th>
+                                <th>Inventory</th>
                                 <th>Unit of Measure</th>
-                                <th>Starting Bid</th>
+                                <th>Selling Price</th>
                                 <th>Added At</th>
-                                <th>Expiration</th>
-                                <th>Is Expired</th>
+{{--                                <th>Expiration</th>--}}
+{{--                                <th>Is Expired</th>--}}
                                 <th class="text-right" data-sort-ignore="true"><i class="fa fa-cogs text-success"></i></th>
                             </tr>
                             </thead>
@@ -71,8 +71,8 @@
                                     <td>{!!  ucfirst($data->unit_of_measure)  !!} </td>
                                     <td class="text-right">{!!  $data->selling_price  !!} </td>
                                     <td style="white-space: nowrap">{!!  \Carbon\Carbon::parse($data->created_at)->format('M d, Y H:i:s')  !!} </td>
-                                    <td style="white-space: nowrap">{{ \Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s')  }} </td>
-                                    <td>{!!  $data->is_expired?'Expired':'Active'  !!} </td>
+{{--                                    <td style="white-space: nowrap">{{ \Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s')  }} </td>--}}
+{{--                                    <td>{!!  $data->is_expired?'Expired':'Active'  !!} </td>--}}
                                     <td class="text-right">
                                         <div class="btn-group text-right">
                                             @if($isCommunityLeader)

@@ -56,12 +56,28 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
 
     Route::get('my-profile', 'ProfileController@myProfile')->name('my-profile');
+    Route::get('edit-profile', 'ProfileController@editProfile')->name('edit-profile');
+    Route::post('profile-update', 'ProfileController@updateProfile')->name('profile-update');
     Route::get('select-profile', 'ProfileController@selectProfile')->name('select-profile');
     Route::get('get-my-profile', 'ProfileController@getMyProfile')->name('get-my-profile');
 
     Route::resource('market-place', 'MarketPlaceController');
     Route::post('market-place-post-bid', 'MarketPlaceController@postBid')->name('market-place.post_bid');
     Route::post('market-place-refresh-bid', 'MarketPlaceController@refreshBid')->name('market-place.refresh_bid');
+
+
+    Route::get('market-place-listing', 'MarketPlaceCartingController@index')->name('market-place-listing');
+    Route::get('market-place-cart', 'MarketPlaceCartingController@cart')->name('market-place-cart');
+    Route::get('market-place-my-orders', 'MarketPlaceCartingController@myOrders')->name('market-place-my_orders');
+    Route::get('market-place-show/{id}', 'MarketPlaceCartingController@show')->name('market-place-show');
+    Route::post('market-place-add-to-cart', 'MarketPlaceCartingController@addToCart')->name('market-place-add_cart');
+    Route::post('market-place-lock-in-order', 'MarketPlaceCartingController@lockInOrder')->name('market-place-lock_in_order');
+    Route::post('market-place-verify-payment', 'MarketPlaceCartingController@verifyPayment')->name('market-place-verify_payment');
+    Route::post('market-place-remove-item', 'MarketPlaceCartingController@removeItem')->name('market-place-remove_item');
+    Route::post('market-place-deliver', 'MarketPlaceCartingController@deliver')->name('market-place-deliver');
+    Route::post('market-place-delivered', 'MarketPlaceCartingController@delivered')->name('market-place-delivered');
+    Route::post('market-place-inventory-actions', 'MarketPlaceCartingController@inventoryActions')->name('market-place-inventory-actions');
+    Route::get('market-place-orders', 'MarketPlaceCartingController@orders')->name('market-place-orders');
 
     Route::get('market-place-my-bids', 'MarketPlaceController@myBids')->name('market-place.my_bids');
     Route::post('market-place-make-winner', 'MarketPlaceController@makeWinner')->name('market-place.make_winner');
