@@ -1,0 +1,11 @@
+
+
+.page-about {
+  .page-title {
+    font-size: 4rem;
+
+    @media (max-width: 1600px) {
+      font-size: 3rem;
+    }
+  }
+}
