@@ -6,6 +6,7 @@ use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
 use App\Services\LoanService;
+use App\Services\MarketplaceInventoryService;
 use App\Services\SpotMarketOrderService;
 use App\MarketPlace;
 use App\MarketPlaceBid;
@@ -21,6 +22,15 @@ use Illuminate\Support\Facades\Log;
 class MarketPlaceController extends Controller
 {
 
+    /**
+     * @var MarketplaceInventoryService
+     */
+    private $inventoryService;
+
+    public function __construct(MarketplaceInventoryService $inventoryService)
+    {
+        $this->inventoryService = $inventoryService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -233,12 +243,14 @@ class MarketPlaceController extends Controller
             $expiration = Carbon::parse($spotMarket['created_at']);
             if($spotMarket['duration']){
                 $duration = explode(':',$spotMarket['duration']);
-                $expiration->addHour($duration[0]);
-                $expiration->addMinute($duration[1]);
+                $expiration->addDays($request->days);
+                $expiration->hours($duration[0]);
+                $expiration->minute($duration[1]);
                 $expiration->second(0);
             }
             $spotMarket->expiration_time = $expiration;
             $spotMarket->save();
+            $this->inventoryService->save($spotMarket, $array['quantity'], 'Initial Inventory');
             $spotMarket->addMedia($request->file('image'))
                 ->toMediaCollection('market-place');
             $farmerModel->marketPlace()->save($spotMarket);
@@ -296,8 +308,10 @@ class MarketPlaceController extends Controller
         $expiration = Carbon::parse($data['created_at']);
         if($data['duration']){
             $duration = explode(':',$data['duration']);
-            $expiration->addHour($duration[0]);
-            $expiration->addMinute($duration[1]);
+            $expiration->addDays($request->days);
+            $expiration->hours($duration[0]);
+            $expiration->minute($duration[1]);
+            $expiration->second(0);
         }
         $data->expiration_time = $expiration;
         $data->save();

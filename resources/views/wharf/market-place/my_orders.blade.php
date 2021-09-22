@@ -28,42 +28,76 @@
 
                 @include('alerts.validation')
 
-                @foreach($orders as $order_number => $cart)
-                <div class="ibox">
-                    <div class="ibox-title pr-3">
-                        <span class="float-right">Ordered at: {{\Carbon\Carbon::parse($cart[0]['order_placed'])->format('M d, Y')}}</span>
-                        <h5>Order No. #{{$order_number}}</h5>
-                    </div>
-                        @foreach($cart as $cartItem)
+                @foreach($orders as  $order)
+                    @php
+                        $order_number = $order->order_number;
+                    @endphp
+
+                    <div class="ibox">
+                        <div class="ibox-title pr-3">
+                            <span class="float-right">Ordered at: {{\Carbon\Carbon::parse($order['created_at'])->format('M d, Y')}}</span>
+                            <h5>Order No. #{{$order->order_number}}</h5>
+                        </div>
+                        @foreach($order->items as $item)
+                            @php
+                                $product  = $item->product;
+                                $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')
+                            @endphp
                             <div class="ibox-content">
+                                {{--                                <pre>{{json_encode($item,128)}}</pre>--}}
                                 <div class="table-responsive">
                                     <table class="table shoping-cart-table">
                                         <tbody>
                                         <tr>
-                                            <td width="90">
+                                            <td>
                                                 <div class="cart-product-imitation">
-                                                    {!! ($cartItem->hasMedia('spot-market')? "<img class='img-thumbnail' src='".$cartItem->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                    {!! $image !!}
                                                 </div>
                                             </td>
                                             <td class="desc">
                                                 <h3>
                                                     <a href="#" class="text-navy">
-                                                        <a href="{{route('spot-market.show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>
+                                                        <a href="{{route('market-place.show', $product->id)}}"
+                                                           class="product-name"> {{$product->name}}</a>
                                                     </a>
                                                 </h3>
-                                                {!! $cartItem->description !!}
+                                                {!! $product->description !!}
                                             </td>
 
                                             <td>
-                                                ₱{{$cartItem->order_price}}
+                                                ₱{{$product->selling_price}}
                                             </td>
                                             <td width="65">
-                                                {{$cartItem->order_quantity}}
+                                                {{$item->quantity}}{{$product->unit_of_measure_short}}
                                             </td>
                                             <td>
-                                                <h4>
-                                                    ₱{{$cartItem->order_subtotal}}
-                                                </h4>
+                                                @php
+                                                    $winningBid = $item->total;
+                                                    $serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');
+                                                @endphp
+                                                <div class="tabulation">
+                                                    <div class="row">
+                                                        <div class="col-4 no-wrap text-muted text-left">Sub Total
+                                                        </div>
+                                                        <div class="col-8 no-wrap text-right">
+                                                            ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4 no-wrap text-muted text-left">Service
+                                                            Fee
+                                                        </div>
+                                                        <div class="col-8 no-wrap text-right">
+                                                            ₱{{number_format($serviceFee, 2)}}</div>
+                                                    </div>
+                                                    <div class="row total">
+                                                        <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                        <div class="col-8 no-wrap text-right">
+                                                            ₱{{number_format($winningBid, 2)}}</div>
+                                                    </div>
+                                                </div>
+                                                {{--                                                <h4>--}}
+                                                {{--                                                    ₱{{$item->total}}--}}
+                                                {{--                                                </h4>--}}
                                             </td>
                                         </tr>
                                         </tbody>
@@ -71,22 +105,65 @@
                                 </div>
                             </div>
                         @endforeach
-                    <div class="ibox-content">
+                        <div class="ibox-content">
+                            <div class="row justify-content-around">
+                                <div class="col-xs-12 px-3" >
+                                    <span class="font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
+                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
-                        <button class="btn btn-primary float-right show_confirm_modal" data-order_number="{{$order_number}}"><i class="fa fa fa-money"></i> Verify Payment</button>
-                        <div class="">
-                            <span class="font-bold {{(array_key_exists('new', getSpotMarketOrderStatuses($order_number)) ? "text-green" : "text-muted")}}">Order Placed</span> <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    <span class="font-bold {{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Payment Verified</span>
+                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
-                            <span class="font-bold {{(array_key_exists('payment_verified', getSpotMarketOrderStatuses($order_number)) ? "text-green" : "text-muted")}}">Payment Verified</span> <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    <span class="font-bold {{(array_key_exists('approved',getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Approved</span>
+                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
-                            <span class="font-bold {{(array_key_exists('approved',getSpotMarketOrderStatuses($order_number)) ? "text-green" : "text-muted")}}">Order Approved</span> <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    <span class="font-bold {{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">On Delivery</span>
+                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
-                            <span class="font-bold {{(array_key_exists('delivery', getSpotMarketOrderStatuses($order_number)) ? "text-green" : "text-muted")}}">On Delivery</span> <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    <span class="font-bold {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Delivered</span>
+                                </div>
+                                <div class="col text-right">
+                                    <strong>Grand Total: ₱{{number_format($order->total)}}</strong>
+                                    @if(!array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)))
+                                        <div>
+                                            <button class="btn btn-primary  show_confirm_modal"
+                                                    data-order_number="{{$order->id}}"><i class="fa fa fa-money"></i> Verify
+                                                Payment
+                                            </button>
+                                        </div>
 
-                            <span class="font-bold {{(array_key_exists('delivered', getSpotMarketOrderStatuses($order_number)) ? "text-green" : "text-muted")}}">Delivered
+                                    @endif
+                                    @if($order->status->status == 'delivery')
+                                        <form action="{{route('market-place-delivered')}}" method="post"
+                                              enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" value="{{$order->id}}" name="id">
+                                            <button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>
+                                                Delivered
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <h3>Status History</h3>
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                                </thead>
+                                @foreach($order->statuses as $status)
+                                    <tr>
+                                        <td>{{$status->name}}</td>
+                                        <td>{{$status->created_at}}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
                         </div>
                     </div>
-                </div>
                 @endforeach
 
 
@@ -111,7 +188,8 @@
                             </span>
                         <div class="m-t-sm">
                             <div class="btn-group">
-                                <a href="#" class="btn btn-primary btn-sm show_confirm_modal"><i class="fa fa-shopping-cart"></i> Confirm Order</a>
+                                <a href="#" class="btn btn-primary btn-sm show_confirm_modal"><i
+                                            class="fa fa-shopping-cart"></i> Confirm Order</a>
                                 <a href="#" class="btn btn-white btn-sm"> Cancel</a>
                             </div>
                         </div>
@@ -135,21 +213,24 @@
         </div>
     </div>
 
-    <div class="modal inmodal fade" id="confirm_order_modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true" data-category="" data-variant="" data-bal="">
+    <div class="modal inmodal fade" id="confirm_order_modal" data-type="" tabindex="-1" role="dialog" aria-hidden="true"
+         data-category="" data-variant="" data-bal="">
         <div id="modal-size" class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header" style="padding: 15px;">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">Verify Payment</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('spot-market.verify_payment')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('market-place-verify_payment')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="order_number" id="verify_order">
                         <div class="ibox-content">
                             <div class="form-group">
                                 <label>Proof of Payment</label>
-                                <input name="proof_of_payment" id="myFileInput" class="form-control" type="file" accept="image/*;capture=camera">
+                                <input name="proof_of_payment" id="myFileInput" class="form-control" type="file"
+                                       accept="image/*;capture=camera">
                             </div>
                             <div class="form-group">
                                 <label>Payment Date</label>
@@ -160,7 +241,8 @@
                                 <input name="reference_number" type="text" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-green w-100" id="verify_payment_submit">Verify</button>
+                                <button type="submit" class="btn btn-green w-100" id="verify_payment_submit">Verify
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -169,13 +251,13 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <i class="fa fa-cart-plus"> </i>
                 <strong class="mr-auto m-l-sm">Add to Cart</strong>
-{{--                <small>2 seconds ago</small>--}}
+                {{--                <small>2 seconds ago</small>--}}
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -194,8 +276,22 @@
     {!! Html::style('css/template/plugins/footable/footable.core.css') !!}
     {!! Html::style('css/template/plugins/toastr/toastr.min.css') !!}
     <style>
-        .cart-product-imitation{
-            padding: 0!important;
+        .cart-product-imitation {
+            padding: 0 !important;
+        }
+
+        .no-wrap {
+            white-space: nowrap;
+        }
+
+        .tabulation {
+            font-size: 14px;
+        }
+
+        .total {
+            font-size: 16px;
+            font-weight: 700;
+            width: 250px;
         }
     </style>
     {{--{!! Html::style('') !!}--}}
@@ -216,11 +312,12 @@
         function numberWithCommas(x) {
             return x.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
+
         function numberRemoveCommas(x) {
             return x.toString().replace(/,/g, "");
         }
 
-        $(document).on('click', '.show_confirm_modal', function(){
+        $(document).on('click', '.show_confirm_modal', function () {
             $('#confirm_order_modal').modal('show');
             let order_number = $(this).data('order_number');
             console.log(order_number)
@@ -228,22 +325,22 @@
         });
 
         let lockInFields = [];
-        $(document).on('click', '#modal-save-btn', function(){
+        $(document).on('click', '#modal-save-btn', function () {
             //spot-market.lock_in_order
             console.log(lockInFields)
             $.ajax({
                 url: "{{route('spot-market.lock_in_order')}}",
-                type:"POST",
-                data:{
+                type: "POST",
+                data: {
                     form: JSON.stringify(lockInFields),
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
-                success:function(response){
+                success: function (response) {
                     window.location.replace("{{route('spot-market.my_orders')}}");
                 },
             });
         });
-        $(document).ready(function(){
+        $(document).ready(function () {
 
             var mem = $('.datepicker').datepicker({
                 todayBtn: "linked",
@@ -255,12 +352,12 @@
                 placement: 'bottom'
             });
 
-            $('.changeSummaryTotal').on('keyup', function(e){
+            $('.changeSummaryTotal').on('keyup', function (e) {
 
                 var target = $(this).data('target');
                 var price = $(this).data('price');
                 var qty = $(this).val();
-                if(isNaN(qty) || qty === ''){
+                if (isNaN(qty) || qty === '') {
                     qty = 1;
                 }
                 $(target).html(numberWithCommas(parseFloat(numberRemoveCommas(price)) * qty));
@@ -272,7 +369,8 @@
             computeTotalCount();
 
         });
-        function computeTotalCount(){
+
+        function computeTotalCount() {
             var count = 0;
             lockInFields = [];
             // $('.changeSummaryTotal').each(function(i, e){
@@ -292,11 +390,12 @@
             // });
             $('#cart_count').html(parseInt(count));
         }
-        function computeTotalSummary(){
+
+        function computeTotalSummary() {
 
             var subTotalPerItem = $('.sub_total_per_item');
             var total = 0;
-            subTotalPerItem.each(function(i, e){
+            subTotalPerItem.each(function (i, e) {
                 let eVal = parseFloat(numberRemoveCommas(e.innerHTML));
                 total += eVal;
             });

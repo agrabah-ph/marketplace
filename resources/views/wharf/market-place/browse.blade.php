@@ -1,6 +1,6 @@
 @extends('wharf.master')
 
-@section('title', 'Spot Market')
+@section('title', 'Marketplace')
 
 @section('content')
 
@@ -107,7 +107,7 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -247,7 +247,7 @@
                         $('#btn_bid_'+id).attr('data-min', response.next_bid);
 
                     }else{
-
+                        window.location.reload();
                     }
                 },
             });

@@ -55,6 +55,10 @@
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" required>
                                 </div>
+                                <div class="form-group">
+                                    <label>Starting Bid</label>
+                                    <input type="text" class="form-control money" name="selling_price" required>
+                                </div>
                             </div>
                             <div class="col-6">
 {{--                                <div class="form-group">--}}
@@ -62,24 +66,24 @@
 {{--                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>--}}
 {{--                                </div>--}}
                                 <div class="form-group">
-                                    <label>Starting Bid</label>
-                                    <input type="text" class="form-control money" name="selling_price" required>
-                                </div>
-                                <div class="form-group">
                                     <label>Area</label>
                                     <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>
                                 </div>
                                 <div class="form-group">
+                                    <label>Delivery Address</label>
+                                    <textarea name="delivery_address" class="form-control no-resize"></textarea>
+                                </div>
+                                <div class="form-group">
                                     <label>Expiration (Days, Hours : Minutes)</label>
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 pb-xs-3">
                                             <select name="days" id="days" class="form-control">
                                                 @foreach(range(1,30) as $day)
                                                     <option value="{{$day}}">{{$day}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-md-6 col-sm-6 col-6">
                                             <div style="position: relative">
                                                 <input type="text" id="time" class="form-control" name="duration" required autocomplete="off">
                                             </div>

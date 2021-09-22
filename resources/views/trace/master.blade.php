@@ -57,7 +57,7 @@
                     </div>
                 </li>
 
-                @include(subdomain_name().'.menu')
+                @include('trace.menu')
 
             </ul>
 

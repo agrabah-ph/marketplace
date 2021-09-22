@@ -36,7 +36,7 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,7 +47,7 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param \App\Profile $profile
      * @return \Illuminate\Http\Response
      */
     public function show(Profile $profile)
@@ -58,7 +58,7 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Profile  $profile
+     * @param \App\Profile $profile
      * @return \Illuminate\Http\Response
      */
     public function edit(Profile $profile)
@@ -69,8 +69,8 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Profile $profile
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Profile $profile)
@@ -81,7 +81,7 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Profile  $profile
+     * @param \App\Profile $profile
      * @return \Illuminate\Http\Response
      */
     public function destroy(Profile $profile)
@@ -94,18 +94,18 @@ class ProfileController extends Controller
         $inputs = $request->input('forms');
         $type = getRoleName('name');
         $userType = null;
-        if($type === 'farmer'){
+        if ($type === 'farmer') {
             $userType = Farmer::find(Auth::user()->farmer->id);
         }
-        if($type === 'community-leader'){
+        if ($type === 'community-leader') {
             $userType = Farmer::find(Auth::user()->leader->id);
         }
-        if($userType){
-            $userType->url = route($type.'.show', array($type=>$userType));
+        if ($userType) {
+            $userType->url = route($type . '.show', array($type => $userType));
             $userType->save();
             QrCode::size(500)
                 ->format('png')
-                ->generate($userType->url, public_path('images/'.$type.'/'.$userType->account_id.'.png'));
+                ->generate($userType->url, public_path('images/' . $type . '/' . $userType->account_id . '.png'));
         }
         $profile = new Profile();
         $profile->first_name = $inputs[0][1][2];
@@ -117,7 +117,7 @@ class ProfileController extends Controller
         $profile->landline = $inputs[0][7][2];
         $profile->mobile = $inputs[0][8][2];
         $profile->image = $inputs[0][0][2];
-        try{
+        try {
             $profile->tin = $inputs[0][9][2];
             $profile->sss_gsis = $inputs[0][10][2];
             $profile->education = $inputs[0][11][2];
@@ -127,19 +127,19 @@ class ProfileController extends Controller
             $profile->employment_info = serialize($inputs[4]);
             $profile->income_asset_info = serialize($inputs[5]);
 
-            if($userType){
-                $profile->qr_image = $userType->account_id.'.png';
-                $profile->qr_image_path = '/images/'.$type.'/'.$userType->account_id.'.png';
+            if ($userType) {
+                $profile->qr_image = $userType->account_id . '.png';
+                $profile->qr_image_path = '/images/' . $type . '/' . $userType->account_id . '.png';
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
 
         }
-        if(!$userType){
+        if (!$userType) {
             $userType = User::find(Auth::user()->id);
         }
-        if($userType->profile()->save($profile)){
-            $user = User::find($userType->user_id??Auth::user()->id);
-            $user->name = $profile->first_name.' '.$profile->last_name;
+        if ($userType->profile()->save($profile)) {
+            $user = User::find($userType->user_id ?? Auth::user()->id);
+            $user->name = $profile->first_name . ' ' . $profile->last_name;
             $user->save();
 
             $url = route('home');
@@ -147,22 +147,61 @@ class ProfileController extends Controller
         }
     }
 
+    public function updateProfile(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        $user = User::find(Auth::user()->id);
+        $user->name = $profile->first_name . ' ' . $profile->last_name;
+        $user->save();
+        $profile->first_name = $request->first_name;
+        $profile->middle_name = $request->middle_name;
+        $profile->last_name = $request->last_name;
+        $profile->dob = Carbon::parse($request->dob)->format('Y-m-d');
+        $profile->civil_status = $request->civil_status;
+        $profile->gender = $request->gender;
+        $profile->landline = $request->landline;
+        $profile->mobile = $request->mobile;
+        if($request->has('profile_pic')){
+            $profile->image = $request->profile_pic;
+        }
+        $profile->save();
+
+        return redirect()->back()->with('success', 'Successfully Updated');
+    }
+
     public function myProfile()
     {
         $type = getRoleName('name');
         $profile = null;
-        if($type === 'farmer'){
+        if ($type === 'farmer') {
             $profile = Auth::user()->farmer->profile;
         }
-        if($type === 'buyer'){
+        if ($type === 'buyer') {
             $profile = Auth::user()->profile;
         }
-        if($type === 'community-leader'){
+        if ($type === 'community-leader') {
             $profile = Auth::user()->leader->profile;
         }
 
 //        return $profile;
         return view('layouts.show-profile', compact('profile'));
+    }
+
+    public function editProfile()
+    {
+        $type = getRoleName('name');
+        $profile = null;
+        if ($type === 'farmer') {
+            $profile = Auth::user()->farmer->profile;
+        }
+        if ($type === 'buyer') {
+            $profile = Auth::user()->profile;
+        }
+        if ($type === 'community-leader') {
+            $profile = Auth::user()->leader->profile;
+        }
+
+        return view('wharf.profile.edit', compact('profile'));
     }
 
     public function selectProfile(Request $request)
@@ -177,10 +216,10 @@ class ProfileController extends Controller
     {
         $type = getRoleName('name');
         $data = null;
-        if($type === 'farmer'){
+        if ($type === 'farmer') {
             $data = Farmer::with('profile')->find(Auth::user()->farmer->id);
         }
-        if($type === 'community-leader'){
+        if ($type === 'community-leader') {
             $data = Farmer::with('profile')->find(Auth::user()->leader->id);
         }
 

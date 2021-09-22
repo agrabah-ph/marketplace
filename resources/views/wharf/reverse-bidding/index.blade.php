@@ -36,7 +36,6 @@
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Farmer</th>
                                 <th>Area</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
@@ -52,11 +51,10 @@
                                 <tr>
                                     <td width="200px">{!! ($data->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}  </td>
                                     <td>{{ $data->name }} </td>
-                                    <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
                                     <td>{!!  $data->description  !!} </td>
                                     <td>{!!  $data->quantity?floatval($data->quantity).'kg':''  !!} </td>
-                                    <td class="text-right">{!!  $data->selling_price  !!} </td>
+                                    <td class="text-right">{!!  $data->asking_price  !!} </td>
                                     <td style="white-space: nowrap">{!!  \Carbon\Carbon::parse($data->created_at)->format('M d, Y H:i:s')  !!} </td>
                                     <td style="white-space: nowrap">{{ \Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s')  }} </td>
                                     <td>{!!  $data->is_expired?'Expired':'Active'  !!} </td>
@@ -113,7 +111,7 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">

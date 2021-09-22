@@ -45,7 +45,7 @@ class ReverseBiddingController extends Controller
 
         $roleName = auth()->user()->roles->first()->name;
         $isCommunityLeader = false;
-        if($roleName == 'buyer'){
+        if($roleName == 'enterprise-client'){
             $list = auth()->user()->reveseBiddings;
             $isCommunityLeader = true;
             return view('wharf.reverse-bidding.index', compact('list', 'isCommunityLeader', 'areas'));
@@ -66,6 +66,21 @@ class ReverseBiddingController extends Controller
     }
 
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function completeBid(Request $request)
+    {
+        $spotMarket = ReverseBidding::find($request->id);
+        $method = $request->input('method');
+        $spotMarket->method = $method;
+        $spotMarket->status = 1;
+        $spotMarket->save();
+
+        return redirect()->back();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -133,10 +148,10 @@ class ReverseBiddingController extends Controller
 
         if(count($bids) > 0){
             $current_bid = $bids->first()->bid;
-            $current_bid+=settings('spot_market_next_bid');
+            $current_bid-=settings('spot_market_next_bid');
         }
 
-        if($current_bid > $value){
+        if($current_bid < $value){
             return response()->json(['status' => false,'$current_bid'=>$current_bid,'value'=>$value]);
         }
 
@@ -148,7 +163,7 @@ class ReverseBiddingController extends Controller
 
         $nextBid = $request->value + settings('spot_market_next_bid');
 
-        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','desc')->pluck('bid')->toArray();
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','asc')->pluck('bid')->toArray();
 
         event(new \App\Events\UpdateBidBrowse('reverse-bidding',$request->id));
 
@@ -170,9 +185,9 @@ class ReverseBiddingController extends Controller
 
         $value = floatval(preg_replace('/,/','',$current_bid));
 
-        $nextBid = $value + settings('spot_market_next_bid');
+        $nextBid = $value - settings('spot_market_next_bid');
 
-        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','desc')->pluck('bid');
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','asc')->pluck('bid');
 
         return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, 'current_bid'=>$current_bid, 'value'=>$value]);
     }

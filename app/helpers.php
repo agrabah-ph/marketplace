@@ -1,17 +1,50 @@
 <?php
 
 use App\LoanType;
+use App\Mail\TraceShipped;
 use App\Profile;
+use App\Settings;
+use App\Trace;
 use App\User;
 use App\Farmer;
 use App\Inventory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Permission;
 
 if (!function_exists('emailNotification')) {
-    function emailNotification($type)
+    function emailNotification($type, $id)
     {
+        switch ($type) {
+            case 'trace-created':
+                $data = Trace::find($id);
+                $details = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-tracking', array('code'=>$data->reference)),
+                    'body' => '<p>Please present this CODE upon receiving your package.</p><br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr></tbody></table><br><br><br>',
+                    'code' => $data->code
+                ];
+                $details2 = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-bfar-show', array('id'=>$data->id)),
+                    'body' => '<br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr></tbody></table><br><br><br>',
+                    'code' => ''
+                ];
+                Mail::to($data->receiver->value_1)->send(new TraceShipped($details));
+                Mail::to(emailAddress('bfar', null))->send(new TraceShipped($details2));
+                break;
+            case 'trace-status-update':
+                $data = Trace::find($id);
+                $details = [
+                    'title' => 'Agrabah Shipping details.',
+                    'url' => route('trace-bfar-show', array('id'=>$data->id)),
+                    'body' => '<br><table><thead><tr><th colspan="4" align="center">Dispatch Information</th></tr></thead><tbody><tr><td width="150" align="left">Driver Name</td><td align="left">'. $data->dispatch->value_0 .'</td></tr><tr><td align="left">Mobile no.</td><td align="left">'. $data->dispatch->value_1 .'</td></tr><tr><td align="left">Vehicle Type</td><td align="left">'. $data->dispatch->value_2 .'</td></tr><tr><td align="left">Plate No.</td><td align="left">'. $data->dispatch->value_3 .'</td></tr><tr><td align="left">Status</td><td align="left"><strong>'. $data->status .'</strong></td></tr></tbody></table><br><br><br>',
+                    'code' => ''
+                ];
 
+                Mail::to(emailAddress('bfar', null))->send(new TraceShipped($details));
+                break;
+        }
     }
 }
 
@@ -19,6 +52,28 @@ if (!function_exists('smsNotification')) {
     function smsNotification($type)
     {
 
+    }
+}
+
+if (!function_exists('emailAddress')) {
+    function emailAddress($recipient, $id)
+    {
+        $email = null;
+        switch ($recipient){
+            case 'bfar':
+                $data = Settings::where('name', 'bfar')->with('profile')->first();
+                if($data->profile->landline !== null){
+                    $email = $data->profile->landline;
+                }
+                break;
+            case 'provider':
+
+                break;
+            case 'borrower':
+
+                break;
+        }
+        return $email;
     }
 }
 
@@ -134,7 +189,7 @@ if (!function_exists('stringSlug')) {
 }
 
 if (!function_exists('getRoleName')) {
-    function getRoleName($data)
+    function getRoleName($data = 'name')
     {
         $info = null;
         switch($data){
@@ -180,11 +235,15 @@ if (!function_exists('permissionTable')) {
 }
 
 if (!function_exists('authProfilePic')) {
-    function authProfilePic($id)
+    function authProfilePic()
     {
         $data = '/img/blank-profile.jpg';
-
-        $profile = Profile::where('user_id', $id)->first();
+        $roleName = getRoleName();
+        if($roleName == 'farmer'){
+            $profile = \App\Profile::find(Auth::user()->farmer->profile->id);
+        }else{
+            $profile = \App\Profile::find(Auth::user()->profile->id);
+        }
 
         if(!empty($profile)){
             if($profile->image !== null){
@@ -282,6 +341,7 @@ if (!function_exists('loanStatInfo')) {
         return $data;
     }
 }
+
 if (!function_exists('isCommunityLeader')) {
     function isCommunityLeader()
     {
@@ -294,10 +354,18 @@ if (!function_exists('isCommunityLeader')) {
         return $isCommunityLeader;
     }
 }
+
 if (!function_exists('getUserSpotMarketCartCount')) {
     function getUserSpotMarketCartCount()
     {
         return \App\SpotMarketCart::where('user_id', auth()->user()->id)->sum('quantity');
+    }
+}
+
+if (!function_exists('getUserMarketplaceCartCount')) {
+    function getUserMarketplaceCartCount()
+    {
+        return \App\MarketplaceCart::where('user_id', auth()->user()->id)->sum('quantity');
     }
 }
 
@@ -314,6 +382,12 @@ if (!function_exists('getSpotMarketOrderStatuses')) {
         return \App\SpotMarketOrderStatus::where('spot_market_orders', $orderNumber)->pluck('is_current', 'status')->toArray();
     }
 }
+if (!function_exists('getMarketplaceOrderStatuses')) {
+    function getMarketplaceOrderStatuses($orderNumber)
+    {
+        return \App\MarketplaceOrderStatus::where('market_place_order_id', $orderNumber)->pluck('is_current', 'status')->toArray();
+    }
+}
 
 if (!function_exists('getServiceFee')) {
     function getServiceFee($uom, $quantity, $bid, $type = 'reverse')
@@ -322,7 +396,7 @@ if (!function_exists('getServiceFee')) {
         $serviceFee = 0;
         if($uom && $quantity && $bid){
             if($type == 'reverse'){
-                $serviceFee = $bid * .01 ;
+                $serviceFee = $bid * (settings('service_fee_percentage') / 100);
             }elseif($type == 'spot_market'){
                 switch ($uom){
                     case 'kilos':
@@ -330,7 +404,7 @@ if (!function_exists('getServiceFee')) {
                         break;
                     case 'lot':
                     case 'bayera':
-                        $serviceFee = $bid * .01 ;
+                        $serviceFee = $bid * (settings('service_fee_percentage') / 100) ;
                         break;
                 }
             }else{
@@ -340,7 +414,7 @@ if (!function_exists('getServiceFee')) {
                         break;
                     case 'lot':
                     case 'bayera':
-                        $serviceFee = $bid * .01 ;
+                        $serviceFee = $bid * (settings('service_fee_percentage') / 100) ;
                         break;
                 }
             }

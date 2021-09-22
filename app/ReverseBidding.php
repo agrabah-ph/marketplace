@@ -23,6 +23,7 @@ class ReverseBidding extends Model implements HasMedia
         'asking_price',
         'buying_price',
         'area',
+        'delivery_address',
         'method',
         'status',
         'unit_of_measure',
@@ -30,7 +31,7 @@ class ReverseBidding extends Model implements HasMedia
 
     public function bids()
     {
-        return $this->hasMany(ReverseBiddingBid::class, 'reverse_bidding_id')->orderBy('bid','desc');
+        return $this->hasMany(ReverseBiddingBid::class, 'reverse_bidding_id')->orderBy('bid','asc');
     }
 
     public function user()
@@ -40,19 +41,43 @@ class ReverseBidding extends Model implements HasMedia
 
     public function getCurrentBidAttribute()
     {
-        $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','desc')->first();
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','asc')->first();
         $currentBid = $bids->bid??$this->asking_price;
         return $currentBid;
     }
 
     public function getWinnerAttribute()
     {
-        $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','desc')->first();
+        $bids = ReverseBiddingBid::where('reverse_bidding_id', $this->id)->orderBy('bid','asc')->first();
         $user = null;
         if($bids){
             $user = $bids->user;
         }
         return $user;
+    }
+    public function getUnitOfMeasureShortAttribute()
+    {
+        $uom = '';
+        if($this['unit_of_measure']){
+            switch ($this['unit_of_measure']){
+                case 'kilos':
+                    $uom = 'kg(s)';
+                    break;
+                case 'bayera':
+                    $uom = ' bayera';
+                    break;
+                case 'lot':
+                    $uom = ' lot';
+                    break;
+                case 'pieces':
+                    $uom = 'pc(s)';
+                    break;
+                default:
+                    $uom = $this['unit_of_measure'];
+                    break;
+            }
+        }
+        return $uom;
     }
 
 }
