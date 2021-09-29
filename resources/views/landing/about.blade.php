@@ -10,10 +10,10 @@
         <div class="max-width">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-4">
-                    <h1 class="page-title">Agrabah Finance</h1>
+                    <h1 class="page-title">Agrabah Wharf</h1>
                     <div class="content">
-                        <p>With the Finance platform lending institution’s KYC processed is streamlined since borrowers are already pre-filling out the form online and uploading necessary requirements for the loan product.</p>
-                        <p>On the farmer side they can now apply for loan at the convenience of their homes and receive the loan disbursement through digital banking which eliminates the long back and forth travel for farmers just to apply for loan.</p>
+                        <p>Agrabah Wharf is a platform created specifically for on spot trading and large volume trading that allows the farmers and fisherfolks to get direct access to market.</p>
+                        <p>This platform also allows trading facility to manage all incoming and outgoing inventory in the area which automate its reporting capability.</p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-8">

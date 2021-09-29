@@ -7,9 +7,9 @@
     <section class="banner-section" style="background-image: url('{{ asset('images/landing/featured-1.jpg') }}')">
         <div class="max-width">
             <div class="inside">
-                <h1 class="banner-title">Lorem ipsum dolor sit amet consectetur</h1>
-                <div class="description">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                <a href="{{ asset('/') }}#get_started"><button class="btn-theme">Get Started</button></a>
+                <h1 class="banner-title">Place orders with farmers and fisherfolks directly.</h1>
+                <div class="description">Find the top growers and fresh produce farmers around the country, place direct purchase orders through your Agrabah WHARF website, and save money by buying directly from the producers.</div>
+                <a href="{{ url('registration') }}"><button class="btn-theme">Get Started</button></a>
             </div>
         </div>
     </section>
@@ -42,34 +42,29 @@
         <div class="max-width padding">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-6">
-                    <h1 class="page-title">How Wharf works?</h1>
+                    <h1 class="page-title">How to get started?</h1>
 
                     <ul class="list">
                         <li>
                             <div class="num"><span>1.</span></div>
                             <div class="content">
-                                <b>Apply Online</b>
-                                <p>Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
+                                <b>Register</b>
+                                <p>Visit Agrabah Finance creation page, <a href="{{ url('registration') }}">wharf.agrabah.ph/registration</a> and fill out the required field.</p>
                             </div>
                         </li>
                         <li>
                             <div class="num"><span>2.</span></div>
                             <div class="content">
                                 <b>Get Verified</b>
-                                <p>Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
+                                <p>On the given email address you will receive an email verification from Agrabah with a verification link. Follow the link to get verified.</p>
                             </div>
                         </li>
                         <li>
                             <div class="num"><span>3.</span></div>
                             <div class="content">
-                                <b>Get Funded</b>
-                                <p>Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
+                                <b>Select Products</b>
+                                <p>You can start browsing products and place orders.
+                                    About Agrabah</p>
                             </div>
                         </li>
                     </ul>
