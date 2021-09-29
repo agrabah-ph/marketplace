@@ -60,7 +60,7 @@
 
 </head>
 
-<body class="pace-done template-loan">
+<body class="pace-done template-wharf">
 
 <div id="wrapper">
 
@@ -73,18 +73,22 @@
                         {{--                        <img alt="image" class="rounded-circle" src="/img/profile_small.jpg"/>--}}
                         {{--                        <img alt="image" class="rounded-circle profile-pic" src="{{ authProfilePic(Auth::user()->id) }}"/>--}}
                         {{--<img alt="image" class="rounded-circle profile-pic" src="/img/blank-profile.jpg"/>--}}
-                        <img alt="image" class="img-fluid rounded-circle profile-pic" src="{{authProfilePic()}}"/>
+                        <img alt="image" class="img-fluid rounded-circle profile-pic round-circle-1" src="{{authProfilePic()}}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             {{--                            <span class="block m-t-xs font-bold">{!! Auth::user()->name !!}</span>--}}
                             {{--                            <span class="text-muted text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--<span class="text-muted text-xs block"> {{ getRoleName('display_name') }} <b class="caret"></b></span>--}}
                             {{--                            <span class="text-muted text-xs block"> {!! Auth::user()->name !!} <b class="caret"></b></span>--}}
-                            <span class="block m-t-xs font-bold text-wrap">{!! Auth::user()->name??Auth::user()->email !!}</span>
+                            <span class="block m-t-xs font-bold text-wrap profile-name">{!! Auth::user()->name??Auth::user()->email !!}</span>
+                            <span class="profile-icon round-circle-2">
+                                <img alt="image" class="img-fluid rounded-circle profile-pic" src="{{authProfilePic()}}"/>
+                            </span>
 {{--                            <small class="text-xs block">{{ getRoleName('display_name') }} <b class="caret"></b></small>--}}
                         </a>
                         <div style="position:relative;">
 
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li class="name">{!! Auth::user()->name??Auth::user()->email !!}</li>
                                 <li><a class="dropdown-item" href="{{ route('my-profile') }}">Profile</a></li>
                                 {{--                            <li><a class="dropdown-item" href="#">Contacts</a></li>--}}
                                 {{--                            <li><a class="dropdown-item" href="#">Mailbox</a></li>--}}
