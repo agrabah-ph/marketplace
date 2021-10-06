@@ -665,6 +665,10 @@
         .item {
           padding: 10px 0;
           border-top: 1px solid $gray;
+
+          &:first-child {
+            border-top: 0;
+          }
         }
       }
 
