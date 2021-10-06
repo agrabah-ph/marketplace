@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div id="app" class="wrapper wrapper-content ">
+    <div id="app" class="wrapper wrapper-content cart-container">
 
 
 
@@ -39,51 +39,95 @@
                     </div>
                     @forelse($cart as $cartItem)
                         <div class="ibox-content">
-                            <div class="table-responsive">
-                                <table class="table shoping-cart-table">
-                                    <tbody>
-                                    <tr>
-                                        <td width="90">
-                                            <div class="cart-product-imitation">
-                                                {!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}
+                            <div class="cart-list">
+                                <div class="cart-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="column-1 d-flex align-items-center">
+                                                <a href="{{route('market-place-show', $cartItem->id)}}">
+                                                    <div class="cart-product-imitation">
+    {{--                                                    {!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}--}}
+                                                        <div class="img" style="background-image: url({{ url('/').$cartItem->getFirstMediaUrl('market-place') }})"></div>
 
-                                            </div>
-                                        </td>
-                                        <td class="desc">
-                                            <h3>
-                                                <a href="#" class="text-navy">
-                                                    <a href="{{route('market-place.show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>
+                                                    </div>
                                                 </a>
-                                            </h3>
-                                            <p class="small d-none">
-                                                It is a long established fact that a reader will be distracted by the readable
-                                                content of a page when looking at its layout. The point of using Lorem Ipsum is
-                                            </p>
-                                            {!! $cartItem->description !!}
 
-                                            <div class="m-t-sm">
-{{--                                                <a href="#" class="text-muted"><i class="fa fa-gift"></i> Add gift package</a>--}}
-{{--                                                |--}}
-                                                <a href="#" class="text-muted remove-item" data-id="{{$cartItem->cart_id}}"><i class="fa fa-trash"></i> Remove item</a>
+                                                <h3>
+                                                    <a href="#" class="text-navy">
+                                                        <a href="{{route('market-place-show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>
+                                                        <div class="price">
+                                                            ₱{{  number_format($cartItem->selling_price, 2) }}
+                                                            <s class="small text-muted"> ₱{{ number_format($cartItem->original_price,2) }}</s>
+                                                        </div>
+                                                    </a>
+                                                </h3>
                                             </div>
-                                        </td>
+                                        </div>
+                                        <div class="col-12 col-lg-2">
+                                            <div class="column-2">
+                                                <div class="counter" id="counter_{{ $cartItem->id }}">
+                                                    <div class="counter-trigger counter-minus" data-id="{{ $cartItem->id }}" data-action="minus"><img src="https://img.icons8.com/ios/20/000000/minus-math.png"/></div>
+                                                    <input type="text" class="form-control changeSummaryTotal"  data-id="{{$cartItem->id}}" data-cart_id="{{$cartItem->cart_id}}" data-target="#sub_total_{{$cartItem->id}}" data-price="{{$cartItem->selling_price}}" value="{{$cartItem->cart_quantity}}" placeholder="1">
+                                                    <div class="counter-trigger counter-plus" data-id="{{ $cartItem->id }}" data-action="plus"><img src="https://img.icons8.com/ios/20/000000/plus-math.png"/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-4">
+                                            <div class="column-3">
+                                                <div class="sub-total-price">
+                                                    ₱<span class="sub_total_per_item" id="sub_total_{{$cartItem->id}}">{{ number_format($cartItem->selling_price * $cartItem->cart_quantity,2) }}</span>
+                                                </div>
+                                                <a href="#" class="text-muted remove-item" data-id="{{$cartItem->cart_id}}"><i class="fa fa-trash"></i></a>
+                                            </div>
 
-                                        <td>
-                                            ₱{{$cartItem->selling_price}}
-                                            <s class="small text-muted"> ₱{{$cartItem->original_price}}</s>
-                                        </td>
-                                        <td width="65">
-                                            <input type="text" class="form-control changeSummaryTotal"  data-id="{{$cartItem->id}}" data-cart_id="{{$cartItem->cart_id}}" data-target="#sub_total_{{$cartItem->id}}" data-price="{{$cartItem->selling_price}}" value="{{$cartItem->cart_quantity}}" placeholder="1">
-                                        </td>
-                                        <td>
-                                            <h4>
-                                                ₱<span class="sub_total_per_item" id="sub_total_{{$cartItem->id}}">{{$cartItem->selling_price * $cartItem->cart_quantity}}</span>
-                                            </h4>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            {{--<div class="table-responsive">--}}
+                                {{--<table class="table shoping-cart-table">--}}
+                                    {{--<tbody>--}}
+                                    {{--<tr>--}}
+                                        {{--<td width="90">--}}
+                                            {{--<div class="cart-product-imitation">--}}
+                                                {{--{!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}--}}
+
+                                            {{--</div>--}}
+                                        {{--</td>--}}
+                                        {{--<td class="desc">--}}
+                                            {{--<h3>--}}
+                                                {{--<a href="#" class="text-navy">--}}
+                                                    {{--<a href="{{route('market-place.show', $cartItem->id)}}" class="product-name"> {{$cartItem->name}}</a>--}}
+                                                    {{--<div class="price">--}}
+                                                        {{--₱{{$cartItem->selling_price}}--}}
+                                                        {{--<s class="small text-muted"> ₱{{$cartItem->original_price}}</s>--}}
+                                                    {{--</div>--}}
+                                                {{--</a>--}}
+                                            {{--</h3>--}}
+
+
+                                            {{--<div class="m-t-sm">--}}
+                                                {{--<a href="#" class="text-muted"><i class="fa fa-gift"></i> Add gift package</a>--}}
+                                                {{--|--}}
+                                                {{--<a href="#" class="text-muted remove-item" data-id="{{$cartItem->cart_id}}"><i class="fa fa-trash"></i> Remove item</a>--}}
+                                            {{--</div>--}}
+                                        {{--</td>--}}
+
+                                        {{--<td>--}}
+                                        {{--</td>--}}
+                                        {{--<td width="65">--}}
+                                            {{--<input type="text" class="form-control changeSummaryTotal"  data-id="{{$cartItem->id}}" data-cart_id="{{$cartItem->cart_id}}" data-target="#sub_total_{{$cartItem->id}}" data-price="{{$cartItem->selling_price}}" value="{{$cartItem->cart_quantity}}" placeholder="1">--}}
+                                        {{--</td>--}}
+                                        {{--<td>--}}
+                                            {{--<h4>--}}
+                                                {{--₱<span class="sub_total_per_item" id="sub_total_{{$cartItem->id}}">{{$cartItem->selling_price * $cartItem->cart_quantity}}</span>--}}
+                                            {{--</h4>--}}
+                                        {{--</td>--}}
+                                        {{--<td></td>--}}
+                                    {{--</tr>--}}
+                                    {{--</tbody>--}}
+                                {{--</table>--}}
+                            {{--</div>--}}
                         </div>
                     @empty
                         <div class="ibox-content">
@@ -171,19 +215,24 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 60px; right: 20px;">
+    <div class="cart-icon-container">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="fa fa-cart-plus"> </i>
-                <strong class="mr-auto m-l-sm">Add to Cart</strong>
-{{--                <small>2 seconds ago</small>--}}
+            {{--<div class="toast-header">--}}
+            {{--<i class="fa fa-cart-plus"> </i>--}}
+            {{--<strong class="mr-auto m-l-sm">Add to Cart</strong>--}}
+            {{--                <small>2 seconds ago</small>--}}
+            {{--<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">--}}
+            {{--<span aria-hidden="true">&times;</span>--}}
+            {{--</button>--}}
+            {{--</div>--}}
+            <div class="toast-body">
+                <div class="text">
+                    <strong id="item_added_to_cart"></strong> has been added to cart.
+                </div> Cart
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <div class="toast-body">
-                <strong id="item_added_to_cart"></strong> has been added to Cart.
             </div>
         </div>
 
@@ -309,5 +358,30 @@
             $('#total_summary').html(numberWithCommas(total));
 
         }
+    </script>
+    <script>
+        $(document).on('click', '.counter-trigger', function () {
+           var id = $(this).data('id');
+           var action = $(this).data('action');
+           var old_value = $(this).parent().find('input').val();
+           var new_value = 0;
+
+           if(old_value != 0) {
+               if(action == 'plus') {
+                   new_value = Number(old_value) + 1;
+               }else {
+                   new_value = Number(old_value) - 1;
+               }
+               $(this).parent().find('input').val(new_value).trigger('keyup');
+
+           }
+
+
+
+           console.log('id => ' + id);
+           console.log('action => ' + action);
+           console.log('old_value => ' + old_value);
+           console.log('new_value => ' + new_value);
+        });
     </script>
 @endsection

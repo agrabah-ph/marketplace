@@ -351,6 +351,37 @@
                         </div>
                     </div>
                 @else
+                    <div class="row revenue">
+                        <div class="col-12 col-lg-6">
+                            <div class="ibox today">
+                                <div class="ibox-title">
+                                    <div class="ibox-tools">
+                                    </div>
+                                    <h5>Today's Revenue</h5>
+                                    <div class="date">3 Oct 2021</div>
+                                </div>
+                                <div class="ibox-content">
+                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    <div class="price">₱ 0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="ibox weekly">
+                                <div class="ibox-title">
+                                    <div class="ibox-tools">
+                                    </div>
+                                    <h5>Weekly Revenue Overview</h5>
+                                    <div class="date">1 - 10 Oct 2021</div>
+                                </div>
+                                <div class="ibox-content">
+                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    <div class="price">₱ 0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="ibox d-none">
                         <div class="ibox-title">
@@ -395,7 +426,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="ibox">
+                    <div class="ibox auction">
                         <div class="ibox-title">
                             <div class="ibox-tools">
                             </div>
@@ -408,39 +439,95 @@
                                     $winningBid = $item->spot_market_bids->first()->bid;
                                     $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'spot_market');
                                 @endphp
-                                <div class="row">
-                                    <div class="col-12">
-                                        <a href="" class="float-left mr-2 d-block">
-                                            <img src="{{url('/').$item->getFirstMediaUrl('spot-market')}}" alt=""
-                                                 class="img-md"></a>
-                                        <div class="ml-1">
+
+                                <div class="auction-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-12 col-lg-5">
+                                            <div class="d-flex align-items-center main">
+                                                <a href="">
+                                                    {{--<img src="{{url('/').$item->getFirstMediaUrl('spot-market')}}" alt=""--}}
+                                                         {{--class="img-md">--}}
+                                                    <div class="img-container">
+                                                        @if($item->getFirstMediaUrl('spot-market'))
+                                                            <div class="img" style="background-image: url({{url('/').$item->getFirstMediaUrl('spot-market')}})"></div>
+                                                        @else
+                                                            <img src="{{ asset('images/favicon.png') }}" class="placeholder">
+                                                        @endif
+                                                    </div>
+                                                </a>
+                                                <div class="details">
+                                                    @if($item->status == 0)
+                                                        <small class="text-muted status pending">Please complete via clicking the award button. </small>
+                                                    @else
+                                                        <small class="text-muted status complete">Transaction completed </small>
+                                                    @endif
+                                                    <strong>{{$winner->name??$winner->email}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-lg-3">
+                                            <div class="item-name">won <span class="name">{{$item->name}}</span></div>
+                                        </div>
+                                        <div class="col-6 col-lg-4">
+                                            <div class="price">₱{{number_format($winningBid, 2)}}</div>
                                             @if($item->status)
                                                 <small class="text-muted float-right">{{\Carbon\Carbon::parse($item->expiration_time)->diffForHumans()}} </small>
                                             @else
                                                 <a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>
                                             @endif
 
-                                            <strong>{{$winner->name??$winner->email}}</strong> won the
-                                            <strong>{{$item->name}}</strong> for
-                                            <strong>₱{{number_format($winningBid, 2)}}</strong>. <br>
-
-                                            @if($item->status == 0)
-                                                <small class="text-muted">Please complete via clicking the award button. </small>
-                                            @else
-                                                <small class="text-muted">Transaction completed </small><br>
-                                            @endif
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <hr>
-                                    </div>
                                 </div>
+
+                                {{--<div class="row">--}}
+                                    {{--<div class="col-12">--}}
+                                        {{--<a href="" class="float-left mr-2 d-block">--}}
+                                            {{--<img src="{{url('/').$item->getFirstMediaUrl('spot-market')}}" alt=""--}}
+                                                 {{--class="img-md"></a>--}}
+                                        {{--<div class="ml-1">--}}
+                                            {{--@if($item->status)--}}
+                                                {{--<small class="text-muted float-right">{{\Carbon\Carbon::parse($item->expiration_time)->diffForHumans()}} </small>--}}
+                                            {{--@else--}}
+                                                {{--<a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>--}}
+                                            {{--@endif--}}
+
+                                            {{--<strong>{{$winner->name??$winner->email}}</strong> won the--}}
+                                            {{--<strong>{{$item->name}}</strong> for--}}
+                                            {{--<strong>₱{{number_format($winningBid, 2)}}</strong>. <br>--}}
+
+                                            {{--@if($item->status == 0)--}}
+                                                {{--<small class="text-muted">Please complete via clicking the award button. </small>--}}
+                                            {{--@else--}}
+                                                {{--<small class="text-muted">Transaction completed </small><br>--}}
+                                            {{--@endif--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                             @endforeach
                         </div>
                     </div>
                 @endif
             </div>
             <div class="col-lg-3">
+                @if(!$isCommunityLeader)
+                    <a href="{{ route('market-place-cart') }}">
+                        <div class="ibox cart-summary">
+                            <div class="ibox-content">
+                                <div class="row align-items-center">
+                                    <div class="col-4 left">
+                                        <i class="fa fa-cart-plus"></i> <span>Cart</span>
+                                    </div>
+                                    <div class="col-8 right">
+                                        <div class="count">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+
+                @endif
                 <div class="ibox ">
                     <div class="ibox-title">
                         <div class="ibox-tools">

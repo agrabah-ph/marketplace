@@ -28,30 +28,47 @@
 
             @forelse($marketList as $data)
                 <div class="col-md-3">
-                    <div class="ibox">
-                        <a href="{{route('market-place-show', $data->id)}}" class="" style="color: #000!important;">
-                        <div class="ibox-content product-box">
-                                <div class="product-imitation" style="background-image: url('{!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!}')">
-                                    {{--                            {{$data->name}}--}}
+                    <div class="ibox listing-item">
+                        <a href="{{route('market-place-show', $data->id)}}">
+                            <div class="card">
+                                <div class="card-img">
+                                    <div class="img" style="background-image: url({!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!})"></div>
+                                    <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
                                 </div>
-                            <div class="product-desc">
-{{--                                <pre>{{json_encode($data, 128)}}</pre>--}}
-{{--                                <pre>{!! ($data->hasMedia('market-place')? $data->getFirstMediaUrl('market-place'):'')  !!}</pre>--}}
-                                <span class="product-price">
-                                   ₱{{$data->selling_price}}
-                                </span>
-                                <small class="text-muted d-none">Category</small>
-                                <p href="{{route('market-place-show', $data->id)}}" class="product-name"> {{$data->name}}</p>
-                                <div class="small m-t-xs d-none">
-                                    {!! $data->description !!}
+                                <div class="card-content">
+                                    <div class="title">{{$data->name}}</div>
+                                    <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
                                 </div>
-                                <div class="m-t">
-                                    <a href="#" class="btn btn-sm btn-primary w-100 add-to-cart"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
-                                </div>
+                                <div class="price">₱{{$data->selling_price}}</div>
                             </div>
-                        </div>
                         </a>
                     </div>
+
+                    {{--<div class="ibox">--}}
+                        {{--<a href="{{route('market-place-show', $data->id)}}" class="" style="color: #000!important;">--}}
+                        {{--<div class="ibox-content product-box">--}}
+                                {{--<div class="product-imitation" style="background-image: url('{!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!}')">--}}
+                                    {{--                            {{$data->name}}--}}
+                                {{--</div>--}}
+                            {{--<div class="product-desc">--}}
+{{--                                <pre>{{json_encode($data, 128)}}</pre>--}}
+{{--                                <pre>{!! ($data->hasMedia('market-place')? $data->getFirstMediaUrl('market-place'):'')  !!}</pre>--}}
+                                {{--<span class="product-price">--}}
+                                   {{--₱{{$data->selling_price}}--}}
+                                {{--</span>--}}
+                                {{--<small class="text-muted d-none">Category</small>--}}
+                                {{--<p href="{{route('market-place-show', $data->id)}}" class="product-name"> {{$data->name}}</p>--}}
+                                {{--<div class="small m-t-xs d-none">--}}
+                                    {{--{!! $data->description !!}--}}
+                                {{--</div>--}}
+                                {{--<div class="m-t">--}}
+                                    {{--<a href="#" class="btn btn-sm btn-primary w-100 add-to-cart"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--</a>--}}
+                    {{--</div>--}}
+
                 </div>
             @empty
                 <div class="col-12">
@@ -61,19 +78,24 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div class="cart-icon-container">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="fa fa-cart-plus"> </i>
-                <strong class="mr-auto m-l-sm">Add to Cart</strong>
+            {{--<div class="toast-header">--}}
+                {{--<i class="fa fa-cart-plus"> </i>--}}
+                {{--<strong class="mr-auto m-l-sm">Add to Cart</strong>--}}
                 {{--                <small>2 seconds ago</small>--}}
+                {{--<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">--}}
+                    {{--<span aria-hidden="true">&times;</span>--}}
+                {{--</button>--}}
+            {{--</div>--}}
+            <div class="toast-body">
+                <div class="text">
+                    <strong id="item_added_to_cart"></strong> has been added to cart.
+                </div> Cart
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <div class="toast-body">
-                <strong id="item_added_to_cart"></strong> has been added to Cart.
             </div>
         </div>
 

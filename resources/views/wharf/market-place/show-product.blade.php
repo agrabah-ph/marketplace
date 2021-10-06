@@ -33,6 +33,7 @@
 
                 <div class="ibox product-detail">
                     <div class="ibox-content">
+                        <h2 class="product-main-price"> ₱ {{number_format($data->current_bid, 2)}} </h2>
 
                         <div class="row">
                             <div class="col-md-5">
@@ -41,8 +42,8 @@
                                 <div class="product-images">
 
                                     <div>
-                                        <div class="image-imitation">
-                                            {!! ($data->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('market-place')."'>":'')  !!}
+                                        <div class="image-imitation" style="background-image: url('{!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!}')">
+{{--                                            {!! ($data->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('market-place')."'>":'')  !!}--}}
                                         </div>
                                     </div>
 {{--                                    <div>--}}
@@ -62,15 +63,16 @@
                             </div>
                             <div class="col-md-7">
 
-                                <h2 class="font-bold m-b-xs">
+                                <h2 class="font-bold m-b-xs item-name">
                                     {{$data->name}}
                                 </h2>
 {{--                                <small>Many desktop publishing packages and web page editors now.</small>--}}
                                 <div class="m-t-md">
-                                    <h2 class="product-main-price"> ₱ {{number_format($data->current_bid, 2)}} </h2>
                                 </div>
                                 <hr>
-                                {!! $data->description !!}
+                                <div class="content">
+                                    {!! $data->description !!}
+                                </div>
                                 <hr>
 {{--                                <div class="row">--}}
 {{--                                    <div class="col-6">--}}
@@ -82,7 +84,8 @@
 {{--                                </div>--}}
                                 <div>
                                     <div class="btn-group">
-                                        <button class="btn btn-primary btn-sm add-to-cart" data-name="{{$data->name}}" data-id="{{$data->id}}"><i class="fa fa-cart-plus"></i> Add to cart</button>
+                                        <a href="#" class="add-to-cart w-100"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                        {{--<button class="btn btn-primary btn-sm add-to-cart" data-name="{{$data->name}}" data-id="{{$data->id}}"><i class="fa fa-cart-plus"></i> Add to cart</button>--}}
 {{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Add to wishlist <small>Coming Soon!</small></button>--}}
 {{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with author </button>--}}
                                     </div>
@@ -107,23 +110,29 @@
     </div>
 
 
-    <div style="position: absolute; top: 60px; right: 20px;">
+    <div class="cart-icon-container">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="fa fa-cart-plus"> </i>
-                <strong class="mr-auto m-l-sm">Add to Cart</strong>
-                {{--                <small>2 seconds ago</small>--}}
+            {{--<div class="toast-header">--}}
+            {{--<i class="fa fa-cart-plus"> </i>--}}
+            {{--<strong class="mr-auto m-l-sm">Add to Cart</strong>--}}
+            {{--                <small>2 seconds ago</small>--}}
+            {{--<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">--}}
+            {{--<span aria-hidden="true">&times;</span>--}}
+            {{--</button>--}}
+            {{--</div>--}}
+            <div class="toast-body">
+                <div class="text">
+                    <strong id="item_added_to_cart"></strong> has been added to cart.
+                </div> Cart
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="toast-body">
-                <strong id="item_added_to_cart"></strong> has been added to Cart.
-            </div>
         </div>
 
     </div>
+
 @endsection
 
 

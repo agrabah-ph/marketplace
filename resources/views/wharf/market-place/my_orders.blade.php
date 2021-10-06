@@ -24,146 +24,310 @@
 
     <div id="app" class="wrapper wrapper-content ">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 order-list">
 
                 @include('alerts.validation')
+
+
+                    <div id="accordion" role="tablist" class="sub_page-content">
+                        @foreach($orders as  $order)
+                            @php
+                                $order_number = $order->order_number;
+                            @endphp
+
+                            <div class="card order-item">
+                                <div class="card-header" role="tab" id="heading_{{ $order->id }}">
+                                    <a data-toggle="collapse" href="#collapse_{{ $order->id }}" aria-expanded="true" aria-controls="collapse_{{ $order->id }}" class="collapsed">
+                                        <h5>Order No. #{{$order->order_number}}</h5>
+                                        <div class="right">
+                                            <span>Ordered at: {{\Carbon\Carbon::parse($order['created_at'])->format('M d, Y')}}</span>
+                                            <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div id="collapse_{{ $order->id }}" class="collapse" role="tabpanel" aria-labelledby="heading_{{ $order->id }}" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="cart-list">
+                                            @foreach($order->items as $item)
+                                                @php
+                                                    $product  = $item->product;
+                                                    $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')
+                                                @endphp
+
+                                                <div class="cart-item">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-12 col-lg-5">
+                                                            <div class="column-1 d-flex align-items-center">
+                                                                <a href="{{route('market-place.show', $product->id)}}">
+                                                                    <div class="cart-product-imitation">
+                                                                        {{--                                                    {!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}--}}
+                                                                        <div class="img" style="background-image: url({!! $image !!})"></div>
+
+                                                                    </div>
+                                                                </a>
+
+                                                                <h3>
+                                                                    <a href="#" class="text-navy">
+                                                                        <a href="{{route('market-place.show', $product->id)}}" class="product-name">{{$product->name}}</a>
+                                                                        <div class="price">
+                                                                            ₱{{$product->selling_price}}
+                                                                        </div>
+                                                                    </a>
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-lg-2">
+                                                            <div class="column-2">
+                                                                {{$item->quantity}}{{$product->unit_of_measure_short}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-lg-5">
+                                                            <div class="column-3">
+                                                                @php
+                                                                    $winningBid = $item->total;
+                                                                    $serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');
+                                                                @endphp
+                                                                <div class="tabulation">
+                                                                    <div class="row no-gutters item">
+                                                                        <div class="col-4 no-wrap text-muted text-left">Sub Total
+                                                                        </div>
+                                                                        <div class="col-8 no-wrap text-right">
+                                                                            ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                                                    </div>
+                                                                    <div class="row no-gutters item">
+                                                                        <div class="col-4 no-wrap text-muted text-left">Service
+                                                                            Fee
+                                                                        </div>
+                                                                        <div class="col-8 no-wrap text-right">
+                                                                            ₱{{number_format($serviceFee, 2)}}</div>
+                                                                    </div>
+                                                                    <div class="row no-gutters item total">
+                                                                        <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                                        <div class="col-8 no-wrap text-right">
+                                                                            ₱{{number_format($winningBid, 2)}}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="ibox-content">
+                                            <div class="row align-items-center justify-content-around">
+                                                <div class="col-12 col-lg-8 px-3 status-list" >
+                                                    <span class="status-item font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
+                                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+
+                                                    <span class="status-item font-bold {{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Payment Verified</span>
+                                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+
+                                                    <span class="status-item font-bold {{(array_key_exists('approved',getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Approved</span>
+                                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+
+                                                    <span class="status-item font-bold {{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">On Delivery</span>
+                                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+
+                                                    <span class="status-item font-bold {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Delivered</span>
+                                                </div>
+                                                <div class="col-12 col-lg-4 text-right">
+                                                    <strong class="grand-total">Grand Total: <span class="num">₱{{number_format($order->total ,2)}}</span></strong>
+                                                </div>
+                                                <div class="col-12">
+
+                                                    @if(!array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)))
+                                                        <div>
+                                                            <button class="btn btn-primary d-block ml-auto mt-3 show_confirm_modal"
+                                                                    data-order_number="{{$order->id}}"><i class="fa fa fa-money"></i> Verify
+                                                                Payment
+                                                            </button>
+                                                        </div>
+
+                                                    @endif
+                                                    @if($order->status->status == 'delivery')
+                                                        <form action="{{route('market-place-delivered')}}" method="post"
+                                                              enctype="multipart/form-data">
+                                                            @csrf
+                                                            <input type="hidden" value="{{$order->id}}" name="id">
+                                                            <button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>
+                                                                Delivered
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="ibox-content">
+                                            <h3>Status History</h3>
+                                            <table class="table table-scroll small-first-col table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th class="text-right">Timestamp</th>
+                                                </tr>
+                                                </thead>
+                                                @foreach($order->statuses as $status)
+                                                    <tr>
+                                                        <td>{{$status->name}}</td>
+                                                        <td class="text-right">{{$status->created_at}}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endforeach
+                    </div>
 
                 @foreach($orders as  $order)
                     @php
                         $order_number = $order->order_number;
                     @endphp
 
-                    <div class="ibox">
-                        <div class="ibox-title pr-3">
-                            <span class="float-right">Ordered at: {{\Carbon\Carbon::parse($order['created_at'])->format('M d, Y')}}</span>
-                            <h5>Order No. #{{$order->order_number}}</h5>
-                        </div>
-                        @foreach($order->items as $item)
-                            @php
-                                $product  = $item->product;
-                                $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')
-                            @endphp
-                            <div class="ibox-content">
-                                {{--                                <pre>{{json_encode($item,128)}}</pre>--}}
-                                <div class="table-responsive">
-                                    <table class="table shoping-cart-table">
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="cart-product-imitation">
-                                                    {!! $image !!}
-                                                </div>
-                                            </td>
-                                            <td class="desc">
-                                                <h3>
-                                                    <a href="#" class="text-navy">
-                                                        <a href="{{route('market-place.show', $product->id)}}"
-                                                           class="product-name"> {{$product->name}}</a>
-                                                    </a>
-                                                </h3>
-                                                {!! $product->description !!}
-                                            </td>
 
-                                            <td>
-                                                ₱{{$product->selling_price}}
-                                            </td>
-                                            <td width="65">
-                                                {{$item->quantity}}{{$product->unit_of_measure_short}}
-                                            </td>
-                                            <td>
-                                                @php
-                                                    $winningBid = $item->total;
-                                                    $serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');
-                                                @endphp
-                                                <div class="tabulation">
-                                                    <div class="row">
-                                                        <div class="col-4 no-wrap text-muted text-left">Sub Total
-                                                        </div>
-                                                        <div class="col-8 no-wrap text-right">
-                                                            ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 no-wrap text-muted text-left">Service
-                                                            Fee
-                                                        </div>
-                                                        <div class="col-8 no-wrap text-right">
-                                                            ₱{{number_format($serviceFee, 2)}}</div>
-                                                    </div>
-                                                    <div class="row total">
-                                                        <div class="col-4 no-wrap text-muted text-left">Total</div>
-                                                        <div class="col-8 no-wrap text-right">
-                                                            ₱{{number_format($winningBid, 2)}}</div>
-                                                    </div>
-                                                </div>
+                    {{--<div class="ibox">--}}
+                        {{--<div class="ibox-title pr-3">--}}
+                            {{--<span class="float-right">Ordered at: {{\Carbon\Carbon::parse($order['created_at'])->format('M d, Y')}}</span>--}}
+                            {{--<h5>Order No. #{{$order->order_number}}</h5>--}}
+                        {{--</div>--}}
+                        {{--@foreach($order->items as $item)--}}
+                            {{--@php--}}
+                                {{--$product  = $item->product;--}}
+                                {{--$image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')--}}
+                            {{--@endphp--}}
+                            {{--<div class="ibox-content">--}}
+                                {{--                                <pre>{{json_encode($item,128)}}</pre>--}}
+                                {{--<div class="table-responsive">--}}
+                                    {{--<table class="table shoping-cart-table">--}}
+                                        {{--<tbody>--}}
+                                        {{--<tr>--}}
+                                            {{--<td>--}}
+                                                {{--<div class="cart-product-imitation">--}}
+                                                    {{--{!! $image !!}--}}
+                                                {{--</div>--}}
+                                            {{--</td>--}}
+                                            {{--<td class="desc">--}}
+                                                {{--<h3>--}}
+                                                    {{--<a href="#" class="text-navy">--}}
+                                                        {{--<a href="{{route('market-place.show', $product->id)}}"--}}
+                                                           {{--class="product-name"> {{$product->name}}</a>--}}
+                                                    {{--</a>--}}
+                                                {{--</h3>--}}
+                                                {{--{!! $product->description !!}--}}
+                                            {{--</td>--}}
+
+                                            {{--<td>--}}
+                                                {{--₱{{$product->selling_price}}--}}
+                                            {{--</td>--}}
+                                            {{--<td width="65">--}}
+                                                {{--{{$item->quantity}}{{$product->unit_of_measure_short}}--}}
+                                            {{--</td>--}}
+                                            {{--<td>--}}
+                                                {{--@php--}}
+                                                    {{--$winningBid = $item->total;--}}
+                                                    {{--$serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');--}}
+                                                {{--@endphp--}}
+                                                {{--<div class="tabulation">--}}
+                                                    {{--<div class="row">--}}
+                                                        {{--<div class="col-4 no-wrap text-muted text-left">Sub Total--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="col-8 no-wrap text-right">--}}
+                                                            {{--₱{{number_format($winningBid - $serviceFee, 2)}}</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="row">--}}
+                                                        {{--<div class="col-4 no-wrap text-muted text-left">Service--}}
+                                                            {{--Fee--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="col-8 no-wrap text-right">--}}
+                                                            {{--₱{{number_format($serviceFee, 2)}}</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="row total">--}}
+                                                        {{--<div class="col-4 no-wrap text-muted text-left">Total</div>--}}
+                                                        {{--<div class="col-8 no-wrap text-right">--}}
+                                                            {{--₱{{number_format($winningBid, 2)}}</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
                                                 {{--                                                <h4>--}}
                                                 {{--                                                    ₱{{$item->total}}--}}
                                                 {{--                                                </h4>--}}
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        @endforeach
-                        <div class="ibox-content">
-                            <div class="row justify-content-around">
-                                <div class="col-xs-12 px-3" >
-                                    <span class="font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
-                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                            {{--</td>--}}
+                                        {{--</tr>--}}
+                                        {{--</tbody>--}}
+                                    {{--</table>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--@endforeach--}}
+                        {{--<div class="ibox-content">--}}
+                            {{--<div class="row justify-content-around">--}}
+                                {{--<div class="col-xs-12 px-3" >--}}
+                                    {{--<span class="font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>--}}
+                                    {{--<i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>--}}
 
-                                    <span class="font-bold {{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Payment Verified</span>
-                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    {{--<span class="font-bold {{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Payment Verified</span>--}}
+                                    {{--<i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>--}}
 
-                                    <span class="font-bold {{(array_key_exists('approved',getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Approved</span>
-                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    {{--<span class="font-bold {{(array_key_exists('approved',getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Approved</span>--}}
+                                    {{--<i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>--}}
 
-                                    <span class="font-bold {{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">On Delivery</span>
-                                    <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
+                                    {{--<span class="font-bold {{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">On Delivery</span>--}}
+                                    {{--<i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>--}}
 
-                                    <span class="font-bold {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Delivered</span>
-                                </div>
-                                <div class="col text-right">
-                                    <strong>Grand Total: ₱{{number_format($order->total)}}</strong>
-                                    @if(!array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)))
-                                        <div>
-                                            <button class="btn btn-primary  show_confirm_modal"
-                                                    data-order_number="{{$order->id}}"><i class="fa fa fa-money"></i> Verify
-                                                Payment
-                                            </button>
-                                        </div>
+                                    {{--<span class="font-bold {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Delivered</span>--}}
+                                {{--</div>--}}
+                                {{--<div class="col text-right">--}}
+                                    {{--<strong>Grand Total: ₱{{number_format($order->total)}}</strong>--}}
+                                    {{--@if(!array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)))--}}
+                                        {{--<div>--}}
+                                            {{--<button class="btn btn-primary  show_confirm_modal"--}}
+                                                    {{--data-order_number="{{$order->id}}"><i class="fa fa fa-money"></i> Verify--}}
+                                                {{--Payment--}}
+                                            {{--</button>--}}
+                                        {{--</div>--}}
 
-                                    @endif
-                                    @if($order->status->status == 'delivery')
-                                        <form action="{{route('market-place-delivered')}}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" value="{{$order->id}}" name="id">
-                                            <button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>
-                                                Delivered
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ibox-content">
-                            <h3>Status History</h3>
-                            <table class="table table-condensed">
-                                <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Timestamp</th>
-                                </tr>
-                                </thead>
-                                @foreach($order->statuses as $status)
-                                    <tr>
-                                        <td>{{$status->name}}</td>
-                                        <td>{{$status->created_at}}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
+                                    {{--@endif--}}
+                                    {{--@if($order->status->status == 'delivery')--}}
+                                        {{--<form action="{{route('market-place-delivered')}}" method="post"--}}
+                                              {{--enctype="multipart/form-data">--}}
+                                            {{--@csrf--}}
+                                            {{--<input type="hidden" value="{{$order->id}}" name="id">--}}
+                                            {{--<button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>--}}
+                                                {{--Delivered--}}
+                                            {{--</button>--}}
+                                        {{--</form>--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="ibox-content">--}}
+                            {{--<h3>Status History</h3>--}}
+                            {{--<table class="table table-condensed">--}}
+                                {{--<thead>--}}
+                                {{--<tr>--}}
+                                    {{--<th>Status</th>--}}
+                                    {{--<th>Timestamp</th>--}}
+                                {{--</tr>--}}
+                                {{--</thead>--}}
+                                {{--@foreach($order->statuses as $status)--}}
+                                    {{--<tr>--}}
+                                        {{--<td>{{$status->name}}</td>--}}
+                                        {{--<td>{{$status->created_at}}</td>--}}
+                                    {{--</tr>--}}
+                                {{--@endforeach--}}
+                            {{--</table>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                 @endforeach
 
 
