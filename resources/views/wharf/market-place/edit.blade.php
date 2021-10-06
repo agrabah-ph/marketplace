@@ -21,6 +21,9 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
+                {{ Form::open(['route'=>['market-place.destroy', $data->id],'id'=>'form_delete','method'=>'delete']) }}
+                {{ Form::close() }}
+                <button type="button" class="btn btn-danger btn-action" data-action="delete">Delete</button>
                 <button type="button" class="btn btn-primary btn-action" data-action="inventory">Inventory</button>
                 <button type="button" class="btn btn-primary btn-action" data-action="store">Update</button>
             </div>
@@ -66,7 +69,7 @@
                                             I'm the supplier
                                         </option>
                                         @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name}}</option>
+                                            <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name??$farmer->user->email}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -146,6 +149,7 @@
                         <tr>
                             <th class="text-right">Qty</th>
                             <th>User</th>
+                            <th>Remarks</th>
                             <th>Timestamp</th>
                         </tr>
                         </thead>
@@ -154,6 +158,7 @@
                             <tr>
                                 <td class="text-right">{{number_format($inventory->quantity)}}</td>
                                 <td>{{$inventory->user->name??$inventory->user->email}}</td>
+                                <td>{{$inventory->remarks}}</td>
                                 <td style="white-space: nowrap">{{$inventory->created_at}}</td>
                             </tr>
                         @endforeach
@@ -195,6 +200,7 @@
     {!! Html::style('/packages/jquery.datetimepicker.css') !!}
     {!! Html::style('/css/template/plugins/select2/select2.min.css') !!}
     {!! Html::style('/css/template/plugins/select2/select2-bootstrap4.min.css') !!}
+    {!! Html::style('/css/template/plugins/sweetalert/sweetalert.css') !!}
 
     {{--    {!! Html::style('/css/template/plugins/dropzone/dropzone.css') !!}--}}
     {{--{!! Html::style('') !!}--}}
@@ -203,6 +209,8 @@
 @endsection
 
 @section('scripts')
+    {!! Html::script('/js/template/plugins/sweetalert/sweetalert.min.js') !!}
+
     {!! Html::script('/js/template/plugins/iCheck/icheck.min.js') !!}
     {!! Html::script('/js/template/plugins/jqueryMask/jquery.mask.min.js') !!}
     {!! Html::script('/js/template/plugins/summernote/summernote-bs4.js') !!}
@@ -261,6 +269,20 @@
                         break;
                     case 'inventory':
                         $('#inventory').modal('show');
+                        break;
+                    case 'delete':
+                        swal({
+                            title: "Are you sure?",
+                            text: "You will not be able to recover this Product!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes, delete it!",
+                            closeOnConfirm: false
+                        }, function () {
+                            $('#form_delete').submit();
+                            swal("Deleted!", "Product has been deleted.", "success");
+                        });
                         break;
                 }
             });
