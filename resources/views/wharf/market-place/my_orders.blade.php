@@ -85,33 +85,30 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-lg-5">
-                                                            <div class="column-3">
-                                                                @php
-                                                                    $winningBid = $item->total;
-                                                                    $serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');
-                                                                @endphp
-                                                                <div class="tabulation">
-                                                                    <div class="row no-gutters item">
-                                                                        <div class="col-4 no-wrap text-muted text-left">Sub Total
-                                                                        </div>
-                                                                        <div class="col-8 no-wrap text-right">
-                                                                            ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                                            @php
+                                                                $winningBid = $item->total;
+                                                                $serviceFee = getServiceFee($product->unit_of_measure, $item->quantity, $winningBid, 'market-place');
+                                                            @endphp
+                                                            <div class="tabulation">
+                                                                <div class="row no-gutters item">
+                                                                    <div class="col-4 no-wrap text-muted text-left">Sub Total
                                                                     </div>
-                                                                    <div class="row no-gutters item">
-                                                                        <div class="col-4 no-wrap text-muted text-left">Service
-                                                                            Fee
-                                                                        </div>
-                                                                        <div class="col-8 no-wrap text-right">
-                                                                            ₱{{number_format($serviceFee, 2)}}</div>
+                                                                    <div class="col-8 no-wrap text-right">
+                                                                        ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
+                                                                </div>
+                                                                <div class="row no-gutters item">
+                                                                    <div class="col-4 no-wrap text-muted text-left">Service
+                                                                        Fee
                                                                     </div>
-                                                                    <div class="row no-gutters item total">
-                                                                        <div class="col-4 no-wrap text-muted text-left">Total</div>
-                                                                        <div class="col-8 no-wrap text-right">
-                                                                            ₱{{number_format($winningBid, 2)}}</div>
-                                                                    </div>
+                                                                    <div class="col-8 no-wrap text-right">
+                                                                        ₱{{number_format($serviceFee, 2)}}</div>
+                                                                </div>
+                                                                <div class="row no-gutters item total">
+                                                                    <div class="col-4 no-wrap text-muted text-left">Total</div>
+                                                                    <div class="col-8 no-wrap text-right">
+                                                                        ₱{{number_format($winningBid, 2)}}</div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
