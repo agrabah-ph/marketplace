@@ -2086,3 +2086,15 @@ body {
   font-weight: bold;
   color: #548714;
 }
+.template-wharf .proof-of-payment .img-thumbnail {
+  width: 100%;
+  height: 150px;
+  display: block;
+  margin: auto;
+}
+@media (max-width: 500px) {
+  .template-wharf .proof-of-payment .img-thumbnail {
+    width: 50%;
+    margin-left: 0;
+  }
+}
