@@ -242,7 +242,9 @@ if (!function_exists('authProfilePic')) {
         if($roleName == 'farmer'){
             $profile = \App\Profile::find(Auth::user()->farmer->profile->id);
         }else{
-            $profile = \App\Profile::find(Auth::user()->profile->id);
+            if(Auth::user()->profile){
+                $profile = \App\Profile::find(Auth::user()->profile->id);
+            }
         }
 
         if(!empty($profile)){
