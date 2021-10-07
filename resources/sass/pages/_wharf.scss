@@ -367,6 +367,8 @@
     transform: translateX(50px);
     padding: 0 1rem;
     color: $white;
+    z-index: 1;
+    box-shadow: 1px 1px 10px rgba($primary-3, .2);
 
     i {
       color: $white;
@@ -572,11 +574,23 @@
           padding: 10px;
           border: 0;
 
+          @media (max-width: 500px) {
+            flex-wrap: wrap;
+          }
+
           h5 {
             font-size: 1rem;
           }
 
           .right {
+            @media (max-width: 500px) {
+              display: flex;
+              align-items:center;
+              justify-content: space-between;
+              width: 100%;
+            }
+
+
             i {
               margin-left: 1rem;
               transform: rotate(0deg);
@@ -611,6 +625,13 @@
             .cart-product-imitation {
               margin-right: 1rem;
             }
+            
+            .column-2 {
+              @media (max-width: 500px) {
+                margin: 1rem 0;
+                
+              }
+            }
           }
         }
 
@@ -620,6 +641,11 @@
             padding: 5px 1rem;
             border-radius: 50px;
             font-size: .9rem;
+
+            @media (max-width: 500px) {
+              display: inline-flex;
+              margin-bottom: 12px;
+            }
 
             &.text-green {
               background-color: $primary-1;
@@ -737,4 +763,39 @@
 
     }
   }
+
+  .status-history {
+    .order-placed {
+      background-color: lighten($orange, 35%) !important;
+    }
+    .payment-verified, .delivered {
+      background-color: lighten($green, 45%) !important;
+    }
+    .order-approved {
+      background-color: lighten($green, 40%) !important;
+    }
+    .on-delivery {
+      background-color: lighten($red, 43%) !important;
+    }
+  }
+
+  .proof-of-payment {
+    .group {
+      margin-bottom: 1rem;
+
+      .label {
+        background-color: transparent;
+        font-size: .9rem;
+        padding: 0;
+        color: #ccc;
+      }
+
+      .value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: $primary-2;
+      }
+    }
+  }
+
 }
