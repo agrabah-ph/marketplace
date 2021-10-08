@@ -89,6 +89,7 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::post('market-place-lock-in-order', 'MarketPlaceCartingController@lockInOrder')->name('market-place-lock_in_order');
     Route::post('market-place-verify-payment', 'MarketPlaceCartingController@verifyPayment')->name('market-place-verify_payment');
     Route::post('market-place-remove-item', 'MarketPlaceCartingController@removeItem')->name('market-place-remove_item');
+    Route::post('market-place-approve', 'MarketPlaceCartingController@approve')->name('market-place.approve');
     Route::post('market-place-deliver', 'MarketPlaceCartingController@deliver')->name('market-place-deliver');
     Route::post('market-place-delivered', 'MarketPlaceCartingController@delivered')->name('market-place-delivered');
     Route::post('market-place-inventory-actions', 'MarketPlaceCartingController@inventoryActions')->name('market-place-inventory-actions');

@@ -244,6 +244,7 @@
 @section('styles')
     {!! Html::style('css/template/plugins/footable/footable.core.css') !!}
     {!! Html::style('css/template/plugins/toastr/toastr.min.css') !!}
+    {!! Html::style('/css/template/plugins/sweetalert/sweetalert.css') !!}
     <style>
         .cart-product-imitation{
             padding: 0!important;
@@ -255,6 +256,7 @@
 @endsection
 
 @section('scripts')
+    {!! Html::script('/js/template/plugins/sweetalert/sweetalert.min.js') !!}
     {!! Html::script('js/template/plugins/footable/footable.all.min.js') !!}
     {{--    {!! Html::script('') !!}--}}
     {{--    {!! Html::script(asset('vendor/datatables/buttons.server-side.js')) !!}--}}
@@ -285,7 +287,13 @@
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success:function(response){
-                    window.location.replace("{{route('market-place-my_orders')}}");
+                    console.log(response)
+                    if(response.status){
+                        window.location.replace("{{route('market-place-my_orders')}}");
+                    }else{
+                        swal("Sorry!", response.msg, "error");
+
+                    }
                 },
             });
         });

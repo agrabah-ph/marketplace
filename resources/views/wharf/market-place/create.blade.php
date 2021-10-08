@@ -66,10 +66,10 @@
                                         @endforeach
                                     </select>
                                 </div>
-{{--                                <div class="form-group">--}}
-{{--                                    <label>Area</label>--}}
-{{--                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>--}}
-{{--                                </div>--}}
+                                <div class="form-group">
+                                    <label>Area</label>
+                                    <input type="text" class="form-control" name="area" value="{{$defaultArea}}" required>
+                                </div>
 {{--                                <div class="form-group">--}}
 {{--                                    <label>Expiration (Days, Hours : Minutes)</label>--}}
 {{--                                    <div class="row">--}}

@@ -74,6 +74,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label>Area</label>
+                                    <input type="text" class="form-control" name="area" value="{{$data->area}}" required>
+                                </div>
+                                <div class="form-group">
                                     <label>Inventory</label>
                                     <input type="number" class="form-control" name="quantity" disabled required
                                            value="{{$data->quantity}}">

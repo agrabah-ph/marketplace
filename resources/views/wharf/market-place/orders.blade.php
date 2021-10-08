@@ -129,6 +129,17 @@
                                 </div>
                                 <div class="col text-right">
                                     <strong>Grand Total: ₱{{number_format($order->total)}}</strong>
+
+                                    @if(!array_key_exists('approved', getMarketplaceOrderStatuses($order->id)))
+                                        <form action="{{route('market-place.approve')}}" method="post"
+                                              enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" value="{{$order->id}}" name="id">
+                                            <button class="btn btn-primary float-right"><i class="fa fa fa-thumbs-up"></i>
+                                                Approve
+                                            </button>
+                                        </form>
+                                    @endif
                                     @if($order->status->status == 'approved')
                                         <form action="{{route('market-place-deliver')}}" method="post"
                                               enctype="multipart/form-data">

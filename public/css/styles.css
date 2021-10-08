@@ -1658,7 +1658,7 @@ body {
 .template-wharf .add-to-cart:hover {
   opacity: 0.9;
 }
-.template-wharf .cart-icon-container .toast.toast-bootstrap {
+.template-wharf .cart-icon-container .toast.toast-bootstrap{
   position: fixed;
   bottom: 8%;
   right: 20px;
@@ -1666,6 +1666,16 @@ body {
   -webkit-box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
           box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
   border: 0;
+}
+.template-wharf .cart-icon-container .toast.toast-bootstrap.toast-success{
+  background-color: rgba(158, 211, 90, 0.8);
+  -webkit-box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
+          box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
+}
+.template-wharf .cart-icon-container .toast.toast-bootstrap.toast-danger{
+  background-color: rgba(245, 166, 166, 0.8)!important;
+  -webkit-box-shadow: 1px 1px 20px rgba(245, 166, 166, 0.8)!important;
+  box-shadow: 1px 1px 20px rgba(245, 166, 166, 0.8)!important;
 }
 .template-wharf .cart-icon-container .toast.toast-bootstrap .toast-body {
   background: transparent;

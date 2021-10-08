@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 
 use App\MarketPlace;
 use App\MarketplaceCart;
+use App\MarketplaceInventory;
 use App\MarketplaceOrder;
 use App\MarketplaceOrderItem;
 use App\MarketplaceOrderPayment;
 use App\Services\MarketplaceInventoryService;
 use App\Services\MarketplaceOrderService;
 use App\SpotMarket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,11 +36,16 @@ class MarketPlaceCartingController extends Controller
         $this->marketplaceInventoryService = $marketplaceInventoryService;
 
     }
-    public function index()
+    public function index(Request $request)
     {
-        $marketList = MarketPlace::all();
+        $marketList = MarketPlace::when($request->area,function($q) use ($request){
+            if($request->area != '_all'){
+                $q->where('area',$request->area);
+            }
+        })->get();
+        $areas = MarketPlace::distinct('area')->pluck('area')->toArray();
 
-        return view('wharf.market-place.listing', compact('marketList'));
+        return view('wharf.market-place.listing', compact('marketList', 'areas'));
 
     }
 
@@ -105,10 +112,14 @@ class MarketPlaceCartingController extends Controller
             'user_id' => auth()->user()->id,
             'market_place_id' => $request->id
         ];
-        $cart = MarketplaceCart::firstOrNew($array);
-        $cart->quantity = $cart->quantity + 1;
-        $cart->save();
-        return getUserMarketplaceCartCount();
+        $marketPlace = MarketplaceInventory::where('market_place_id', $request->id)->sum('quantity');
+//        if($marketPlace >= 1){
+            $cart = MarketplaceCart::firstOrNew($array);
+            $cart->quantity = $cart->quantity + 1;
+            $cart->save();
+            return getUserMarketplaceCartCount();
+//        }
+        return 0;
 
     }
 
@@ -162,6 +173,18 @@ class MarketPlaceCartingController extends Controller
 
             foreach($form as $row){
 
+
+                $marketPlace = MarketplaceInventory::where('market_place_id', $row['id'])->sum('quantity');
+                $product = MarketPlace::find($row['id']);
+                if($marketPlace <= 0){
+                    DB::rollBack();
+                    $product = MarketPlace::find($row['id']);
+                    return response()->json(['status'=>false, 'msg'=> 'Sorry, '.ucfirst($product->name).' is already out of stock.']);
+                }
+                if($row['qty'] > $marketPlace){
+                    DB::rollBack();
+                    return response()->json(['status'=>false, 'msg'=> 'Sorry, '.ucfirst($product->name).' has less stocks than you have in cart.']);
+                }
                 $orderItem = new MarketplaceOrderItem();
                 $orderItem->market_place_order_id = $order->id;
                 $orderItem->market_place_id = $row['id'];
@@ -189,6 +212,7 @@ class MarketPlaceCartingController extends Controller
         }
 
         DB::commit();
+        return response()->json(['status'=>true, 'msg'=> '']);
 
     }
 
@@ -215,6 +239,17 @@ class MarketPlaceCartingController extends Controller
 
         }
         return redirect()->back()->with('danger','Order not found!');
+
+    }
+
+
+    public function approve(Request  $request)
+    {
+        $marketplaces = MarketplaceOrder::find($request->id);
+
+        $this->marketplaceOrderService->approved($marketplaces);
+
+        return redirect()->back()->with('success','Successfully approved!');
 
     }
 

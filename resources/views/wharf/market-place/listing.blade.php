@@ -25,6 +25,25 @@
 
     <div id="app" class="wrapper wrapper-content">
         <div class="row">
+            <div class="col-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <label>Areas</label>
+                            <select class="form-control" id="areas" name="areas" required>
+                                <option value="_all">All</option>
+                                @foreach($areas as $id => $area)
+                                    @if($area)
+                                        <option value="{{$area}}" {{request()->area == $area ?'selected':''}}>{{$area}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
 
             @forelse($marketList as $data)
                 <div class="col-md-3">
@@ -36,6 +55,7 @@
                                     <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
                                 </div>
                                 <div class="card-content">
+                                    <small class="text-muted"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</small>
                                     <div class="title">{{$data->name}}</div>
                                     <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
                                 </div>
@@ -43,32 +63,6 @@
                             </div>
                         </a>
                     </div>
-
-                    {{--<div class="ibox">--}}
-                        {{--<a href="{{route('market-place-show', $data->id)}}" class="" style="color: #000!important;">--}}
-                        {{--<div class="ibox-content product-box">--}}
-                                {{--<div class="product-imitation" style="background-image: url('{!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!}')">--}}
-                                    {{--                            {{$data->name}}--}}
-                                {{--</div>--}}
-                            {{--<div class="product-desc">--}}
-{{--                                <pre>{{json_encode($data, 128)}}</pre>--}}
-{{--                                <pre>{!! ($data->hasMedia('market-place')? $data->getFirstMediaUrl('market-place'):'')  !!}</pre>--}}
-                                {{--<span class="product-price">--}}
-                                   {{--₱{{$data->selling_price}}--}}
-                                {{--</span>--}}
-                                {{--<small class="text-muted d-none">Category</small>--}}
-                                {{--<p href="{{route('market-place-show', $data->id)}}" class="product-name"> {{$data->name}}</p>--}}
-                                {{--<div class="small m-t-xs d-none">--}}
-                                    {{--{!! $data->description !!}--}}
-                                {{--</div>--}}
-                                {{--<div class="m-t">--}}
-                                    {{--<a href="#" class="btn btn-sm btn-primary w-100 add-to-cart"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--</a>--}}
-                    {{--</div>--}}
-
                 </div>
             @empty
                 <div class="col-12">
@@ -91,7 +85,7 @@
             {{--</div>--}}
             <div class="toast-body">
                 <div class="text">
-                    <strong id="item_added_to_cart"></strong> has been added to cart.
+                    <strong id="item_added_to_cart"></strong> <span id="toast-message">has been added to cart.</span>
                 </div> Cart
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -136,10 +130,15 @@
     {{--    {!! Html::script('/js/template/plugins/sweetalert/sweetalert.min.js') !!}--}}
     {{--    {!! Html::script('/js/template/moment.js') !!}--}}
     <script>
+        let toast1;
+        $(document).on('change','#areas', function(e){
+            var value = this.value;
+            window.location.href = "{{route('market-place-listing')}}?area=" + value;
+        });
         $(document).ready(function(){
             $('.footable').footable();
 
-            let toast1 = $('.toast1');
+            toast1 = $('.toast1');
             toast1.toast({
                 delay: 5000,
                 animation: true
@@ -147,15 +146,13 @@
 
             $('.add-to-cart').on('click', function(e){
                 e.preventDefault();
-                toast1.toast('show');
-                var item = $(this).data('name');
                 var itemId = $(this).data('id');
-                addToCart(itemId);
-                $('#item_added_to_cart').html(item);
+                var item = $(this).data('name');
+                addToCart(itemId, item);
             })
         });
 
-        function addToCart(id){
+        function addToCart(id, item){
 
             $.ajax({
                 url: "{{route('market-place-add_cart')}}",
@@ -165,7 +162,20 @@
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success:function(response){
-                    $('#spot_market_cart_count').html(response);
+                    if(response>0){
+                        $('#spot_market_cart_count').html(response);
+                        $('#item_added_to_cart').html(item);
+                        $('#toast-message').html("has been added to cart.");
+                        toast1.removeClass('toast-danger');
+                        toast1.addClass('toast-success');
+                        toast1.toast('show');
+                    }else{
+                        $('#item_added_to_cart').html("Error");
+                        $('#toast-message').html("not enough stocks.");
+                        toast1.removeClass('toast-success');
+                        toast1.addClass('toast-danger');
+                        toast1.toast('show');
+                    }
 
                 },
             });

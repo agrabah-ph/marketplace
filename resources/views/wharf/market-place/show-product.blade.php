@@ -12,7 +12,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="{{ route('market-place.index') }}">Marketplace</a>
+                    <a href="{{ route('market-place-listing') }}">Marketplace</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@yield('title')</strong>
@@ -66,7 +66,9 @@
                                 <h2 class="font-bold m-b-xs item-name">
                                     {{$data->name}}
                                 </h2>
-{{--                                <small>Many desktop publishing packages and web page editors now.</small>--}}
+                                <div class="small"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</div>
+                                <div class="small"><i class="fa fa-truck"></i>  {{$data->fromFarmer->name??'No Supplier'}}</div>
+
                                 <div class="m-t-md">
                                 </div>
                                 <hr>
@@ -123,7 +125,7 @@
             {{--</div>--}}
             <div class="toast-body">
                 <div class="text">
-                    <strong id="item_added_to_cart"></strong> has been added to cart.
+                    <strong id="item_added_to_cart"></strong> <span id="toast-message">has been added to cart.</span>
                 </div> Cart
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -146,6 +148,10 @@
             top: 21px !important;
             padding: 4px 7px !important;
         }
+        .product-detail .small .fa{
+            width: 18px;
+            text-align: center;
+        }
     </style>
     {{--{!! Html::style('') !!}--}}
     {{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">--}}
@@ -160,9 +166,10 @@
     {{--    {!! Html::script('/js/template/plugins/sweetalert/sweetalert.min.js') !!}--}}
     {{--    {!! Html::script('/js/template/moment.js') !!}--}}
     <script>
+        let toast1;
         $(document).ready(function(){
 
-            let toast1 = $('.toast1');
+            toast1 = $('.toast1');
             toast1.toast({
                 delay: 5000,
                 animation: true
@@ -170,14 +177,12 @@
 
             $('.add-to-cart').on('click', function(e){
                 e.preventDefault();
-                toast1.toast('show');
-                var item = $(this).data('name');
                 var itemId = $(this).data('id');
-                addToCart(itemId);
-                $('#item_added_to_cart').html(item);
+                var item = $(this).data('name');
+                addToCart(itemId, item);
             })
 
-            function addToCart(id){
+            function addToCart(id, item){
 
                 $.ajax({
                     url: "{{route('market-place-add_cart')}}",
@@ -187,7 +192,20 @@
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success:function(response){
-                        $('#spot_market_cart_count').html(response);
+                        if(response>0){
+                            $('#spot_market_cart_count').html(response);
+                            $('#item_added_to_cart').html(item);
+                            $('#toast-message').html("has been added to cart.");
+                            toast1.removeClass('toast-danger');
+                            toast1.addClass('toast-success');
+                            toast1.toast('show');
+                        }else{
+                            $('#item_added_to_cart').html("Error");
+                            $('#toast-message').html("not enough stocks.");
+                            toast1.removeClass('toast-success');
+                            toast1.addClass('toast-danger');
+                            toast1.toast('show');
+                        }
 
                     },
                 });
