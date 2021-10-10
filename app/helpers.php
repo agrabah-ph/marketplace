@@ -189,7 +189,7 @@ if (!function_exists('stringSlug')) {
 }
 
 if (!function_exists('getRoleName')) {
-    function getRoleName($data)
+    function getRoleName($data = 'name')
     {
         $info = null;
         switch($data){
@@ -235,11 +235,17 @@ if (!function_exists('permissionTable')) {
 }
 
 if (!function_exists('authProfilePic')) {
-    function authProfilePic($id)
+    function authProfilePic()
     {
         $data = '/img/blank-profile.jpg';
-
-        $profile = Profile::where('user_id', $id)->first();
+        $roleName = getRoleName();
+        if($roleName == 'farmer'){
+            $profile = \App\Profile::find(Auth::user()->farmer->profile->id);
+        }else{
+            if(Auth::user()->profile){
+                $profile = \App\Profile::find(Auth::user()->profile->id);
+            }
+        }
 
         if(!empty($profile)){
             if($profile->image !== null){
@@ -358,6 +364,13 @@ if (!function_exists('getUserSpotMarketCartCount')) {
     }
 }
 
+if (!function_exists('getUserMarketplaceCartCount')) {
+    function getUserMarketplaceCartCount()
+    {
+        return \App\MarketplaceCart::where('user_id', auth()->user()->id)->sum('quantity');
+    }
+}
+
 if (!function_exists('getSpotMarketOrderStatus')) {
     function getSpotMarketOrderStatus($orderNumber)
     {
@@ -369,6 +382,12 @@ if (!function_exists('getSpotMarketOrderStatuses')) {
     function getSpotMarketOrderStatuses($orderNumber)
     {
         return \App\SpotMarketOrderStatus::where('spot_market_orders', $orderNumber)->pluck('is_current', 'status')->toArray();
+    }
+}
+if (!function_exists('getMarketplaceOrderStatuses')) {
+    function getMarketplaceOrderStatuses($orderNumber)
+    {
+        return \App\MarketplaceOrderStatus::where('market_place_order_id', $orderNumber)->pluck('is_current', 'status')->toArray();
     }
 }
 

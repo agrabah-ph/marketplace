@@ -1,0 +1,366 @@
+
+
+.banner-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 90vh;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  color: $white;
+
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($black, .4);
+  }
+
+  .inside {
+    position: relative;
+    width: 50%;
+
+
+    @media (max-width: 1600px) {
+      width:80%;
+    }
+
+    @media (max-width: 768px) {
+      width:95%;
+    }
+
+    @media (max-width: 500px) {
+      width:100%;
+    }
+
+    h1.banner-title {
+      font-weight: bold;
+      font-size: 4rem;
+      line-height: initial;
+      @extend .Work-Sans;
+
+      @media (max-width: 768px) {
+        font-size: 3rem;
+      }
+
+      @media (max-width: 400px) {
+        font-size: 2.5rem;
+      }
+    }
+
+    .description {
+      width: 80%;
+      margin-bottom: 1rem;
+
+
+      @media (max-width: 500px) {
+        width:90%;
+      }
+    }
+  }
+
+
+  @media (max-width: 500px) {
+    .max-width { margin-bottom: 3rem; }
+  }
+}
+
+.section-2 {
+  @media (max-width: 768px) {
+    .max-width {
+      width: 100%;
+      padding-bottom: 0;
+    }
+  }
+
+  .content {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  .users-container {
+    display: flex;
+    margin-top: 7rem;
+    flex-wrap: wrap;
+
+    .user-box {
+      position: relative;
+      overflow: hidden;
+      width: calc(100%/2);
+      text-align: center;
+      color: $black;
+      background-color: $color-1;
+      min-height: 600px;
+      padding: 2rem;
+      padding-bottom: 0;
+      transition: .3s;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+
+      &:nth-child(2n) {
+        background-color: $color-2;
+        color: $white;
+
+        .page-title {
+          color: $white;
+        }
+      }
+
+      .img {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        img {
+          transition: .3s;
+          max-width: 450px;
+          transform: scale(1);
+
+
+          @media (max-width: 500px) {
+            max-width: 400px;
+          }
+        }
+      }
+
+      &:hover {
+        .img {
+          img {
+            transform: scale(1.3);
+
+            @media (max-width: 768px) {
+              transform: scale(1);
+            }
+          }
+        }
+      }
+
+      &.active {
+        transform: translateY(-10%);
+
+        @media (max-width: 768px) {
+          transform: translateY(0);
+        }
+
+      }
+    }
+  }
+}
+
+
+.featured-section {
+  background-color: $color-3;
+
+  ul.list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 4rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 3rem;
+
+      .num {
+        @extend .Work-Sans;
+        font-size: 2.5rem;
+        //padding: 1rem 2rem;
+        width: 130px;
+        height: 130px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-2;
+        border-radius: 50%;
+        color: $white;
+
+        @media(max-width: 500px) {
+          width: 100px;
+          height: 100px;
+        }
+
+        @media(max-width: 400px) {
+          font-size: 2rem;
+          width: 80px;
+          height: 80px;
+        }
+
+      }
+
+      .content {
+        padding-left: 2rem;
+        width: calc(100% - 130px);
+
+
+        @media(max-width: 500px) {
+          width: calc(100% - 100px);
+        }
+
+        @media(max-width: 400px) {
+          width: calc(100% - 80px);
+        }
+
+        b {
+          font-size: 1.5rem;
+          @extend .Work-Sans;
+        }
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .app-img {
+    transform: rotate(-25deg) translateY(5%);
+    animation: movingObject 5s infinite;
+  }
+
+  @keyframes movingObject {
+    25% {
+      transform: rotate(-25deg) translateY(-5%);
+    }
+    50% {
+      transform: rotate(-25deg) translateY(5%);
+    }
+    75% {
+      transform: rotate(-25deg) translateY(-5%);
+    }
+    100% {
+      transform: rotate(-25deg) translateY(5%);
+    }
+  }
+
+}
+
+
+.about-section {
+  .about-img {
+    background-position: center;
+    background-size: cover;
+    min-height: 800px;
+
+
+    @media (max-width: 768px) {
+      min-height: 500px;
+    }
+  }
+
+  .about-content {
+    background-color: $color-1;
+    height: 100%;
+    min-height: 800px;
+    display: flex;
+    align-items: center;
+    padding-left: 15%;
+    padding-right: 5%;
+
+    @media (max-width: 1440px) {
+      padding-left: 8%;
+    }
+
+    @media (max-width: 768px) {
+      min-height: auto;
+    }
+  }
+
+  .link {
+    position: relative;
+    color: $black;
+    text-transform: uppercase;
+    margin-top: 2rem;
+    font-weight: 400;
+    transition: .3s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .line {
+      display: block;
+      width: 0%;
+      height: 2px;
+      background-color: $black;
+      bottom: 0;
+      margin-left: 1rem;
+      transition: .3s;
+    }
+
+    &:hover {
+      font-weight: bold;
+      .line {
+        width: 60%;
+      }
+    }
+  }
+}
+
+
+.faq-section {
+  min-height: 50vh;
+  b {
+    display: block;
+    color: $color-2;
+    margin-bottom: 2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+
+    li {
+      margin-bottom: 5px;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 13px;
+        height: 13px;
+        background-color: $color-2;
+        display: block;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        border-top-right-radius: 50%;
+        //transition: .3s;
+      }
+
+      &:hover {
+        &:before {
+          opacity: 1;
+        }
+      }
+
+      a {
+        color: $black;
+      }
+    }
+  }
+
+  .farmer {
+    ul li {
+      &:before {
+        background-color: $color-1;
+      }
+    }
+  }
+}

@@ -8,7 +8,9 @@ use App\Loan;
 use App\LoanProvider;
 use App\LoanType;
 use App\MarketPlace;
+use App\MarketPlaceBid;
 use App\ReverseBidding;
+use App\ReverseBiddingBid;
 use App\SpotMarket;
 use App\SpotMarketBid;
 use App\Trace;
@@ -71,16 +73,60 @@ class HomeController extends Controller
 
 
         /** BIDS */
-        $spotMarketList = auth()->user()->farmer->spotMarket->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
-        $spotMarketBidsWinsQuery = SpotMarketBid::query();
-        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
-        $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->WhereIn('spot_market_id', $spotMarketList);
-        $spotMarketBidsWins = $spotMarketBidsWinsQuery->pluck('spot_market_id')->toArray();
+        $winningBids = [];
+        $winningBidsMarketplace = [];
+        $winningBidsReverseBidding = [];
+        $products = [];
+        $isCommunityLeader = false;
+        if(auth()->user()->farmer){
+            if(isCommunityLeader()){
+                $spotMarketList = auth()->user()->farmer->spotMarket->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
 
-        $spotMarketWinningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
+                $spotMarketBidsWinsQuery = SpotMarketBid::query();
+                $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->Where('winner', 1);
+                $spotMarketBidsWinsQuery = $spotMarketBidsWinsQuery->WhereIn('spot_market_id', $spotMarketList);
+                $spotMarketBidsWins = $spotMarketBidsWinsQuery->pluck('spot_market_id')->toArray();
 
+                $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
 
-        $products = ReverseBidding::where('status', 1)->get();
+                $marketplaceList = auth()->user()->farmer->marketPlace->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
+
+                $marketplaceBidsWinsQuery = MarketPlaceBid::query();
+                $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->Where('winner', 1);
+                $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->WhereIn('market_place_id', $marketplaceList);
+                $marketplaceBidsWins = $marketplaceBidsWinsQuery->pluck('market_place_id')->toArray();
+
+                $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
+
+                $reverseBiddingQuery = ReverseBiddingBid::query();
+                $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
+                $reverseBiddingQuery = $reverseBiddingQuery->where('user_id', auth()->user()->id);
+                $reverseBiddingBidsWins = $reverseBiddingQuery->pluck('reverse_bidding_id')->toArray();
+
+                $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
+
+                $products = ReverseBidding::where('status', 0)->where('expiration_time', '>', now())->get();
+                $isCommunityLeader = true;
+            }
+        }
+        $myBidsSpotMarket = [];
+        $myBidsMarketplace = [];
+        if(!$products){
+            $spotMarketBidsActiveQuery = SpotMarketBid::query();
+//            $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
+            $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('spot_market_id')->toArray();
+
+            $myBidsSpotMarket = SpotMarket::whereIn('id', $spotMarketBidsActive)
+                ->get();
+
+            $spotMarketBidsActiveQuery = MarketPlaceBid::query();
+//            $spotMarketBidsActiveQuery = $spotMarketBidsActiveQuery->Where('user_id', auth()->user()->id);
+            $spotMarketBidsActive = $spotMarketBidsActiveQuery->pluck('market_place_id')->toArray();
+
+            $myBidsMarketplace = MarketPlace::whereIn('id', $spotMarketBidsActive)
+                ->get();
+
+        }
 
 
         /** BIDS */
@@ -96,7 +142,12 @@ class HomeController extends Controller
             'marketplaceCountToday',
             'spotMarketCountToday',
             'reverseBiddingCountToday',
-            'spotMarketWinningBids',
+            'isCommunityLeader',
+            'myBidsSpotMarket',
+            'myBidsMarketplace',
+            'winningBids',
+            'winningBidsMarketplace',
+            'winningBidsReverseBidding',
             'products'
         ));
 

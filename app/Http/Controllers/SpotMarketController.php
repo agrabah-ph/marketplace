@@ -7,6 +7,8 @@ use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
 use App\MarketPlace;
 use App\MarketPlaceBid;
+use App\ReverseBidding;
+use App\ReverseBiddingBid;
 use App\Services\LoanService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
@@ -62,6 +64,7 @@ class SpotMarketController extends Controller
         $spotMarketBidsLoseQuery = SpotMarketBid::query();
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->whereNotIn('spot_market_id', $spotMarketBidsWins);
         $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('spot_market_id')->toArray();
         $losingBids = SpotMarket::whereIn('id', $spotMarketBidsLose)
             ->where('expiration_time', '<',now())
@@ -89,6 +92,7 @@ class SpotMarketController extends Controller
         $spotMarketBidsLoseQuery = MarketPlaceBid::query();
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('user_id', auth()->user()->id);
         $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->Where('winner', 0);
+        $spotMarketBidsLoseQuery = $spotMarketBidsLoseQuery->whereNotIn('market_place_id', $spotMarketBidsWins);
         $spotMarketBidsLose = $spotMarketBidsLoseQuery->pluck('market_place_id')->toArray();
         $losingMarketplaceBids = MarketPlace::whereIn('id', $spotMarketBidsLose)
             ->where('expiration_time', '<',now())
@@ -115,7 +119,23 @@ class SpotMarketController extends Controller
 
         $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
 
-        return view('wharf.spot-market.winning_bids', compact('winningBids'));
+        $marketplaceList = auth()->user()->farmer->marketPlace->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
+
+        $marketplaceBidsWinsQuery = MarketPlaceBid::query();
+        $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->Where('winner', 1);
+        $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->WhereIn('market_place_id', $marketplaceList);
+        $marketplaceBidsWins = $marketplaceBidsWinsQuery->pluck('market_place_id')->toArray();
+
+        $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
+
+        $reverseBiddingQuery = ReverseBiddingBid::query();
+        $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
+        $reverseBiddingQuery = $reverseBiddingQuery->where('user_id', auth()->user()->id);
+        $reverseBiddingBidsWins = $reverseBiddingQuery->pluck('reverse_bidding_id')->toArray();
+
+        $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
+
+        return view('wharf.spot-market.winning_bids', compact('winningBids', 'winningBidsMarketplace', 'winningBidsReverseBidding'));
 
     }
 

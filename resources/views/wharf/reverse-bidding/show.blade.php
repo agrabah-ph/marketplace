@@ -78,7 +78,9 @@
                                         @php
                                             $winningBid = $data->asking_price;
                                             if($data->bids){
-                                                $winningBid = $data->bids->first()->bid;
+                                                if($data->bids->first()){
+                                                    $winningBid = $data->bids->first()->bid;
+                                                }
                                             }
                                         @endphp
                                         ₱{{currency_format($winningBid)}}
@@ -123,7 +125,7 @@
     </div>
 
 
-    <div style="position: absolute; top: 20px; right: 20px;">
+    <div style="position: absolute; top: 60px; right: 20px;">
 
         <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
