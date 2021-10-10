@@ -238,12 +238,12 @@
 
                         console.log(datas);
 
-                        $.post('{!! route('trace-store') !!}', {
-                            _token: '{!! csrf_token() !!}',
-                            datas: datas
-                        }, function(data){
-                            window.location.replace('{!! route('trace.index') !!}');
-                        });
+                        {{--$.post('{!! route('trace-store') !!}', {--}}
+                        {{--    _token: '{!! csrf_token() !!}',--}}
+                        {{--    datas: datas--}}
+                        {{--}, function(data){--}}
+                        {{--    window.location.replace('{!! route('trace.index') !!}');--}}
+                        {{--});--}}
 
                         break;
                     case 'add-item':
@@ -255,28 +255,28 @@
                         }).toArray();
                         // console.log(ids);
                         var products = new Array();
-                        $.get('{!! route('farmer-inventory-list-item') !!}', {
-                            ids: ids
-                        }, function(data){
-                            // console.log(data);
-                            if(data.length > 0){
-                                for(var a = 0; a < data.length; a++){
-                                    products.push('' +
-                                        '<tr data-id="'+ data[a].id +'">' +
-                                        '<td>'+ data[a].name +'</td>' +
-                                        '<td>'+ data[a].details +'</td>' +
-                                        '<td class="text-right">'+ data[a].farmer.profile.first_name +' '+ data[a].farmer.profile.last_name +'</td>' +
-                                        '<td class="text-right">' +
-                                        '<div class="btn-group text-right">' +
-                                        '<button class="btn btn-white btn-xs btn-action" data-action="remove-item"><i class="fa fa-times text-danger"></i></button>' +
-                                        '</div>' +
-                                        '</td>' +
-                                        '</tr>' +
-                                        '');
-                                }
-                            }
-                            $('#item-list').append(products.join(''));
-                        });
+                        {{--$.get('{!! route('farmer-inventory-list-item') !!}', {--}}
+                        {{--    ids: ids--}}
+                        {{--}, function(data){--}}
+                        {{--    // console.log(data);--}}
+                        {{--    if(data.length > 0){--}}
+                        {{--        for(var a = 0; a < data.length; a++){--}}
+                        {{--            products.push('' +--}}
+                        {{--                '<tr data-id="'+ data[a].id +'">' +--}}
+                        {{--                '<td>'+ data[a].name +'</td>' +--}}
+                        {{--                '<td>'+ data[a].details +'</td>' +--}}
+                        {{--                '<td class="text-right">'+ data[a].farmer.profile.first_name +' '+ data[a].farmer.profile.last_name +'</td>' +--}}
+                        {{--                '<td class="text-right">' +--}}
+                        {{--                '<div class="btn-group text-right">' +--}}
+                        {{--                '<button class="btn btn-white btn-xs btn-action" data-action="remove-item"><i class="fa fa-times text-danger"></i></button>' +--}}
+                        {{--                '</div>' +--}}
+                        {{--                '</td>' +--}}
+                        {{--                '</tr>' +--}}
+                        {{--                '');--}}
+                        {{--        }--}}
+                        {{--    }--}}
+                        {{--    $('#item-list').append(products.join(''));--}}
+                        {{--});--}}
                         modal.modal('toggle');
                         break;
                     case 'remove-item':

@@ -96,6 +96,14 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
 
     Route::resource('report', 'ReportController');
+
+
+
+
+    // FARMER START
+    Route::get('farmer-inventory-list', 'InventoryController@farmerInventoryList')->name('farmer-inventory-list');
+    Route::get('farmer-inventory-list-item', 'InventoryController@farmerInventoryListItem')->name('farmer-inventory-list-item');
+    // FARMER START
 });
 
 
