@@ -2114,6 +2114,7 @@ body {
   .template-wharf .banner-section .banner-container {
     background-size: contain;
     background-repeat: no-repeat;
+    min-height: 200px;
   }
 }
 .template-wharf .marketplace-container {
