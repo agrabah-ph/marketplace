@@ -374,15 +374,15 @@
            var old_value = $(this).parent().find('input').val();
            var new_value = 0;
 
-           if(old_value != 0) {
-               if(action == 'plus') {
-                   new_value = Number(old_value) + 1;
-               }else {
-                   new_value = Number(old_value) - 1;
+           if(action == 'plus') {
+               new_value = Number(old_value) + 1;
+           }else {
+               if(old_value != 0) {
+                new_value = Number(old_value) - 1;
                }
-               $(this).parent().find('input').val(new_value).trigger('keyup');
-
            }
+           $(this).parent().find('input').val(new_value).trigger('keyup');
+
 
 
 
