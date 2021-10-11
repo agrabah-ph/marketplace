@@ -2110,6 +2110,13 @@ body {
   background-size: cover;
   background-position: center;
 }
+@media (max-width: 992px) {
+  .template-wharf .banner-section .banner-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-height: 200px;
+  }
+}
 .template-wharf .marketplace-container {
   width: 99%;
   margin: auto;
@@ -2119,6 +2126,11 @@ body {
   padding: 1rem 0;
   -webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
           box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 992px) {
+  .template-wharf .marketplace-container {
+    margin-top: 0;
+  }
 }
 .template-wharf .filters .form-group {
   border-top: 1px solid #dadada;

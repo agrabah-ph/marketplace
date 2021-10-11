@@ -820,6 +820,12 @@
       min-height: 300px;
       background-size: cover;
       background-position: center;
+
+      @media (max-width: 992px) {
+        background-size: contain;
+        background-repeat: no-repeat;
+        min-height: 200px;
+      }
     }
   }
 
@@ -831,6 +837,10 @@
     background-color: rgba($white, .9);
     padding: 1rem 0;
     box-shadow: 1px 1px 10px rgba($black, .1);
+
+    @media (max-width: 992px) {
+      margin-top: 0;
+    }
   }
 
   .filters {
