@@ -1,5 +1,6 @@
 @extends('wharf.master')
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 @section('title', 'Marketplace')
 
 @section('content')
@@ -24,8 +25,11 @@
     </div>
 
     <div id="app" class="wrapper wrapper-content">
-        <div class="row">
-            <div class="col-12">
+        <div class="banner-section">
+            <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')"></div>
+        </div>
+        <div class="row marketplace-container">
+            <div class="col-12 col-lg-3 filters">
                 <div class="ibox">
                     <div class="ibox-content">
                         <div class="form-group">
@@ -39,36 +43,84 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Categories</label>
+
+                            <ul>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-octopus-30.png') }}" alt=""> Seafood
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-algae-30.png') }}" alt=""> Seaweed
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-livestock-30.png') }}" alt=""> Livestock
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-chicken-30.png') }}" alt=""> Poultry
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-watermelon-30.png') }}" alt=""> Fruits
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-carrot-30.png') }}" alt=""> Vegetables
+                                    </div>
+                                    <ul>
+                                        <li>Highland</li>
+                                        <li>lowland</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="gr">
+                                        <img src="{{ asset('images/wharf/icons/icons8-spa-flower-30.png') }}" alt=""> Flowers and Plants
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
+            <div class="col-12 col-lg-9">
+                <div class="row">
 
-            @forelse($marketList as $data)
-                <div class="col-md-3">
-                    <div class="ibox listing-item">
-                        <a href="{{route('market-place-show', $data->id)}}">
-                            <div class="card">
-                                <div class="card-img">
-                                    <div class="img" style="background-image: url({!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!})"></div>
-                                    <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
-                                </div>
-                                <div class="card-content">
-                                    <small class="text-muted"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</small>
-                                    <div class="title">{{$data->name}}</div>
-                                    <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
-                                </div>
-                                <div class="price">₱{{$data->selling_price}}</div>
+                    @forelse($marketList as $data)
+                        <div class="col-md-4 mb-4">
+                            <div class="ibox listing-item">
+                                <a href="{{route('market-place-show', $data->id)}}">
+                                    <div class="card">
+                                        <div class="card-img">
+                                            <div class="img" style="background-image: url({!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!})"></div>
+                                            <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="title">{{$data->name}}</div>
+                                            <small class="text-muted"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</small>
+                                            <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                        </div>
+                                        <div class="price">₱{{$data->selling_price}}</div>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    @empty
+                        <div class="col-12">
+                            <h1 class="text-center w-100">No Listing Yet</h1>
+                        </div>
+                    @endforelse
                 </div>
-            @empty
-                <div class="col-12">
-                    <h1 class="text-center w-100">No Listing Yet</h1>
-                </div>
-            @endforelse
+            </div>
         </div>
     </div>
 
