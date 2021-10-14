@@ -15,12 +15,12 @@
     {{--    <link rel="manifest" href="{{ URL::to('/favicon_io/site.webmanifest') }}">--}}
 
     {!! Html::style('/css/app.css') !!}
-    {!! Html::style('/css/styles.css') !!}
+    {!! Html::style('/css/styles.css?v='.now()->unix()) !!}
     {{--    {!! Html::style('/css/template/bootstrap.min.css') !!}--}}
     {!! Html::style('/font-awesome/css/font-awesome.css') !!}
     @yield('styles')
     {!! Html::style('/css/template/animate.css') !!}
-    {!! Html::style('/css/template/style.css') !!}
+    {!! Html::style('/css/template/style.css?v='.now()->unix()) !!}
     <style>
         @media screen and (min-width: 700px) {
             .table-responsive{

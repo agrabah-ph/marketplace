@@ -53,9 +53,9 @@
                         </div>
                         <div class="form-group">
                             <label class="font-bold" for="null_cat">Categories
-                                <span class="float-right font-weight-light small">
+                                <a class="float-right font-weight-light small">
                                 <input type="radio" name="cat" class="d-none filter_trigger" id="null_cat" value="_all">
-                                Clear Category</span>
+                                Clear Category</a>
                             </label>
                             <ul>
                                 @foreach($categories as $category)
