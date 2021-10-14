@@ -424,4 +424,10 @@ if (!function_exists('getServiceFee')) {
         return $serviceFee;
     }
 }
+if (!function_exists('arrayStringToCommaSeparated')) {
+    function arrayStringToCommaSeparatedString($string)
+    {
+        return implode(', ', (array) json_decode($string));
+    }
+}
 

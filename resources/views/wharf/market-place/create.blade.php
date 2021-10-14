@@ -99,6 +99,14 @@
                                         <option value="lot">Lot</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label>Categories</label>
+                                    <select name="categories[]" id="categories" class="form-control" multiple>
+                                        @foreach($categories as $category)
+                                            <option  value="{{$category->id}}">{{$category->parent_id?$category->parentCat->display_name.' - ':''}}{{$category->display_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
@@ -180,6 +188,11 @@
             $('.summernote').summernote();
 
             $("#from_user_id").select2({
+                theme: 'bootstrap4',
+                // placeholder: "",
+            });
+
+            $("#categories").select2({
                 theme: 'bootstrap4',
                 // placeholder: "",
             });

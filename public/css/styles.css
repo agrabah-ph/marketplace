@@ -1674,6 +1674,16 @@ body {
           box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
   border: 0;
 }
+.template-wharf .cart-icon-container .toast.toast-bootstrap.toast-success{
+  background-color: rgba(158, 211, 90, 0.8);
+  -webkit-box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
+  box-shadow: 1px 1px 20px rgba(158, 211, 90, 0.8);
+}
+.template-wharf .cart-icon-container .toast.toast-bootstrap.toast-danger{
+  background-color: rgba(245, 166, 166, 0.8)!important;
+  -webkit-box-shadow: 1px 1px 20px rgba(245, 166, 166, 0.8)!important;
+  box-shadow: 1px 1px 20px rgba(245, 166, 166, 0.8)!important;
+}
 .template-wharf .cart-icon-container .toast.toast-bootstrap .toast-body {
   background: transparent;
   color: #000;
@@ -2140,7 +2150,9 @@ body {
   border-top: 0;
 }
 .template-wharf .filters .form-group label {
-  font-weight: bold;
+  /*font-weight: bold;*/
+  cursor: pointer;
+  display: inherit;
 }
 .template-wharf .filters .form-group ul {
   padding: 0;
@@ -2190,6 +2202,7 @@ body {
 .template-wharf .filters .form-group ul li > ul li:hover {
   opacity: 0.8;
 }
+.template-wharf .filters .form-group ul li.active img ,
 .template-wharf .filters .form-group ul li:hover img {
   background-color: #9ed35a;
 }

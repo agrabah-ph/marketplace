@@ -32,63 +32,57 @@
             <div class="col-12 col-lg-3 filters">
                 <div class="ibox">
                     <div class="ibox-content">
+                        <form action="" id="form_search">
                         <div class="form-group">
-                            <label>Areas</label>
+                            <label class="font-bold" for="null_cat">Search
+                                <a href="{{route('market-place-listing')}}" class="float-right font-weight-light small">
+                                Clear Filters</a>
+                            </label>
+                            <input type="text" class="form-control" id="filter" name="filter" value="{{request()->filter}}" placeholder="Input Search">
+                        </div>
+                        <div class="form-group">
+                            <label class="font-bold">Areas</label>
                             <select class="form-control" id="areas" name="areas" required>
                                 <option value="_all">All</option>
                                 @foreach($areas as $id => $area)
                                     @if($area)
-                                        <option value="{{$area}}" {{request()->area == $area ?'selected':''}}>{{$area}}</option>
+                                        <option value="{{$area}}" {{request()->areas == $area ?'selected':''}}>{{$area}}</option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Categories</label>
-
+                            <label class="font-bold" for="null_cat">Categories
+                                <span class="float-right font-weight-light small">
+                                <input type="radio" name="cat" class="d-none filter_trigger" id="null_cat" value="_all">
+                                Clear Category</span>
+                            </label>
                             <ul>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-octopus-30.png') }}" alt=""> Seafood
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-algae-30.png') }}" alt=""> Seaweed
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-livestock-30.png') }}" alt=""> Livestock
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-chicken-30.png') }}" alt=""> Poultry
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-watermelon-30.png') }}" alt=""> Fruits
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-carrot-30.png') }}" alt=""> Vegetables
-                                    </div>
-                                    <ul>
-                                        <li>Highland</li>
-                                        <li>lowland</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div class="gr">
-                                        <img src="{{ asset('images/wharf/icons/icons8-spa-flower-30.png') }}" alt=""> Flowers and Plants
-                                    </div>
-                                </li>
+                                @foreach($categories as $category)
+                                    <li class="{{request()->cat == $category->id?'active':''}}">
+                                        <label for="cat_{{$category->id}}" class="mb-0 w-100">
+                                        <div class="gr">
+                                            <input type="radio" name="cat" class="d-none filter_trigger" value="{{$category->id}}" id="cat_{{$category->id}}">
+                                            <img src="{{config('app.admin_url').$category->logo}}" alt=""> {{$category->display_name}}
+                                        </div>
+                                        </label>
+                                        @if(count($category->childrenCat) > 0)
+                                            <ul>
+                                                @foreach($category->childrenCat as $childCategory)
+                                                    <li>
+                                                        <label for="cat_{{$childCategory->id}}" class="mb-0  w-100">
+                                                        <input type="radio" name="cat" class="d-none filter_trigger" id="cat_{{$childCategory->id}}" value="{{$childCategory->id}}">
+                                                {{$childCategory->display_name}}
+                                                        </label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
-
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -102,12 +96,34 @@
                                     <div class="card">
                                         <div class="card-img">
                                             <div class="img" style="background-image: url({!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!})"></div>
-                                            <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                            <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}">
+                                                @if($data->quantity>0)
+                                                    <i class="fa fa-cart-plus"></i> Add to Cart
+                                                @else
+                                                    Sold Out
+                                                @endif
+                                            </a>
                                         </div>
                                         <div class="card-content">
                                             <div class="title">{{$data->name}}</div>
-                                            <small class="text-muted"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</small>
-                                            <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                            <small class="text-muted"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</small><br>
+                                            <small class="text-muted"><i class="fa fa-tags"></i>
+                                            @forelse($data->categoriesRel as $category)
+                                                <span class="badge badge-primary">{{$category->display_name}}</span>
+                                            @empty
+                                                -
+                                            @endforelse
+
+                                            </small><br>
+                                            <small class="text-muted"><i class="fa fa-cubes"></i> {{$data->quantity>0?$data->quantity.$data->unit_of_measure_short:'Sold out'}}</small><br>
+
+                                            <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}">
+                                                @if($data->quantity>0)
+                                                    <i class="fa fa-cart-plus"></i> Add to Cart
+                                                @else
+                                                    Sold Out
+                                                @endif
+                                            </a>
                                         </div>
                                         <div class="price">₱{{$data->selling_price}}</div>
                                     </div>
@@ -116,7 +132,7 @@
                         </div>
                     @empty
                         <div class="col-12">
-                            <h1 class="text-center w-100">No Listing Yet</h1>
+                            <h1 class="text-center w-100">Nothing to show here. </h1>
                         </div>
                     @endforelse
                 </div>
@@ -154,6 +170,9 @@
     {!! Html::style('css/template/plugins/footable/footable.core.css') !!}
     {!! Html::style('css/template/plugins/toastr/toastr.min.css') !!}
     <style>
+        .cursor-pointer {
+            cursor: pointer !important;
+        }
         .product-name{
             font-size: 20px!important;
         }
@@ -187,6 +206,13 @@
             var value = this.value;
             window.location.href = "{{route('market-place-listing')}}?area=" + value;
         });
+        $(document).on('click','.filter_trigger', function(e){
+            $('#form_search').submit();
+        });
+        $(document).on('change','#areas', function(e){
+            $('#form_search').submit();
+        });
+
         $(document).ready(function(){
             $('.footable').footable();
 

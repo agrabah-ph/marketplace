@@ -50,6 +50,7 @@
                                 <th>Farmer</th>
                                 <th>Area</th>
                                 <th>Description</th>
+                                <th>Categories</th>
                                 <th>Inventory</th>
                                 <th>Unit of Measure</th>
                                 <th>Selling Price</th>
@@ -67,6 +68,7 @@
                                     <td style="white-space: nowrap">{{ $data->fromFarmer['name'] }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
                                     <td>{!!  $data->description  !!} </td>
+                                    <td>{{  implode(', ',$data->categories)  }} </td>
                                     <td>{!!  $data->quantity  !!} </td>
                                     <td>{!!  ucfirst($data->unit_of_measure)  !!} </td>
                                     <td class="text-right">{!!  $data->selling_price  !!} </td>
@@ -126,23 +128,20 @@
         </div>
     </div>
 
-    <div style="position: absolute; top: 60px; right: 20px;">
-
-        <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="fa fa-cart-plus"> </i>
-                <strong class="mr-auto m-l-sm">Add to Cart</strong>
+    <div class="toast toast1 toast-bootstrap toast-success" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="fa fa-cart-plus"> </i>
+            <strong class="mr-auto m-l-sm">Add to Cart</strong>
 {{--                <small>2 seconds ago</small>--}}
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                <strong id="item_added_to_cart"></strong> has been added to Cart.
-            </div>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-
+        <div class="toast-body">
+            <strong id="item_added_to_cart"></strong> has been added to Cart.
+        </div>
     </div>
+
 
 @endsection
 
