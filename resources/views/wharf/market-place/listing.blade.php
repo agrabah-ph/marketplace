@@ -26,7 +26,12 @@
 
     <div id="app" class="wrapper wrapper-content">
         <div class="banner-section">
-            <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')"></div>
+            <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>Freshness direct from the farm</h3>
+                </div>
+            </div>
         </div>
         <div class="row marketplace-container">
             <div class="col-12 col-lg-3 filters">
