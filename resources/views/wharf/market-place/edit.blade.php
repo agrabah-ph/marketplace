@@ -69,7 +69,9 @@
                                             I'm the supplier
                                         </option>
                                         @foreach($farmers as $farmer)
+                                            @if($farmer->user)
                                             <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
