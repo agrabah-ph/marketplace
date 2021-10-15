@@ -1107,6 +1107,10 @@
               &:hover {
                 opacity: .8;
               }
+
+              &.active {
+                color: $primary-1;
+              }
             }
           }
 
