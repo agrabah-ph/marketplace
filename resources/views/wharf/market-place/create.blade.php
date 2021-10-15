@@ -62,7 +62,9 @@
                                     <select class="form-control" id="from_user_id" name="from_user_id" required>
                                         <option value="{{auth()->user()->id}}">I'm the supplier</option>
                                         @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @if($farmer->user)
+                                                <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
