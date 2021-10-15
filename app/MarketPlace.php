@@ -38,6 +38,24 @@ class MarketPlace extends Model implements HasMedia
         return $this->belongsTo(User::class, 'from_user_id');
     }
 
+    public function categoriesRel()
+    {
+        return $this->belongsToMany(MarketplaceCategories::class,
+            'marketplace_categories_pivot',
+            'marketplaces',
+            'categories','id','id');
+    }
+
+    public function getCategoriesAttribute()
+    {
+        $categories =  $this->categoriesRel;
+        $array = [];
+        foreach($categories as $category){
+            $array[$category->id] = ($category->parent_id?$category->parentCat->display_name.' - ':'').$category->display_name;
+        }
+        return $array;
+    }
+
     public function bids()
     {
         return $this->hasMany(MarketPlaceBid::class, 'market_place_id')->orderBy('bid','desc');

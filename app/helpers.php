@@ -398,15 +398,15 @@ if (!function_exists('getServiceFee')) {
         $serviceFee = 0;
         if($uom && $quantity && $bid){
             if($type == 'reverse'){
-                $serviceFee = $bid * (settings('service_fee_percentage') / 100);
+                $serviceFee = $bid * (floatval(settings('service_fee_percentage')) / 100);
             }elseif($type == 'spot_market'){
                 switch ($uom){
                     case 'kilos':
                         $serviceFee = $quantity;
                         break;
                     case 'lot':
-                    case 'bayera':
-                        $serviceFee = $bid * (settings('service_fee_percentage') / 100) ;
+                    case 'banyera':
+                        $serviceFee = $bid * (floatval(settings('service_fee_percentage')) / 100) ;
                         break;
                 }
             }else{
@@ -415,13 +415,19 @@ if (!function_exists('getServiceFee')) {
                         $serviceFee = $quantity;
                         break;
                     case 'lot':
-                    case 'bayera':
-                        $serviceFee = $bid * (settings('service_fee_percentage') / 100) ;
+                    case 'banyera':
+                        $serviceFee = $bid * (floatval(settings('service_fee_percentage')) / 100) ;
                         break;
                 }
             }
         }
         return $serviceFee;
+    }
+}
+if (!function_exists('arrayStringToCommaSeparated')) {
+    function arrayStringToCommaSeparatedString($string)
+    {
+        return implode(', ', (array) json_decode($string));
     }
 }
 

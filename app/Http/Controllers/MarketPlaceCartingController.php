@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\MarketPlace;
 use App\MarketplaceCart;
+use App\MarketplaceCategories;
 use App\MarketplaceInventory;
 use App\MarketplaceOrder;
 use App\MarketplaceOrderItem;
@@ -13,6 +14,7 @@ use App\Services\MarketplaceInventoryService;
 use App\Services\MarketplaceOrderService;
 use App\SpotMarket;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,14 +40,31 @@ class MarketPlaceCartingController extends Controller
     }
     public function index(Request $request)
     {
-        $marketList = MarketPlace::when($request->area,function($q) use ($request){
-            if($request->area != '_all'){
-                $q->where('area',$request->area);
-            }
-        })->get();
-        $areas = MarketPlace::distinct('area')->pluck('area')->toArray();
+        $marketList = MarketPlace::query()->with('inventory','categoriesRel')
+            ->when($request->area, function($q) use ($request){
+                if($request->areas != '_all'){
+                    $q->where('area',$request->areas);
+                }
+            })
+            ->when($request->filter, function($q) use ($request){
+                $q->where('name', 'like','%'.$request->filter.'%');
+            })
+            ->when($request->cat, function($q) use ($request){
+                if($request->cat != '_all'){
+                    $q->whereHas('categoriesRel', function(Builder $builder) use ($request){
+                        $builder->where('id', $request->cat);
+                    });
+                }
+            });
 
-        return view('wharf.market-place.listing', compact('marketList', 'areas'));
+        $marketList= $marketList->get();
+
+        $areas = MarketPlace::distinct('area')->pluck('area')->toArray();
+        $categories = MarketplaceCategories::with('media','parentCat','childrenCat')
+            ->whereNull('parent_id')
+            ->get();
+
+        return view('wharf.market-place.listing', compact('marketList', 'areas', 'categories'));
 
     }
 
@@ -113,12 +132,12 @@ class MarketPlaceCartingController extends Controller
             'market_place_id' => $request->id
         ];
         $marketPlace = MarketplaceInventory::where('market_place_id', $request->id)->sum('quantity');
-//        if($marketPlace >= 1){
+        if($marketPlace >= 1){
             $cart = MarketplaceCart::firstOrNew($array);
             $cart->quantity = $cart->quantity + 1;
             $cart->save();
             return getUserMarketplaceCartCount();
-//        }
+        }
         return 0;
 
     }

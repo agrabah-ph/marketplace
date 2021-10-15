@@ -62,7 +62,9 @@
                                     <select class="form-control" id="from_user_id" name="from_user_id" required>
                                         <option value="{{auth()->user()->id}}">I'm the supplier</option>
                                         @foreach($farmers as $farmer)
-                                            <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @if($farmer->user)
+                                                <option value="{{$farmer->user->id}}">{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -97,6 +99,14 @@
                                         <option value="kilos">Kilos</option>
                                         <option value="banyera">Banyera</option>
                                         <option value="lot">Lot</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Categories</label>
+                                    <select name="categories[]" id="categories" class="form-control" multiple>
+                                        @foreach($categories as $category)
+                                            <option  value="{{$category->id}}">{{$category->parent_id?$category->parentCat->display_name.' - ':''}}{{$category->display_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -180,6 +190,11 @@
             $('.summernote').summernote();
 
             $("#from_user_id").select2({
+                theme: 'bootstrap4',
+                // placeholder: "",
+            });
+
+            $("#categories").select2({
                 theme: 'bootstrap4',
                 // placeholder: "",
             });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
+use App\MarketplaceCategories;
 use App\Services\LoanService;
 use App\Services\MarketplaceInventoryService;
 use App\Services\SpotMarketOrderService;
@@ -151,7 +152,9 @@ class MarketPlaceController extends Controller
             $defaultArea = $defaultAreaQuery->area;
         }
 
-        return view('wharf.market-place.create', compact('farmers', 'defaultArea'));
+        $categories = MarketplaceCategories::with('media','parentCat','childrenCat')->get();
+
+        return view('wharf.market-place.create', compact('farmers', 'defaultArea','categories'));
     }
     /**
      * Show the form for creating a new resource.
@@ -239,6 +242,7 @@ class MarketPlaceController extends Controller
             $array["selling_price"] = preg_replace('/,/','', $array['selling_price']);
 
             $spotMarket = MarketPlace::create($array);
+            $spotMarket->categoriesRel()->sync($request->categories);
 
             $expiration = Carbon::parse($spotMarket['created_at']);
             if($spotMarket['duration']){
@@ -280,9 +284,10 @@ class MarketPlaceController extends Controller
     public function edit($id)
     {
         $data = MarketPlace::find($id);
+        $categories = MarketplaceCategories::with('media','parentCat','childrenCat')->get();
         $farmers = Farmer::with('user')->where('community_leader', 0)->get();
 
-        return view('wharf.market-place.edit', compact('data','farmers'));
+        return view('wharf.market-place.edit', compact('data','farmers', 'categories'));
     }
 
     /**
@@ -301,10 +306,10 @@ class MarketPlaceController extends Controller
 
         $data = MarketPlace::find($id);
         $request->merge([
-            'selling_price' => preg_replace('/,/','',$request->selling_price)
+            'selling_price' => preg_replace('/,/','',$request->selling_price),
         ]);
         $data->update($request->except(['_token', 'image']));
-
+        $data->categoriesRel()->sync($request->categories);
         $expiration = Carbon::parse($data['created_at']);
         if($data['duration']){
             $duration = explode(':',$data['duration']);

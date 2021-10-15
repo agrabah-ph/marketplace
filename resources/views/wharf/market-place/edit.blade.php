@@ -69,7 +69,9 @@
                                             I'm the supplier
                                         </option>
                                         @foreach($farmers as $farmer)
+                                            @if($farmer->user)
                                             <option value="{{$farmer->user->id}}" {{$data->from_user_id==$farmer->user->id?'selected':''}}>{{$farmer->user->name??$farmer->user->email}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -91,6 +93,14 @@
                                             Banyera
                                         </option>
                                         <option value="lot" {{$data->unit_of_measure=='lot'?'selected':''}}>Lot</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Categories</label>
+                                    <select name="categories[]" id="categories" class="form-control" multiple>
+                                        @foreach($categories as $category)
+                                            <option  {{array_key_exists($category->id, $data->categories)?'selected':''}} value="{{$category->id}}">{{$category->parent_id?$category->parentCat->display_name.' - ':''}}{{$category->display_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -241,6 +251,10 @@
         $(document).ready(function () {
             $('.summernote').summernote();
 
+            $("#categories").select2({
+                theme: 'bootstrap4',
+                // placeholder: "",
+            });
             $("#from_user_id").select2({
                 theme: 'bootstrap4',
                 // placeholder: "",

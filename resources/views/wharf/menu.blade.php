@@ -6,6 +6,7 @@
     <li class="{{ (request()->is('market-place*')) && !request()->is('market-place-*') ? 'active' : '' }}">
         <a href="#"><i class="fa fa-shopping-bag"></i> <span class="nav-label">Marketplace</span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
+            <li class="{{ (request()->is('market-place-listinbanyerag')) ? 'active' : '' }}"><a href="{!! route('market-place-listing') !!}">Browse</a></li>
             <li class="{{ (request()->is('market-place')) ? 'active' : '' }}"><a href="{!! route('market-place.index') !!}">My List</a></li>
             <li class="{{ (request()->is('market-place/create')) ? 'active' : '' }}"><a href="{!! route('market-place.create') !!}">Create</a></li>
         </ul>
