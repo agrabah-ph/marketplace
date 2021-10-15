@@ -405,7 +405,7 @@ if (!function_exists('getServiceFee')) {
                         $serviceFee = $quantity;
                         break;
                     case 'lot':
-                    case 'bayera':
+                    case 'banyera':
                         $serviceFee = $bid * (floatval(settings('service_fee_percentage')) / 100) ;
                         break;
                 }
@@ -415,7 +415,7 @@ if (!function_exists('getServiceFee')) {
                         $serviceFee = $quantity;
                         break;
                     case 'lot':
-                    case 'bayera':
+                    case 'banyera':
                         $serviceFee = $bid * (floatval(settings('service_fee_percentage')) / 100) ;
                         break;
                 }
