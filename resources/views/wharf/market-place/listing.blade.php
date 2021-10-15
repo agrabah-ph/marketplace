@@ -81,7 +81,7 @@
                                         @if(count($category->childrenCat) > 0)
                                             <ul>
                                                 @foreach($category->childrenCat as $childCategory)
-                                                    <li>
+                                                    <li class="{{request()->cat == $childCategory->id?'active':''}}">
                                                         <label for="cat_{{$childCategory->id}}" class="mb-0  w-100">
                                                         <input type="radio" name="cat" class="d-none filter_trigger" id="cat_{{$childCategory->id}}" value="{{$childCategory->id}}">
                                                 {{$childCategory->display_name}}
