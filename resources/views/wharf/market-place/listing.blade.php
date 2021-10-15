@@ -25,7 +25,7 @@
     </div>
 
     <div id="app" class="wrapper wrapper-content">
-        <div class="banner-section">
+        <div class="banner-section test">
             <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')"></div>
         </div>
         <div class="row marketplace-container">
