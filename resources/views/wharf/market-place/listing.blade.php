@@ -25,8 +25,20 @@
     </div>
 
     <div id="app" class="wrapper wrapper-content">
-        <div class="banner-section test">
-            <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')"></div>
+        <div class="banner-section">
+            <div class="banner-container-mobile d-block d-lg-none">
+                <img src="{{ asset('images/wharf/banners/banner-1.png') }}" alt="banner" class="img-fluid d-block mx-auto">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>@if(isCommunityLeader()) Sell At Retail @else Freshness direct from the farm @endif</h3>
+                </div>
+            </div>
+            <div class="banner-container d-none d-lg-block" style="background-image: url('{{ asset('images/wharf/banners/banner-1.png') }}')">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>@if(isCommunityLeader()) Sell At Retail @else Freshness direct from the farm @endif</h3>
+                </div>
+            </div>
         </div>
         <div class="row marketplace-container">
             <div class="col-12 col-lg-3 filters">
@@ -96,13 +108,13 @@
                                     <div class="card">
                                         <div class="card-img">
                                             <div class="img" style="background-image: url({!! ($data->hasMedia('market-place')? url('/').$data->getFirstMediaUrl('market-place'):'')  !!})"></div>
-                                            <a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}">
-                                                @if($data->quantity>0)
-                                                    <i class="fa fa-cart-plus"></i> Add to Cart
-                                                @else
-                                                    Sold Out
-                                                @endif
-                                            </a>
+                                            {{--<a href="#" class="add-to-cart float d-none d-lg-block"  data-name="{{$data->name}}" data-id="{{$data->id}}">--}}
+                                                {{--@if($data->quantity>0)--}}
+                                                    {{--<i class="fa fa-cart-plus"></i> Add to Cart--}}
+                                                {{--@else--}}
+                                                    {{--Sold Out--}}
+                                                {{--@endif--}}
+                                            {{--</a>--}}
                                         </div>
                                         <div class="card-content">
                                             <div class="title">{{$data->name}}</div>
@@ -117,7 +129,7 @@
                                             </small><br>
                                             <small class="text-muted"><i class="fa fa-cubes"></i> {{$data->quantity>0?$data->quantity.$data->unit_of_measure_short:'Sold out'}}</small><br>
 
-                                            <a href="#" class="add-to-cart d-block d-lg-none"  data-name="{{$data->name}}" data-id="{{$data->id}}">
+                                            <a href="#" class="add-to-cart @if($data->quantity<0) sold-out @endif"  data-name="{{$data->name}}" data-id="{{$data->id}}">
                                                 @if($data->quantity>0)
                                                     <i class="fa fa-cart-plus"></i> Add to Cart
                                                 @else

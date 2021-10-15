@@ -25,6 +25,22 @@
 
     <div id="app" class="wrapper wrapper-content">
 
+        <div class="banner-section mb-4">
+            <div class="banner-container-mobile d-block d-lg-none">
+                <img src="{{ asset('images/wharf/banners/banner-4.png') }}" alt="banner" class="img-fluid d-block mx-auto">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>Sell at Wholesale</h3>
+                </div>
+            </div>
+            <div class="banner-container d-none d-lg-block" style="background-image: url('{{ asset('images/wharf/banners/banner-4.png') }}')">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>Sell at Wholesale</h3>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">

@@ -120,7 +120,31 @@
 
                                         <div class="ibox-content">
                                             <div class="row align-items-center justify-content-around">
-                                                <div class="col-12 col-lg-8 px-3 status-list" >
+                                                <div class="col-12 col-lg-8 px-3 status-list version-2" >
+                                                    <ul>
+                                                        <li class="{{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                            <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/shopping-cart-loaded--v1.png"/></div>
+                                                            <div class="label">Order Placed</div>
+                                                        </li>
+                                                        <li class="{{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                            <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/paid-bill.png"/></div>
+                                                            <div class="label">Payment Verified</div>
+                                                        </li>
+                                                        <li class="{{(array_key_exists('approved', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                            <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/data-arrived.png"/></div>
+                                                            <div class="label">Order Approved</div>
+                                                        </li>
+                                                        <li class="{{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                            <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/deliver-food.png"/></div>
+                                                            <div class="label">On Delivery</div>
+                                                        </li>
+                                                        <li class="{{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                            <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/checked-truck.png"/></div>
+                                                            <div class="label">Delivered</div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-12 col-lg-8 px-3 status-list d-none" >
                                                     <span class="status-item font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
                                                     <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 

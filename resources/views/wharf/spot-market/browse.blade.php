@@ -27,14 +27,17 @@
     <div id="app" class="wrapper wrapper-content">
 
         <div class="banner-section mb-4">
-            <div class="tagline">
-                <h1>Online Marketplace</h1>
-                <h3>Freshness direct from the farm</h3>
-            </div>
-            <div class="banner-container" style="background-image: url('{{ asset('images/wharf/banner-1.jpg') }}')">
+            <div class="banner-container-mobile d-block d-lg-none">
+                <img src="{{ asset('images/wharf/banners/banner-3.png') }}" alt="banner" class="img-fluid d-block mx-auto">
                 <div class="tagline">
                     <h1>Online Marketplace</h1>
-                    <h3>Freshness direct from the farm</h3>
+                    <h3>Bid for the Best Selection</h3>
+                </div>
+            </div>
+            <div class="banner-container d-none d-lg-block" style="background-image: url('{{ asset('images/wharf/banners/banner-3.png') }}')">
+                <div class="tagline">
+                    <h1>Online Marketplace</h1>
+                    <h3>Bid for the Best Selection</h3>
                 </div>
             </div>
         </div>

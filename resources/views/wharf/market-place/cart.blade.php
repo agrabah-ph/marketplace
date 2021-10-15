@@ -383,13 +383,13 @@
            }
            $(this).parent().find('input').val(new_value).trigger('keyup');
 
-
-
-
-           console.log('id => ' + id);
-           console.log('action => ' + action);
-           console.log('old_value => ' + old_value);
-           console.log('new_value => ' + new_value);
+//
+//
+//
+//           console.log('id => ' + id);
+//           console.log('action => ' + action);
+//           console.log('old_value => ' + old_value);
+//           console.log('new_value => ' + new_value);
         });
     </script>
 @endsection

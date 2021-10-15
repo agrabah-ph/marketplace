@@ -125,7 +125,32 @@
 
                                     <div class="ibox-content">
                                         <div class="row align-items-center justify-content-around">
-                                            <div class="col-12 col-lg-8 px-3 status-list" >
+
+                                            <div class="col-12 col-lg-8 px-3 status-list version-2" >
+                                                <ul>
+                                                    <li class="{{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                        <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/shopping-cart-loaded--v1.png"/></div>
+                                                        <div class="label">Order Placed</div>
+                                                    </li>
+                                                    <li class="{{(array_key_exists('payment_verified', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                        <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/paid-bill.png"/></div>
+                                                        <div class="label">Payment Verified</div>
+                                                    </li>
+                                                    <li class="{{(array_key_exists('approved', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                        <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/data-arrived.png"/></div>
+                                                        <div class="label">Order Approved</div>
+                                                    </li>
+                                                    <li class="{{(array_key_exists('delivery', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                        <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/deliver-food.png"/></div>
+                                                        <div class="label">On Delivery</div>
+                                                    </li>
+                                                    <li class="{{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "highlighted" : "")}}">
+                                                        <div class="icon"><img src="https://img.icons8.com/ios/25/9ed35a/checked-truck.png"/></div>
+                                                        <div class="label">Delivered</div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-12 col-lg-8 px-3 status-list d-none" >
                                                 <span class="status-item font-bold {{(array_key_exists('new', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Order Placed</span>
                                                 <i class="fa fa-chevron-right text-muted" style="font-size: 14px"></i>
 
@@ -214,41 +239,45 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <span class="font-bold {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">Delivered</span>
                                 </div>
-                                <div class="col text-right">
-                                    <strong>Grand Total: ₱{{number_format($order->total)}}</strong>
+                                <div class="col text-right item-footer">
+                                    <span class="font-bold status {{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "text-green" : "text-muted")}}">{{(array_key_exists('delivered', getMarketplaceOrderStatuses($order->id)) ? "Delivered" : "IN Progress")}}</span>
 
-                                    @if(!array_key_exists('approved', getMarketplaceOrderStatuses($order->id)))
-                                        <form action="{{route('market-place.approve')}}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" value="{{$order->id}}" name="id">
-                                            <button class="btn btn-primary float-right"><i class="fa fa fa-thumbs-up"></i>
-                                                Approve
-                                            </button>
-                                        </form>
-                                    @endif
-                                    @if($order->status->status == 'approved')
-                                        <form action="{{route('market-place-deliver')}}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" value="{{$order->id}}" name="id">
-                                            <button class="btn btn-primary float-right"><i class="fa fa fa-truck"></i>
-                                                Deliver
-                                            </button>
-                                        </form>
-                                    @endif
-                                    @if($order->status->status == 'delivery')
-                                        <form action="{{route('market-place-delivered')}}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" value="{{$order->id}}" name="id">
-                                            <button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>
-                                                Delivered
-                                            </button>
-                                        </form>
-                                    @endif
+                                    <div class="group">
+                                        <strong class="grand-total">Grand Total: <span class="num">₱{{number_format($order->total)}}</span></strong>
+
+                                        @if(!array_key_exists('approved', getMarketplaceOrderStatuses($order->id)))
+                                            <form action="{{route('market-place.approve')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" value="{{$order->id}}" name="id">
+                                                <button class="btn btn-primary float-right"><i class="fa fa fa-thumbs-up"></i>
+                                                    Approve
+                                                </button>
+                                            </form>
+                                        @endif
+                                        @if($order->status->status == 'approved')
+                                            <form action="{{route('market-place-deliver')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" value="{{$order->id}}" name="id">
+                                                <button class="btn btn-primary float-right"><i class="fa fa fa-truck"></i>
+                                                    Deliver
+                                                </button>
+                                            </form>
+                                        @endif
+                                        @if($order->status->status == 'delivery')
+                                            <form action="{{route('market-place-delivered')}}" method="post"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" value="{{$order->id}}" name="id">
+                                                <button class="btn btn-primary float-right"><i class="fa fa fa-home"></i>
+                                                    Delivered
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

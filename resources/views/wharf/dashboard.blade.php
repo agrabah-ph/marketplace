@@ -351,6 +351,7 @@
                         </div>
                     </div>
                 @else
+                    @if(getRoleName() == 'buyer')
                     <div class="row revenue">
                         <div class="col-12 col-lg-6">
                             <div class="ibox today">
@@ -381,6 +382,8 @@
                             </div>
                         </div>
                     </div>
+
+                    @endif
 
 
                     <div class="ibox d-none">
@@ -511,6 +514,7 @@
             </div>
             <div class="col-lg-3">
                 @if(!$isCommunityLeader)
+                    @if(getRoleName() == 'buyer')
                     <a href="{{ route('market-place-cart') }}">
                         <div class="ibox cart-summary">
                             <div class="ibox-content">
@@ -519,7 +523,7 @@
                                         <i class="fa fa-cart-plus"></i> <span>Cart</span>
                                     </div>
                                     <div class="col-8 right">
-                                        <div class="count">0</div>
+                                        <div class="count">{{getUserMarketplaceCartCount()}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -527,6 +531,7 @@
                         </div>
                     </a>
 
+                    @endif
                 @endif
                 <div class="ibox ">
                     <div class="ibox-title">

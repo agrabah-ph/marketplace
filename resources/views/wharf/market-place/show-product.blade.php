@@ -85,8 +85,13 @@
 {{--                                    </div>--}}
 {{--                                </div>--}}
                                 <div>
-                                    <div class="btn-group">
-                                        <a href="#" class="add-to-cart w-100"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
+                                    <div class="btn-group cart-list">
+                                        <div class="counter">
+                                            <div class="counter-trigger counter-minus" data-id="{{ $data->id }}" data-action="minus"><img src="https://img.icons8.com/ios/20/000000/minus-math.png"/></div>
+                                            <input type="text" class="form-control changeSummaryTotal"  data-id="{{$data->id}}" data-price="{{$data->selling_price}}" value="1" placeholder="1">
+                                            <div class="counter-trigger counter-plus" data-id="{{ $data->id }}" data-action="plus"><img src="https://img.icons8.com/ios/20/000000/plus-math.png"/></div>
+                                        </div>
+                                        <a href="#" class="add-to-cart w-100 mt-0"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
                                         {{--<button class="btn btn-primary btn-sm add-to-cart" data-name="{{$data->name}}" data-id="{{$data->id}}"><i class="fa fa-cart-plus"></i> Add to cart</button>--}}
 {{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Add to wishlist <small>Coming Soon!</small></button>--}}
 {{--                                        <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with author </button>--}}
@@ -212,4 +217,31 @@
             }
         });
     </script>
+
+    <script>
+        $(document).on('click', '.counter-trigger', function () {
+            var id = $(this).data('id');
+            var action = $(this).data('action');
+            var old_value = $(this).parent().find('input').val();
+            var new_value = 0;
+
+            if(action == 'plus') {
+                new_value = Number(old_value) + 1;
+            }else {
+                if(old_value != 0) {
+                    new_value = Number(old_value) - 1;
+                }
+            }
+            $(this).parent().find('input').val(new_value).trigger('keyup');
+
+
+
+
+            console.log('id => ' + id);
+            console.log('action => ' + action);
+            console.log('old_value => ' + old_value);
+            console.log('new_value => ' + new_value);
+        });
+    </script>
+
 @endsection
