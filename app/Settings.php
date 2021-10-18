@@ -11,4 +11,9 @@ class Settings extends Model
         'name', 'display_name', 'value', 'is_active'
     ];
 
+
+    public function profile()
+    {
+        return $this->morphOne(Profile::class, 'model');
+    }
 }

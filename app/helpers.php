@@ -211,13 +211,15 @@ if (!function_exists('getRoleNameByID')) {
     {
         $data = User::find($id);
         $info = null;
-        switch($type){
-            case 'name':
-                $info = $data->roles->pluck('name');
-                break;
-            case 'display_name':
-                $info = $data->roles->pluck('display_name');
-                break;
+        if($data){
+            switch($type){
+                case 'name':
+                    $info = $data->roles->pluck('name');
+                    break;
+                case 'display_name':
+                    $info = $data->roles->pluck('display_name');
+                    break;
+            }
         }
         $info =  substr($info, 2);
         $info =  substr($info, 0, -2);
@@ -291,7 +293,7 @@ if (!function_exists('currency_format')) {
 if (!function_exists('settings')) {
     function settings($setting)
     {
-        $settingQuery =  \Illuminate\Support\Facades\DB::table('settings')->where('name', $setting)->first();
+        $settingQuery =  \Illuminate\Support\Facades\DB::table('settings')->where('name', $setting)->whereIsActive(1)->first();
         if($settingQuery){
             return $settingQuery->value;
         }

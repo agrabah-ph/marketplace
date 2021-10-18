@@ -42,7 +42,64 @@
                         <div class="ibox-title">
                             <div class="ibox-tools">
                             </div>
-                            <h5>Winning Bids</h5>.
+                            <h5>Expiring Bids</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table shoping-cart-table">
+                                        <tbody>
+                                        @foreach($expiringAuctionResult as $item)
+                                            @php
+                                                $currentBid = 0;
+                                                if($item->spot_market_bids){
+                                                    $currentBid = $item->current_bid;
+                                                }
+                                                $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $currentBid, 'market_place');
+                                            @endphp
+                                            <tr>
+                                                <td>
+                                                    <div class="cart-product-imitation">
+                                                        {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                    </div>
+                                                    <br>
+                                                </td>
+                                                <td class="text-left">
+                                                    Asking Price: <br>{{currency_format($item->selling_price)}}
+                                                </td>
+                                                <td class="text-left">
+                                                    Current Bid: <br>{{currency_format($currentBid)}}
+                                                </td>
+                                                <td class="text-left">
+                                                    Expiring At: <br>{{($item->expiration_time)}}
+                                                </td>
+                                                <td class="desc">
+                                                    <h3>
+                                                        <a href="#" class="text-navy">
+                                                            <a href="{{route('market-place.show', $item->id)}}"
+                                                               class="product-name"> {{$item->name}}</a>
+                                                        </a>
+                                                    </h3>
+                                                    {!! $item->description !!}
+                                                </td>
+                                                <td>
+                                                    <h4>
+                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <div class="ibox-tools">
+                            </div>
+                            <h5>Winning Bids</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="tabs-container">

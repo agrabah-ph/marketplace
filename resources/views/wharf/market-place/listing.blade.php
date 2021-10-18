@@ -129,13 +129,15 @@
                                             </small><br>
                                             <small class="text-muted"><i class="fa fa-cubes"></i> {{$data->quantity>0?$data->quantity.$data->unit_of_measure_short:'Sold out'}}</small><br>
 
-                                            <a href="#" class="add-to-cart @if($data->quantity<0) sold-out @endif"  data-name="{{$data->name}}" data-id="{{$data->id}}">
-                                                @if($data->quantity>0)
-                                                    <i class="fa fa-cart-plus"></i> Add to Cart
-                                                @else
+                                            @if($data->quantity>0)
+                                                <a href="#" class="add-to-cart"  data-name="{{$data->name}}" data-id="{{$data->id}}">
+                                                        <i class="fa fa-cart-plus"></i> Add to Cart
+                                                </a>
+                                            @else
+                                                <a href="#" class="add-to-cart sold-out "  data-name="{{$data->name}}" data-id="{{$data->id}}">
                                                     Sold Out
-                                                @endif
-                                            </a>
+                                                </a>
+                                            @endif
                                         </div>
                                         <div class="price">₱{{$data->selling_price}}</div>
                                     </div>

@@ -68,6 +68,16 @@
                                 </h2>
                                 <div class="small"><i class="fa fa-map-marker"></i> {{$data->area??'No Area'}}</div>
                                 <div class="small"><i class="fa fa-truck"></i>  {{$data->fromFarmer->name??'No Supplier'}}</div>
+                                <small class="text-muted"><i class="fa fa-tags"></i>
+                                    @forelse($data->categoriesRel as $category)
+                                        <span class="badge badge-primary">{{$category->display_name}}</span>
+                                    @empty
+                                        -
+                                    @endforelse
+
+                                </small><br>
+                                <small class="text-muted"><i class="fa fa-cubes"></i> {{$data->quantity>0?$data->quantity.$data->unit_of_measure_short:'Sold out'}}</small><br>
+
 
                                 <div class="m-t-md">
                                 </div>
@@ -85,10 +95,14 @@
 {{--                                    </div>--}}
 {{--                                </div>--}}
                                 <div>
+                                    <div class="alert alert-danger out-f-stk" style="display: none">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <strong id="error_msg">Not Enough stock!</strong>
+                                    </div>
                                     <div class="btn-group cart-list">
                                         <div class="counter">
                                             <div class="counter-trigger counter-minus" data-id="{{ $data->id }}" data-action="minus"><img src="https://img.icons8.com/ios/20/000000/minus-math.png"/></div>
-                                            <input type="text" class="form-control changeSummaryTotal"  data-id="{{$data->id}}" data-price="{{$data->selling_price}}" value="1" placeholder="1">
+                                            <input type="text" class="form-control qty"  data-id="{{$data->id}}" data-qty="{{$data->quantity}}" value="1" placeholder="1">
                                             <div class="counter-trigger counter-plus" data-id="{{ $data->id }}" data-action="plus"><img src="https://img.icons8.com/ios/20/000000/plus-math.png"/></div>
                                         </div>
                                         <a href="#" class="add-to-cart w-100 mt-0"  data-name="{{$data->name}}" data-id="{{$data->id}}"> <i class="fa fa-cart-plus"></i> Add to Cart  </a>
@@ -184,32 +198,34 @@
                 e.preventDefault();
                 var itemId = $(this).data('id');
                 var item = $(this).data('name');
-                addToCart(itemId, item);
+                var qtyElem = $('.qty');
+                var qty =  qtyElem.val();
+                var stock = qtyElem.data('qty');
+
+                addToCart(itemId, item, qty);
             })
 
-            function addToCart(id, item){
+            function addToCart(id, item, qty){
 
                 $.ajax({
                     url: "{{route('market-place-add_cart')}}",
                     type:"POST",
                     data:{
                         id:id,
-                        _token: $('meta[name="csrf-token"]').attr('content')
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        qty:qty,
                     },
                     success:function(response){
-                        if(response>0){
-                            $('#spot_market_cart_count').html(response);
+                        if(response.status){
+                            $('#spot_market_cart_count').html(response.count);
                             $('#item_added_to_cart').html(item);
                             $('#toast-message').html("has been added to cart.");
                             toast1.removeClass('toast-danger');
                             toast1.addClass('toast-success');
                             toast1.toast('show');
                         }else{
-                            $('#item_added_to_cart').html("Error");
-                            $('#toast-message').html("not enough stocks.");
-                            toast1.removeClass('toast-success');
-                            toast1.addClass('toast-danger');
-                            toast1.toast('show');
+                            $('.out-f-stk').show();
+                            $('#error_msg').html(response.msg);
                         }
 
                     },

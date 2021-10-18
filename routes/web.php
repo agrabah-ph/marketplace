@@ -83,6 +83,7 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
     Route::get('market-place-listing', 'MarketPlaceCartingController@index')->name('market-place-listing');
     Route::get('market-place-cart', 'MarketPlaceCartingController@cart')->name('market-place-cart');
+    Route::post('market-place-cart-validate', 'MarketPlaceCartingController@cartValidate')->name('market-place-cart-validate');
     Route::get('market-place-my-orders', 'MarketPlaceCartingController@myOrders')->name('market-place-my_orders');
     Route::get('market-place-show/{id}', 'MarketPlaceCartingController@show')->name('market-place-show');
     Route::post('market-place-add-to-cart', 'MarketPlaceCartingController@addToCart')->name('market-place-add_cart');
@@ -99,6 +100,8 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
     Route::post('market-place-make-winner', 'MarketPlaceController@makeWinner')->name('market-place.make_winner');
     Route::get('market-place-winning-bids', 'MarketPlaceController@winningBids')->name('market-place.winning_bids');
     Route::post('market-place-complete-bid', 'MarketPlaceController@completeBid')->name('market-place.complete_bid');
+
+    Route::get('market-place-notify-email', 'MarketPlaceController@notifyEmail')->name('market-place.notify_email');
 
     Route::resource('purchase-order', 'PurchaseOrderController');
     Route::resource('spot-market', 'SpotMarketController');

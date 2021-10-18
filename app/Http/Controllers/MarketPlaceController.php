@@ -109,6 +109,17 @@ class MarketPlaceController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return \Illuminate\Http\Response
+     */
+    public function notifyEmail(Request $request)
+    {
+        return view('emails.wharf.notification_bfar');
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index(Request $request)

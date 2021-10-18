@@ -8,6 +8,7 @@ use App\Loan;
 use App\ReverseBidding;
 use App\ReverseBiddingBid;
 use App\Services\LoanService;
+use App\Services\NotificationService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
 use App\SpotMarketBid;
@@ -22,12 +23,17 @@ use Illuminate\Support\Facades\Log;
 
 class ReverseBiddingController extends Controller
 {
+    /**
+     * @var NotificationService
+     */
+    private $notificationService;
 
     /**
-     * @var LoanService
+     * @var NotificationService
      */
-    public function __construct()
+    public function __construct(NotificationService $notificationService)
     {
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -79,7 +85,13 @@ class ReverseBiddingController extends Controller
         $spotMarket->status = 1;
         $spotMarket->save();
 
-        return redirect()->back();
+        if($method == 'transport'){
+            return $spotMarket->from;
+            $this->notificationService->notifyBFAR($spotMarket);
+        }
+
+
+//        return redirect()->back();
     }
     /**
      * Display a listing of the resource.

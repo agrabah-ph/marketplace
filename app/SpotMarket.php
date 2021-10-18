@@ -28,6 +28,11 @@ class SpotMarket extends Model implements HasMedia
         'unit_of_measure',
     ];
 
+    public function from()
+    {
+        return $this->morphTo();
+    }
+
     public function fromFarmer()
     {
         return $this->belongsTo(User::class, 'from_user_id');

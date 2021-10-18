@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Trace;
-use Illuminate\Http\Request;
+use App\BfarNotifications;
 
 class BfarController extends Controller
 {
     public function traceIndex()
     {
-        $datas = Trace::get();
+        $datas = BfarNotifications::get();
         return view('trace.bfar.index', compact('datas'));
     }
 

@@ -10,6 +10,7 @@ use App\MarketPlaceBid;
 use App\ReverseBidding;
 use App\ReverseBiddingBid;
 use App\Services\LoanService;
+use App\Services\NotificationService;
 use App\Services\SpotMarketOrderService;
 use App\SpotMarket;
 use App\SpotMarketBid;
@@ -28,13 +29,18 @@ class SpotMarketController extends Controller
      * @var SpotMarketOrderService
      */
     private $spotMarketOrderService;
+    /**
+     * @var NotificationService
+     */
+    private $notificationService;
 
     /**
      * @var LoanService
      */
-    public function __construct(SpotMarketOrderService $spotMarketOrderService)
+    public function __construct(SpotMarketOrderService $spotMarketOrderService, NotificationService $notificationService)
     {
         $this->spotMarketOrderService = $spotMarketOrderService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -151,6 +157,10 @@ class SpotMarketController extends Controller
         $spotMarket->method = $method;
         $spotMarket->status = 1;
         $spotMarket->save();
+
+        if($method == 'transport'){
+            return $this->notificationService->notifyBFAR($spotMarket->name, $spotMarket->area, $spotMarket->current_bid);
+        }
 
         return redirect()->back();
     }

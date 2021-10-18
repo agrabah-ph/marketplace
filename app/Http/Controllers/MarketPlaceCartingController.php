@@ -115,14 +115,17 @@ class MarketPlaceCartingController extends Controller
     public function show($id)
     {
         $data = MarketPlace::find($id);
-        return view('wharf.market-place.show-product', compact('data'));
+        $order = MarketplaceCart::where('user_id', auth()->user()->id)
+            ->where('market_place_id',$id)
+            ->first();
+        return view('wharf.market-place.show-product', compact('data','order'));
     }
 
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function addToCart(Request $request)
     {
@@ -131,14 +134,29 @@ class MarketPlaceCartingController extends Controller
             'user_id' => auth()->user()->id,
             'market_place_id' => $request->id
         ];
+        $checkQuantity = 1;
+        if($request->has('qty')){
+            $checkQuantity =  $request->get('qty');
+        }
+
         $marketPlace = MarketplaceInventory::where('market_place_id', $request->id)->sum('quantity');
-        if($marketPlace >= 1){
+        $cart = MarketplaceCart::where($array)->get();
+        if($cart){
+            $cartQuantity = $cart->sum('quantity');
+            if($cartQuantity > 0){
+                if($cartQuantity >= $marketPlace){
+                    return response()->json(['status'=>false,'msg'=> "Sorry, can't add more, but you have ".$cartQuantity." in your cart!" ,'count'=>getUserMarketplaceCartCount()]);
+                }
+            }
+        }
+
+        if($marketPlace >= $checkQuantity){
             $cart = MarketplaceCart::firstOrNew($array);
             $cart->quantity = $cart->quantity + 1;
             $cart->save();
-            return getUserMarketplaceCartCount();
+            return response()->json(['status'=>true,'count'=>getUserMarketplaceCartCount()]);
         }
-        return 0;
+        return response()->json(['status'=>false,'msg'=>'Not Enough Stocks!','count'=>getUserMarketplaceCartCount()]);
 
     }
 
@@ -170,6 +188,45 @@ class MarketPlaceCartingController extends Controller
 
     }
 
+    public function cartValidate(Request $request)
+    {
+
+        $formStringify = $request->input('form');
+        $form = json_decode($formStringify,true);
+        DB::beginTransaction();
+        $errors = [];
+        foreach($form as $row){
+            $marketPlace = MarketplaceInventory::where('market_place_id', $row['id'])->sum('quantity');
+            if($marketPlace <= 0){
+                if($row['qty'] > 0){
+                    $errors[]  = [
+                        'id'=>$row['id'],
+                        'form'=>$form,
+                        'msg'=>'Out of stock.',
+                        'stock'=> $marketPlace
+                    ];
+                }
+            }else{
+                if($row['qty'] > $marketPlace){
+                    $errors[]  = [
+                        'id'=>$row['id'],
+                        'form'=>$form,
+                        'msg'=>'Only '.$marketPlace.' stock(s) left.',
+                        'stock'=> $marketPlace
+                    ];
+                }
+            }
+        }
+        if($errors)
+            return response()->json(['status'=>false, 'errors'=> $errors]);
+
+        return response()->json([
+            'form'=>$form,
+            'status'=>true,
+            'errors'=> $errors
+        ]);
+
+    }
 
     public function lockInOrder(Request $request)
     {

@@ -76,6 +76,8 @@ class HomeController extends Controller
         $winningBids = [];
         $winningBidsMarketplace = [];
         $winningBidsReverseBidding = [];
+        $expiringAuctionResult = [];
+        $expiringMarketplaceResult = [];
         $products = [];
         $isCommunityLeader = false;
         if(auth()->user()->farmer){
@@ -89,7 +91,7 @@ class HomeController extends Controller
 
                 $winningBids = SpotMarket::whereIn('id', $spotMarketBidsWins)->get();
 
-                $marketplaceList = auth()->user()->farmer->marketPlace->where('expiration_time','<',Carbon::parse())->pluck('id')->toArray();
+                $marketplaceList = auth()->user()->farmer->marketPlace->where('expiration_time','>',Carbon::parse())->pluck('id')->toArray();
 
                 $marketplaceBidsWinsQuery = MarketPlaceBid::query();
                 $marketplaceBidsWinsQuery = $marketplaceBidsWinsQuery->Where('winner', 1);
@@ -97,6 +99,12 @@ class HomeController extends Controller
                 $marketplaceBidsWins = $marketplaceBidsWinsQuery->pluck('market_place_id')->toArray();
 
                 $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
+
+
+                $expiringAuctionResult = auth()->user()->farmer->spotMarket->where('expiration_time','>',Carbon::parse());
+                $expiringMarketplaceResult = auth()->user()->farmer->marketPlace->where('expiration_time','>',Carbon::parse());
+
+
 
                 $reverseBiddingQuery = ReverseBiddingBid::query();
                 $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
@@ -148,6 +156,8 @@ class HomeController extends Controller
             'winningBids',
             'winningBidsMarketplace',
             'winningBidsReverseBidding',
+            'expiringAuctionResult',
+            'expiringMarketplaceResult',
             'products'
         ));
 
