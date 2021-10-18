@@ -25,6 +25,15 @@
 
     <div id="app" class="wrapper wrapper-content">
 
+
+        @if(getRoleName() == 'enterprise-client')
+            <div class="banner-section mb-4">
+                <div class="banner-container-mobile">
+                    <img src="{{ asset('images/wharf/banners/banner-7.png') }}" alt="banner" class="img-fluid d-block mx-auto">
+                </div>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">

@@ -7,8 +7,19 @@
 
     <div id="app" class="wrapper wrapper-content">
         <div class="row">
+            <div class="col-12">
+            @if(getRoleName() == 'enterprise-client')
+                <div class="banner-section mb-4">
+                    <div class="banner-container-mobile">
+                        <img src="{{ asset('images/wharf/banners/banner-7.png') }}" alt="banner" class="img-fluid d-block mx-auto">
+                    </div>
+                </div>
+            @endif
+            </div>
             <div class="col-lg-9">
-                @if($isCommunityLeader)
+
+
+            @if($isCommunityLeader)
                     <div class="ibox">
                         <div class="ibox-title">
                             <div class="ibox-tools">
