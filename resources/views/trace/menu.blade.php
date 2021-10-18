@@ -3,9 +3,6 @@
 </li>
 
 @if(auth()->user()->hasRole('bfar'))
-    <li class="{{ (request()->is('bfar*')) ? 'active' : '' }}">
-        <a href="{!! route('trace-bfar') !!}"><i class="fa fa-cubes"></i> <span class="nav-label">Trace</span></a>
-    </li>
 @endif
 
 @if(auth()->user()->hasRole('community-leader'))

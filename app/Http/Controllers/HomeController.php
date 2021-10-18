@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\BfarNotifications;
+use App\Exports\BfarReport;
+use App\Exports\Report;
 use App\Farmer;
 use App\Inventory;
 use App\Loan;
@@ -17,6 +20,7 @@ use App\Trace;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -36,10 +40,31 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request  $request)
     {
         if (auth()->user()->hasRole('bfar')){
-            return view('trace.bfar.dashboard');
+
+            $datas = BfarNotifications::get();
+
+            $row = [];
+            $start = Carbon::now()->toDateString();
+            $end = Carbon::now()->toDateString();
+            if($request->has('mode') && $mode = $request->get('mode')){
+
+                $start = $request->get('start');
+                $end = $request->get('end');
+
+                $query = BfarNotifications::query();
+                $query->whereBetween('date_of_travel', [$start, $end]);
+
+                $row = $query->get();
+
+                if($mode == 'download'){
+                    return Excel::download(new BfarReport($row), Carbon::parse($start)->format('Y-m-d').' to '.Carbon::parse($end)->format('Y-m-d').' Report.xlsx');
+                }
+            }
+
+            return view('trace.bfar.dashboard',compact('datas','start', 'end'));
         }
 
         $marketplace = MarketPlace::get();
@@ -76,8 +101,8 @@ class HomeController extends Controller
         $winningBids = [];
         $winningBidsMarketplace = [];
         $winningBidsReverseBidding = [];
-        $expiringAuctionResult = [];
-        $expiringMarketplaceResult = [];
+        $expiredAuctionResult = [];
+        $expiredPo = [];
         $products = [];
         $isCommunityLeader = false;
         if(auth()->user()->farmer){
@@ -101,9 +126,9 @@ class HomeController extends Controller
                 $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
 
 
-                $expiringAuctionResult = auth()->user()->farmer->spotMarket->where('expiration_time','>',Carbon::parse());
-                $expiringMarketplaceResult = auth()->user()->farmer->marketPlace->where('expiration_time','>',Carbon::parse());
+                $expiredAuctionResult = auth()->user()->farmer->spotMarket->where('expiration_time','<',Carbon::parse());
 
+                $expiredPo = ReverseBidding::where('expiration_time', '<', now())->get();
 
 
                 $reverseBiddingQuery = ReverseBiddingBid::query();
@@ -156,8 +181,8 @@ class HomeController extends Controller
             'winningBids',
             'winningBidsMarketplace',
             'winningBidsReverseBidding',
-            'expiringAuctionResult',
-            'expiringMarketplaceResult',
+            'expiredAuctionResult',
+            'expiredPo',
             'products'
         ));
 

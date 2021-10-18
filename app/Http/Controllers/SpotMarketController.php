@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BfarNotifications;
 use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
@@ -159,7 +160,20 @@ class SpotMarketController extends Controller
         $spotMarket->save();
 
         if($method == 'transport'){
-            return $this->notificationService->notifyBFAR($spotMarket->name, $spotMarket->area, $spotMarket->current_bid);
+            $bfar_notifcation = BfarNotifications::create([
+                'from' => $request->from,
+                'product' => $request->product,
+                'quantity' => $request->quantity,
+                'unit_of_measure' => $request->unit_of_measure,
+                'destination' => $request->destination,
+                'com_leader_user_id' => auth()->user()->id,
+                'date_of_travel' => $request->date_of_travel,
+                'type_of_vehicle' => $request->type_of_vehicle
+            ]);
+            $this->notificationService->notifyBFAR($spotMarket->name, $spotMarket->area, $spotMarket->current_bid);
+        }
+        if($request->ajax()){
+            return response()->json(['status'=>true]);
         }
 
         return redirect()->back();

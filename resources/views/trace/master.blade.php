@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="pace-done template-trace">
+<body class="pace-done template-trace {{auth()->user()->hasRole('bfar')?"mini-navbar":""}}">
 
 <div id="wrapper">
 
@@ -53,7 +53,7 @@
                         </ul>
                     </div>
                     <div class="logo-element">
-                        Trace
+                        BFAR
                     </div>
                 </li>
 

@@ -83,7 +83,11 @@
                                         </td>
                                         <td class="text-left">
                                             @if($item->status == 0)
-                                            <form action="{{route('spot-market.complete_bid')}}" method="POST">
+                                            <form action="{{route('spot-market.complete_bid')}}" method="POST" class="complete_bid"
+                                                  data-id="{{$item->id}}"
+                                                  data-product="{{$item->name}}"
+                                                  data-qty="{{$item->quantity}}"
+                                                  data-uom="{{$item->unit_of_measure_short}}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{$item->id}}">
                                             <div class="form-check">

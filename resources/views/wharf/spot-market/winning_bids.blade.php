@@ -97,7 +97,11 @@
                                                 <td class="text-left">
                                                     @if($item->status == 0)
                                                         <form action="{{route('market-place.complete_bid')}}"
-                                                              method="POST">
+                                                              method="POST" class="complete_bid"
+                                                              data-id="{{$item->id}}"
+                                                              data-product="{{$item->name}}"
+                                                              data-qty="{{$item->quantity}}"
+                                                              data-uom="{{$item->unit_of_measure_short}}">
                                                             @csrf
                                                             <input type="hidden" name="id"
                                                                    value="{{$item->id}}">
@@ -195,7 +199,11 @@
                                                 <td class="text-left">
                                                     @if($item->status == 0)
                                                         <form action="{{route('spot-market.complete_bid')}}"
-                                                              method="POST">
+                                                              method="POST" class="complete_bid"
+                                                              data-id="{{$item->id}}"
+                                                              data-product="{{$item->name}}"
+                                                              data-qty="{{$item->quantity}}"
+                                                              data-uom="{{$item->unit_of_measure_short}}">
                                                             @csrf
                                                             <input type="hidden" name="id"
                                                                    value="{{$item->id}}">
@@ -293,7 +301,11 @@
                                                 <td class="text-left">
                                                     @if($item->status == 0)
                                                         <form action="{{route('reverse-bidding.complete_bid')}}"
-                                                              method="POST">
+                                                              method="POST" class="complete_bid"
+                                                              data-id="{{$item->id}}"
+                                                              data-product="{{$item->name}}"
+                                                              data-qty="{{$item->quantity}}"
+                                                              data-uom="{{$item->unit_of_measure_short}}">
                                                             @csrf
                                                             <input type="hidden" name="id"
                                                                    value="{{$item->id}}">

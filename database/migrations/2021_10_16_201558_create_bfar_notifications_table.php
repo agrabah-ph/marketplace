@@ -13,14 +13,24 @@ class CreateBfarNotificationsTable extends Migration
      */
     public function up()
     {
+        /*
+         * 1. Starting point of travel
+           2. Product - how many kg /banyera
+           4. Destination
+           5. Community leader
+           6. Date of travel
+           7. Type of vehicle
+         */
         Schema::create('bfar_notifications', function (Blueprint $table) {
             $table->id();
-            $table->integer('model_id')->nullable();
-            $table->string('model_type')->nullable();
-            $table->integer('winner_user_id')->nullable();
-            $table->integer('com_leader_user_id')->nullable();
+            $table->string('from')->nullable();
+            $table->string('product')->nullable();
+            $table->double('quantity')->nullable();
+            $table->string('unit_of_measure')->nullable();
             $table->string('destination')->nullable();
-            $table->double('worth')->nullable();
+            $table->integer('com_leader_user_id')->nullable();
+            $table->date('date_of_travel')->nullable();
+            $table->string('type_of_vehicle')->nullable();
             $table->timestamps();
         });
     }

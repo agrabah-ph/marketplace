@@ -153,6 +153,7 @@
 
         <div id="app">
             @yield('content')
+            @include('wharf.complete_bid')
         </div>
 
         <div class="footer">
@@ -195,6 +196,52 @@
         $("#printable").empty();
         var printable = $(this).data("print_target");
         printElem($(printable).clone())
+    });
+    $(document).ready(function () {
+        var complete_bid_dates = $('.complete_bid_dates').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            placement: 'bottom',
+        });
+
+    });
+    $(document).on('submit', '.complete_bid',function (e){
+        var method_selected =  $("input[type=radio]:checked",this).val();
+        if(method_selected === 'transport'){
+            e.preventDefault();
+            var form = $(this);
+            var formData = form.data();
+
+            $('#completed_bid_modal').modal('show')
+
+            var url = form.attr('action');
+            $('#complete_bid_transport_id').val(formData.id);
+            $('#complete_bid_transport_product').val(formData.product);
+            $('#complete_bid_transport_quantity').val(formData.qty);
+            $('#complete_bid_transport_unit_of_measure').val(formData.uom);
+
+            $(document).on('submit', '#completed_bid_form',function (e){
+                e.preventDefault();
+                var new_form = $('#completed_bid_form');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: new_form.serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        window.location.reload();
+                    }
+                });
+
+            });
+
+        }
+        console.log(method_selected)
+
     });
     // print_trigger
     // print_target

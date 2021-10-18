@@ -53,69 +53,12 @@
                         <div class="ibox-title">
                             <div class="ibox-tools">
                             </div>
-                            <h5>Expiring Bids</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table shoping-cart-table">
-                                        <tbody>
-                                        @foreach($expiringAuctionResult as $item)
-                                            @php
-                                                $currentBid = 0;
-                                                if($item->spot_market_bids){
-                                                    $currentBid = $item->current_bid;
-                                                }
-                                                $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $currentBid, 'market_place');
-                                            @endphp
-                                            <tr>
-                                                <td>
-                                                    <div class="cart-product-imitation">
-                                                        {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
-                                                    </div>
-                                                    <br>
-                                                </td>
-                                                <td class="text-left">
-                                                    Asking Price: <br>{{currency_format($item->selling_price)}}
-                                                </td>
-                                                <td class="text-left">
-                                                    Current Bid: <br>{{currency_format($currentBid)}}
-                                                </td>
-                                                <td class="text-left">
-                                                    Expiring At: <br>{{($item->expiration_time)}}
-                                                </td>
-                                                <td class="desc">
-                                                    <h3>
-                                                        <a href="#" class="text-navy">
-                                                            <a href="{{route('market-place.show', $item->id)}}"
-                                                               class="product-name"> {{$item->name}}</a>
-                                                        </a>
-                                                    </h3>
-                                                    {!! $item->description !!}
-                                                </td>
-                                                <td>
-                                                    <h4>
-                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}
-                                                    </h4>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <div class="ibox-tools">
-                            </div>
                             <h5>Winning Bids</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="tabs-container">
-                                <ul class="nav nav-tabs" role="tablist">
-{{--                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> Marketplace</a></li>--}}
+                                <ul class="nav nav-tabs winners_tab" role="tablist">
+                                    {{--                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> Marketplace</a></li>--}}
                                     <li><a class="nav-link active" data-toggle="tab" href="#tab-2"> Auctions</a></li>
                                     <li><a class="nav-link" data-toggle="tab" href="#tab-3"> Purchase Order</a></li>
                                 </ul>
@@ -182,7 +125,12 @@
                                                             <td class="text-left">
                                                                 @if($item->status == 0)
                                                                     <form action="{{route('market-place.complete_bid')}}"
-                                                                          method="POST">
+                                                                          method="POST" class="complete_bid"
+                                                                          data-id="{{$item->id}}"
+                                                                          data-product="{{$item->name}}"
+                                                                          data-qty="{{$item->quantity}}"
+                                                                          data-uom="{{$item->unit_of_measure_short}}"
+                                                                    >
                                                                         @csrf
                                                                         <input type="hidden" name="id"
                                                                                value="{{$item->id}}">
@@ -280,7 +228,12 @@
                                                             <td class="text-left">
                                                                 @if($item->status == 0)
                                                                     <form action="{{route('spot-market.complete_bid')}}"
-                                                                          method="POST">
+                                                                          method="POST" class="complete_bid"
+
+                                                                          data-id="{{$item->id}}"
+                                                                          data-product="{{$item->name}}"
+                                                                          data-qty="{{$item->quantity}}"
+                                                                          data-uom="{{$item->unit_of_measure_short}}">
                                                                         @csrf
                                                                         <input type="hidden" name="id"
                                                                                value="{{$item->id}}">
@@ -378,7 +331,11 @@
                                                             <td class="text-left">
                                                                 @if($item->status == 0)
                                                                     <form action="{{route('reverse-bidding.complete_bid')}}"
-                                                                          method="POST">
+                                                                          method="POST" class="complete_bid"
+                                                                          data-id="{{$item->id}}"
+                                                                          data-product="{{$item->name}}"
+                                                                          data-qty="{{$item->quantity}}"
+                                                                          data-uom="{{$item->unit_of_measure_short}}">
                                                                         @csrf
                                                                         <input type="hidden" name="id"
                                                                                value="{{$item->id}}">
@@ -406,6 +363,94 @@
                                                                 @elseif($item->status == 1)
                                                                     <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
                                                                 @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <div class="ibox-tools">
+                            </div>
+                            <h5>Expired Bids</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs expired_tabs" role="tablist">
+                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-expired-2"> Auctions</a></li>
+                                    <li><a class="nav-link" data-toggle="tab" href="#tab-expired-3"> Purchase Order</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" id="tab-expired-2" class="tab-pane active">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table shoping-cart-table">
+                                                    <tbody>
+                                                    @foreach($expiredAuctionResult as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="cart-product-imitation">
+                                                                    {!! ($item->hasMedia('spot-market')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('spot-market')."'>":'')  !!}
+                                                                </div>
+                                                            </td>
+                                                            <td class="desc">
+                                                                <h3>
+                                                                    <a href="#" class="text-navy">
+                                                                        <a href="{{route('spot-market.show', $item->id)}}"
+                                                                           class="product-name"> {{$item->name}}</a>
+                                                                    </a>
+                                                                </h3>
+                                                                {!! $item->description !!}
+                                                            </td>
+                                                            <td>
+                                                                <h4>
+                                                                    {{$item->quantity}}{{$item->unit_of_measure_short}}
+                                                                </h4>
+                                                            </td>
+                                                            <td>
+                                                                <h4>
+                                                                    {{$item->selling_price}}
+                                                                </h4>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" id="tab-expired-3" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table shoping-cart-table">
+                                                    <tbody>
+                                                    @foreach($expiredPo as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="cart-product-imitation">
+                                                                    {!! ($item->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}
+                                                                </div>
+                                                            </td>
+                                                            <td class="desc">
+                                                                <h3>
+                                                                    <a href="#" class="text-navy">
+                                                                        <a href="{{route('reverse-bidding.show', $item->id)}}"
+                                                                           class="product-name"> {{$item->name}}</a>
+                                                                    </a>
+                                                                </h3>
+                                                                {!! $item->description !!}
+                                                            </td>
+                                                            <td>
+                                                                <h4>
+                                                                    {{$item->quantity}}{{$item->unit_of_measure_short}}
+                                                                </h4>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -660,6 +705,8 @@
     {!! Html::style('/css/template/plugins/iCheck/custom.css') !!}
     {!! Html::style('/css/template/plugins/fullcalendar/fullcalendar.css') !!}
     {!! Html::style('/css/template/plugins/fullcalendar/fullcalendar.print.css') !!}
+    {!! Html::style('/css/template/plugins/datapicker/datepicker3.css') !!}
+    {!! Html::style('/css/template/plugins/daterangepicker/daterangepicker-bs3.css') !!}
     <style>
         #count_table {
 
@@ -687,9 +734,28 @@
     {!! Html::script('/js/template/plugins/iCheck/icheck.min.js') !!}
     {!! Html::script('/js/template/plugins/fullcalendar/moment.min.js') !!}
     {!! Html::script('/js/template/plugins/fullcalendar/fullcalendar.min.js') !!}
+    {!! Html::script('https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js') !!}
+    {!! Html::script('/js/template/plugins/datapicker/bootstrap-datepicker.js') !!}
+    {!! Html::script('/js/template/plugins/daterangepicker/daterangepicker.js') !!}
+    {!! Html::script('/js/template/moment.js') !!}
+    {!! Html::script('/js/template/numeral.js') !!}
     <script>
         $(document).ready(function () {
-
+            $('.winners_tab a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                console.log($(e.target).attr('href'))
+                localStorage.setItem('winnerActiveTab', $(e.target).attr('href'));
+            });
+            var winnerActiveTab = localStorage.getItem('winnerActiveTab');
+            if(winnerActiveTab){
+                $('.winners_tab a[href="' + winnerActiveTab + '"]').tab('show');
+            }
+            $('.expired_tabs a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('expiredActiveTab', $(e.target).attr('href'));
+            });
+            var expiredActiveTab = localStorage.getItem('expiredActiveTab');
+            if(expiredActiveTab){
+                $('.expired_tabs a[href="' + expiredActiveTab + '"]').tab('show');
+            }
         });
     </script>
 @endsection
