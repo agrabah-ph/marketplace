@@ -572,11 +572,11 @@
                                                     </div>
                                                 </a>
                                                 <div class="details">
-                                                    @if($item->status == 0)
-                                                        <small class="text-muted status pending">Please complete via clicking the award button. </small>
-                                                    @else
-                                                        <small class="text-muted status complete">Transaction completed </small>
-                                                    @endif
+{{--                                                    @if($item->status == 0)--}}
+{{--                                                        <small class="text-muted status pending">Auction in progress</small>--}}
+{{--                                                    @else--}}
+{{--                                                        <small class="text-muted status complete">Transaction completed </small>--}}
+{{--                                                    @endif--}}
                                                     <strong>{{$winner->name??$winner->email}}</strong>
                                                 </div>
                                             </div>
@@ -586,11 +586,11 @@
                                         </div>
                                         <div class="col-6 col-lg-4">
                                             <div class="price">₱{{number_format($winningBid, 2)}}</div>
-                                            @if($item->status)
+{{--                                            @if($item->status)--}}
                                                 <small class="text-muted float-right">{{\Carbon\Carbon::parse($item->expiration_time)->diffForHumans()}} </small>
-                                            @else
-                                                <a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>
-                                            @endif
+{{--                                            @else--}}
+{{--                                                <a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>--}}
+{{--                                            @endif--}}
 
                                         </div>
                                     </div>
