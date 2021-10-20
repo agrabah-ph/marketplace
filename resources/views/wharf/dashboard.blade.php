@@ -9,11 +9,26 @@
         <div class="row">
             <div class="col-12">
             @if(getRoleName() == 'enterprise-client')
+                {{--<div class="banner-section mb-4">--}}
+                    {{--<div class="banner-container-mobile">--}}
+                        {{--<img src="{{ asset('images/wharf/banners/banner-7.png') }}" alt="banner" class="img-fluid d-block mx-auto">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+
                 <div class="banner-section mb-4">
-                    <div class="banner-container-mobile">
+                    <div class="banner-container-mobile d-block d-lg-none">
                         <img src="{{ asset('images/wharf/banners/banner-7.png') }}" alt="banner" class="img-fluid d-block mx-auto">
+                        <div class="tagline">
+                            <h1>SOURCING MADE SIMPLE</h1>
+                        </div>
+                    </div>
+                    <div class="banner-container d-none d-lg-block" style="background-image: url('{{ asset('images/wharf/banners/banner-7.png') }}')">
+                        <div class="tagline">
+                            <h1>SOURCING MADE SIMPLE</h1>
+                        </div>
                     </div>
                 </div>
+
             @endif
             </div>
             <div class="col-lg-9">
@@ -465,36 +480,36 @@
                     </div>
                 @else
                     @if(getRoleName() == 'buyer')
-                    <div class="row revenue">
-                        <div class="col-12 col-lg-6">
-                            <div class="ibox today">
-                                <div class="ibox-title">
-                                    <div class="ibox-tools">
-                                    </div>
-                                    <h5>Today's Revenue</h5>
-                                    <div class="date">3 Oct 2021</div>
-                                </div>
-                                <div class="ibox-content">
-                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                    <div class="price">₱ 0.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <div class="ibox weekly">
-                                <div class="ibox-title">
-                                    <div class="ibox-tools">
-                                    </div>
-                                    <h5>Weekly Revenue Overview</h5>
-                                    <div class="date">1 - 10 Oct 2021</div>
-                                </div>
-                                <div class="ibox-content">
-                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                    <div class="price">₱ 0.00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {{--<div class="row revenue">--}}
+                        {{--<div class="col-12 col-lg-6">--}}
+                            {{--<div class="ibox today">--}}
+                                {{--<div class="ibox-title">--}}
+                                    {{--<div class="ibox-tools">--}}
+                                    {{--</div>--}}
+                                    {{--<h5>Today's Revenue</h5>--}}
+                                    {{--<div class="date">3 Oct 2021</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="ibox-content">--}}
+                                    {{--<i class="fa fa-line-chart" aria-hidden="true"></i>--}}
+                                    {{--<div class="price">₱ 0.00</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-12 col-lg-6">--}}
+                            {{--<div class="ibox weekly">--}}
+                                {{--<div class="ibox-title">--}}
+                                    {{--<div class="ibox-tools">--}}
+                                    {{--</div>--}}
+                                    {{--<h5>Weekly Revenue Overview</h5>--}}
+                                    {{--<div class="date">1 - 10 Oct 2021</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="ibox-content">--}}
+                                    {{--<i class="fa fa-line-chart" aria-hidden="true"></i>--}}
+                                    {{--<div class="price">₱ 0.00</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
 
                     @endif
 
