@@ -419,24 +419,37 @@ header .header-left navbar {
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-header .btn-login {
-  background-color: transparent;
+header .btn-login, header .btn-register {
   border: 1px solid #3F3F3F;
   padding: 5px 2rem;
   border-radius: 5px;
   color: #3F3F3F;
   text-decoration: none;
   margin: 10px;
-  margin-left: 2rem;
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-header .btn-login:hover {
-  background-color: #99CE5B;
-  border: 1px solid #99CE5B;
+header .btn-login:hover, header .btn-register:hover {
   -webkit-box-shadow: 1px 1px 10px rgba(153, 206, 91, 0.8);
           box-shadow: 1px 1px 10px rgba(153, 206, 91, 0.8);
+}
+header .btn-login {
+  margin-left: 2rem;
+}
+header .btn-login:hover {
+  background-color: #99CE5B;
+  border-color: #99CE5B;
   color: #fff;
+}
+header .btn-register {
+  background-color: #3A8CDD;
+  color: #fff;
+  border-color: #EFF2F4;
+}
+header .btn-register:hover {
+  background-color: #99CE5B;
+  -webkit-box-shadow: 1px 1px 10px rgba(153, 206, 91, 0.8);
+          box-shadow: 1px 1px 10px rgba(153, 206, 91, 0.8);
 }
 header.scrolled {
   -webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.4);

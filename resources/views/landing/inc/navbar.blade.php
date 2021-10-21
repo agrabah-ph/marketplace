@@ -29,6 +29,7 @@
             </ul>
         </navbar>
         <a href="@include('landing.inc.login_link')"><div class="btn-login">Login</div></a>
+        <a href="{{ url('registration') }}"><div class="btn-register d-none d-lg-block">Register</div></a>
         <div class="menu-icon menu_burger d-block d-lg-none">
             <img src="https://img.icons8.com/material-outlined/50/3A8CDD/menu.png"/>
         </div>
