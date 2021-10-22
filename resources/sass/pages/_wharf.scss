@@ -437,6 +437,10 @@
           display: flex;
           align-items: center;
 
+          @media (max-width: 500px) {
+            margin-bottom: 1rem;
+          }
+
           .cart-product-imitation {
             position: relative;
             overflow: hidden;

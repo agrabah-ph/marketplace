@@ -18,6 +18,7 @@ use App\SpotMarket;
 use App\SpotMarketBid;
 use App\Trace;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -162,6 +163,28 @@ class HomeController extends Controller
         }
 
 
+
+        $marketList = MarketPlace::query()->with('inventory','categoriesRel')
+            ->when($request->area, function($q) use ($request){
+                if($request->areas != '_all'){
+                    $q->where('area',$request->areas);
+                }
+            })
+            ->when($request->filter, function($q) use ($request){
+                $q->where('name', 'like','%'.$request->filter.'%');
+            })
+            ->when($request->cat, function($q) use ($request){
+                if($request->cat != '_all'){
+                    $q->whereHas('categoriesRel', function(Builder $builder) use ($request){
+                        $builder->where('id', $request->cat);
+                    });
+                }
+            });
+
+        $marketList= $marketList->get();
+
+
+
         /** BIDS */
 
         return view('wharf.dashboard', compact(
@@ -183,7 +206,8 @@ class HomeController extends Controller
             'winningBidsReverseBidding',
             'expiredAuctionResult',
             'expiredPo',
-            'products'
+            'products',
+            'marketList'
         ));
 
     }

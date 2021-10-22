@@ -325,6 +325,17 @@ body {
   font-size: 1rem !important;
 }
 
+.default-link {
+  display: block;
+  color: #948b96;
+  text-align: right;
+}
+@media (max-width: 500px) {
+  .default-link {
+    text-align: center;
+  }
+}
+
 .page-forms a.link {
   text-align: center;
   font-size: 0.8rem;
@@ -1778,6 +1789,11 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+@media (max-width: 500px) {
+  .template-wharf .cart-list .cart-item .column-1 {
+    margin-bottom: 1rem;
+  }
 }
 .template-wharf .cart-list .cart-item .column-1 .cart-product-imitation {
   position: relative;

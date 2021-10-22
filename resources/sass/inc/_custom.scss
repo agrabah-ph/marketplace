@@ -33,3 +33,13 @@
 .form-control {
   font-size: 1rem !important;
 }
+
+.default-link {
+  display: block;
+  color: $default;
+  text-align: right;
+
+  @media (max-width: 500px) {
+    text-align: center;
+  }
+}
