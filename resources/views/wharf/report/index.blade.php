@@ -32,6 +32,8 @@
                     <div class="ibox-content">
                         <form>
                         <div class="row">
+
+                            @if(getRoleName() != 'enterprise-client')
                             <div class="col-sm-3 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label for="">Type</label>
@@ -42,6 +44,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-sm-3 col-md-6 col-lg-3">
                                 <div class="form-group">
                                     <label for="">Date Range</label>

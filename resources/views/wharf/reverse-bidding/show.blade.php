@@ -12,7 +12,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a href="{{ route('spot-market.index') }}">Reverse Biddings</a>
+                    <a href="{{ route('reverse-bidding.index') }}">Reverse Biddings</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>@yield('title')</strong>

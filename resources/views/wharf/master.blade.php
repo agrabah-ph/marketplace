@@ -227,6 +227,8 @@
             $(document).on('submit', '#completed_bid_form',function (e){
                 e.preventDefault();
                 var new_form = $('#completed_bid_form');
+                $('#complete_bid_submit').prop('disabled',true)
+                $('#complete_bid_submit').html('<i class="fa fa-spin fa-spinner"></i>')
                 $.ajax({
                     type: "POST",
                     url: url,
