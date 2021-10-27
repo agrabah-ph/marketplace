@@ -163,7 +163,7 @@
   }
 }
 
-.mini-navbar {
+body.mini-navbar {
   .navbar-default {
     .version {
       .short {
@@ -199,7 +199,7 @@
     &:after {
       bottom: 0;
       top: auto;
-      right: 30px;
+      right: 44px;
     }
   }
 
@@ -211,7 +211,24 @@
     padding: 1rem 0;
   }
 
-  
+  .navbar-static-side {
+    width: 100px !important;
+  }
+
+  .nav-label {
+    display: block !important;
+    font-size: .8rem;
+    line-height: 14px;
+  }
+
+  li {
+    &.active {
+      .nav-second-level {
+        left: 99px;
+      }
+    }
+  }
+
 }
 
 
