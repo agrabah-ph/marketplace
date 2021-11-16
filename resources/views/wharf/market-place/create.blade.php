@@ -41,7 +41,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
                                     <img src="{{url('img/blank-landscape.jpg')}}" alt="" id="image_preview" class="mb-2" style="height: 174px;">
                                     <label class="w-100">Photo</label>
@@ -56,7 +56,7 @@
                                     <input type="text" class="form-control money" name="selling_price" required>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-lg-6">
                                 <div class="form-group">
                                     <label>Supplier</label>
                                     <select class="form-control" id="from_user_id" name="from_user_id" required>
