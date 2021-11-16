@@ -123,6 +123,7 @@ Route::middleware(['auth', 'verified', 'has_profile'])->group(function () {
 
 
     Route::post('reverse-bidding-post-bid', 'ReverseBiddingController@postBid')->name('reverse-bidding.post_bid');
+    Route::post('reverse-bidding-submit_offer', 'ReverseBiddingController@submitOfferBid')->name('reverse-bidding.submit_offer');
     Route::post('reverse-bidding-refresh-bid', 'ReverseBiddingController@refreshBid')->name('reverse-bidding.refresh_bid');
 
     Route::get('reverse-bidding-my-bids', 'ReverseBiddingController@myBids')->name('reverse-bidding.my_bids');

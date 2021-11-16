@@ -49,10 +49,8 @@
                                             <img src="{{url('/').$product->getFirstMediaUrl('reverse-bidding')}}" alt=""
                                                  class="img-md"></a>
                                         <div class="ml-1">
-                                            <strong>{{$product->user->name??$product->user->email}}</strong> selling
-                                            <strong>{{$product->name}}</strong> for
-                                            <strong>{{number_format($product->asking_price)}}</strong> current bid
-                                            <strong>{{number_format($product->current_bid)}}</strong>. <br>
+                                            <strong>{{$product->user->name??$product->user->email}}</strong> just listed a purchase order, bid now!
+                                            <br>
                                             <small class="text-muted">{{Carbon\Carbon::parse($product->expiration_time)->diffForHumans()}}
                                                 at {{Carbon\Carbon::parse($product->expiration_time)->format('h:ia')}}</small>
                                         </div>
@@ -692,9 +690,11 @@
                                                 <a href="{{route('spot-market.winning_bids')}}" class="btn btn-primary btn-xs float-right">Award</a>
                                             @endif
 
-                                            <strong>{{$winner->name??$winner->email}}</strong> won the
-                                            <strong>{{$item->name}}</strong> for
-                                            <strong>₱{{number_format($winningBid, 2)}}</strong>. <br>
+                                            @if($winner)
+                                                <strong>{{$winner->name??$winner->email}}</strong> won the
+                                                <strong>{{$item->name}}</strong> for
+                                                <strong>₱{{number_format($winningBid, 2)}}</strong>. <br>
+                                            @endif
 
                                             @if($item->status == 0)
                                                 <small class="text-muted">Please complete via clicking the award button. </small>

@@ -62,6 +62,9 @@
         </div>
         <div class="row">
             @forelse($list as $data)
+            @php
+              $allowCurrentBid = floatval($data['current_bid'])-settings('spot_market_next_bid');
+            @endphp
             <div class="col-md-3 col-sm-6">
                 <div class="ibox">
                     <div class="ibox-content product-box">
@@ -69,69 +72,38 @@
                         <div class="product-imitation" style="background-image: url('{!! ($data->hasMedia('reverse-bidding')? url('/').$data->getFirstMediaUrl('reverse-bidding'):'')  !!}')">
                         </div>
                         </a>
-
                         <div class="product-desc">
                             <span class="product-price">
-                                {{$data->area}}
+                               {{count($data->bids)>0?'Current Bid':'Starting Bid'}}  <span style="font-weight: 700">₱<span id="current_bid_{{$data->id}}">{{number_format($data['current_bid'],2)}}</span></span>
                             </span>
-                            <a href="{{route('reverse-bidding.show', $data->id)}}" class="product-name" style="font-size: 18px"> PO# {{$data->po_num}}</a>
+                            <a href="{{route('reverse-bidding.show', $data->id)}}" class="product-name" style="font-size: 18px"> {{$data->name}}</a>
+                            <div class="my-2 text-right">
+                                <div class="input-group">
+                                    <input type="text" class="form-control money input-bids" data-min="{{(count($data->bids)>0?$allowCurrentBid:$data->asking_price)}}" value="{{(count($data->bids)>0?$allowCurrentBid:$data->asking_price)}}" id="bid_value_{{$data->id}}">
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-primary btn-bid" id="btn_bid_{{$data->id}}" data-id="{{$data->id}}" data-min="{{(count($data->bids)>0?$allowCurrentBid:$data->asking_price)}}" >Bid</button>
+                                    </span>
+                                </div>
+                            </div>
                             <small class="row">
                                 <div class="col-6">
-                                    Category
-                                </div>
-                                <div class="col-6">
-                                    {{optional($data->category)->display_name}}
-                                </div>
-                                <div class="col-6">
-                                    Area
-                                </div>
-                                <div class="col-6">
-                                    {{$data->area}}
-                                </div>
-                                <div class="col-6">
-                                    Bidding Ends
-                                </div>
-                                <div class="col-6">
-                                    {{\Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s a')}}
-                                </div>
-                                <div class="col-6">
-                                    Delivery Date/Time
-                                </div>
-                                <div class="col-6">
-                                    {{\Carbon\Carbon::parse($data->delivery_date)->format('M d, Y')}}
-                                    {{\Carbon\Carbon::parse($data->delivery_type)->format('H:i:s a')}}
-                                </div>
-                                <div class="col-6">
-                                    Delivery Address
-                                </div>
-                                <div class="col-6">
-                                    {{$data->delivery_address}}
-                                </div>
-                            </small>
-                            <small class="row">
-                                <div class="col-12 text-center">
                                     Countdown <br>
                                     <span id="expiration_{{$data->id}}">--:--:--</span>
                                 </div>
+                                <div class="col-6 text-right">
+                                    Expiring At <br>
+                                    <span>{{\Carbon\Carbon::parse($data->expiration_time)->format('m/d H:i:s a')}}</span>
+                                </div>
                             </small>
-                            @if(\Carbon\Carbon::parse($data->expiration_time)->isFuture())
-                                <div class="my-2 ">
-                                    <a href="{{route('reverse-bidding.show', $data->id)}}" class="btn btn-primary w-100">Bid</a>
-                                </div>
-                            @else
-                                <div class="my-2 ">
-                                    <a href="{{route('reverse-bidding.show', $data->id)}}" class="btn btn-default w-100">Closed</a>
-                                </div>
-                            @endif
                             <pre class="d-none">
                                 {{json_encode($data, 128)}}
                             </pre>
                             <div class="small m-t-xs">
                                 Bids
-                                @if(count($data->offers)>0)
+                                @if(count($data->bids)>0)
                                     <ol id="bids_list_{{$data->id}}" style="height: 6.38em;overflow-y: auto;padding-left: 1.5em">
-                                        @foreach($data->offers as $bids)
-                                            <li>₱{{$bids->total_bid}}{{$bids->user_id == auth()->user()->id?' (your bid)':''}}</li>
+                                        @foreach($data->bids as $bids)
+                                            <li>₱{{$bids->bid}}{{$bids->user_id == auth()->user()->id?' (your bid)':''}}</li>
                                         @endforeach
                                     </ol>
                                 @else
@@ -400,10 +372,10 @@
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
                 document.getElementById("expiration_{{$data->id}}").innerHTML =  days+" "+hours + ":" + minutes + ":" + seconds;
-                if (distance < 0) {$
+                if (distance < 0) {
                     clearInterval(x{{$data->id}});
                     finishBid('{{$data->id}}');
-                    document.getElementById("expiration_{{$data->id}}").innerHTML = "--:--:--";
+                    document.getElementById("expiration_{{$data->id}}").innerHTML = "Awarding";
                 }
             }, 1000);
             @endforeach

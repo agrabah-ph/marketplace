@@ -44,11 +44,9 @@
                             <thead>
                             <tr>
                                 <th>Image</th>
-                                <th>Name</th>
                                 <th>Area</th>
+                                <th>Items</th>
                                 <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Starting Bid</th>
                                 <th>Added At</th>
                                 <th>Expiration</th>
                                 <th>Is Expired</th>
@@ -59,18 +57,23 @@
                             @forelse($list as $data)
                                 <tr>
                                     <td width="200px">{!! ($data->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$data->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}  </td>
-                                    <td>{{ $data->name }} </td>
                                     <td style="white-space: nowrap">{{ $data->area }} </td>
+                                    <td style="white-space: nowrap">
+                                        <ol>
+                                        @foreach($data->items as $item)
+                                            <li>{{$item->item_name}} - {{$item->quantity}} {{$item->unit_of_measure_short}}
+                                            </li>
+                                        @endforeach
+                                        </ol>
+                                    </td>
                                     <td>{!!  $data->description  !!} </td>
-                                    <td>{!!  $data->quantity?floatval($data->quantity).'kg':''  !!} </td>
-                                    <td class="text-right">{!!  $data->asking_price  !!} </td>
                                     <td style="white-space: nowrap">{!!  \Carbon\Carbon::parse($data->created_at)->format('M d, Y H:i:s')  !!} </td>
                                     <td style="white-space: nowrap">{{ \Carbon\Carbon::parse($data->expiration_time)->format('M d, Y H:i:s')  }} </td>
                                     <td>{!!  $data->is_expired?'Expired':'Active'  !!} </td>
                                     <td class="text-right">
                                         <div class="btn-group text-right">
                                             @if($isCommunityLeader)
-                                                <a href="{{route('reverse-bidding.edit', $data->id)}}" class="action btn-white btn btn-xs"><i class="fa fa-search text-success"></i> View/Edit</a>
+                                                <a href="{{route('reverse-bidding.show', $data->id)}}" class="action btn-white btn btn-xs"><i class="fa fa-search text-success"></i> View</a>
                                             @else
                                                 <button class="add-to-cart btn-white btn btn-xs"  data-name="{{$data->name}}" data-id="{{$data->id}}">
                                                     <i class="fa fa-plus text-success"></i> Add to Cart</button>

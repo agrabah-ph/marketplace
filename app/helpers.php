@@ -290,13 +290,22 @@ if (!function_exists('currency_format')) {
     }
 }
 
+
+if (!function_exists('number_format_from_comma')) {
+    function number_format_from_comma($amount, $decimal = 2)
+    {
+        return number_format(preg_replace('/,/','',$amount), $decimal);
+    }
+}
+
 if (!function_exists('settings')) {
-    function settings($setting)
+    function settings($setting, $default = null)
     {
         $settingQuery =  \Illuminate\Support\Facades\DB::table('settings')->where('name', $setting)->whereIsActive(1)->first();
         if($settingQuery){
             return $settingQuery->value;
         }
+        return $default;
     }
 }
 

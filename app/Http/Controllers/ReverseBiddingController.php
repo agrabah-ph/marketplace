@@ -6,8 +6,11 @@ use App\BfarNotifications;
 use App\Farmer;
 use App\Http\Resources\SpotMarketBrowseCollection;
 use App\Loan;
+use App\MarketplaceCategories;
 use App\ReverseBidding;
 use App\ReverseBiddingBid;
+use App\ReverseBiddingItems;
+use App\ReverseBiddingOffers;
 use App\Services\LoanService;
 use App\Services\NotificationService;
 use App\Services\SpotMarketOrderService;
@@ -65,7 +68,11 @@ class ReverseBiddingController extends Controller
                 $q->where('area',$request->area);
             }
         });
-        $list = $listQuery->where('expiration_time','>=',Carbon::now())->get();
+        $list = $listQuery
+//            ->where('expiration_time','>=',Carbon::now())
+            ->orderBy('expiration_time', 'desc')
+            ->get();
+
 
         return view('wharf.reverse-bidding.browse', compact('list', 'isCommunityLeader', 'areas'));
 
@@ -80,6 +87,7 @@ class ReverseBiddingController extends Controller
      */
     public function completeBid(Request $request)
     {
+        DB::beginTransaction();
         $spotMarket = ReverseBidding::find($request->id);
         $method = $request->input('method');
         $spotMarket->method = $method;
@@ -87,18 +95,26 @@ class ReverseBiddingController extends Controller
         $spotMarket->save();
 
         if($method == 'transport'){
-            $bfar_notifcation = BfarNotifications::create([
-                'from' => $request->from,
-                'product' => $request->product,
-                'quantity' => $request->quantity,
-                'unit_of_measure' => $request->unit_of_measure,
-                'destination' => $request->destination,
-                'com_leader_user_id' => auth()->user()->id,
-                'date_of_travel' => $request->date_of_travel,
-                'type_of_vehicle' => $request->type_of_vehicle
-            ]);
-            $this->notificationService->notifyBFAR($spotMarket->name, $spotMarket->area, $spotMarket->current_bid);
+
+            foreach($spotMarket->items as $item){
+                $product_name = $item->item_name;
+                $quantity = $item->quantity;
+                $bfar_notifcation = BfarNotifications::create([
+                    'from' => $request->from,
+                    'product' => $product_name,
+                    'quantity' => $quantity,
+                    'unit_of_measure' => $request->unit_of_measure,
+                    'destination' => $request->destination,
+                    'com_leader_user_id' => auth()->user()->id,
+                    'date_of_travel' => $request->date_of_travel,
+                    'type_of_vehicle' => $request->type_of_vehicle
+                ]);
+                $this->notificationService->notifyBFAR($spotMarket->name, $spotMarket->area, $spotMarket->current_bid);
+            }
+
         }
+
+        DB::commit();
         if($request->ajax()){
             return response()->json(['status'=>true]);
         }
@@ -156,8 +172,43 @@ class ReverseBiddingController extends Controller
         if($defaultAreaQuery){
             $defaultArea = $defaultAreaQuery->area;
         }
+        $categories = MarketplaceCategories::orderBy('name')->get();
 
-        return view('wharf.reverse-bidding.create',compact('defaultArea'));
+        return view('wharf.reverse-bidding.create',compact('defaultArea', 'categories'));
+    }
+
+    public function submitOfferBid(Request $request)
+    {
+
+        $array = $request->except('_token');
+        DB::beginTransaction();
+
+        $json_bids = [];
+        foreach($array['item_price'] as $key => $price){
+            $json_bids[] = [
+                'id' =>$array['item_id'][$key],
+                'price' =>$price,
+                'cost' =>$array['item_cost'][$key],
+            ];
+        }
+
+        $offer = ReverseBiddingOffers::create([
+            'reverse_bidding_id' => $array['po_id'],
+            'user_id' => auth()->user()->id,
+            'gross_total' => $array['gross_total'],
+            'service_fee' => $array['gross_total'],
+            'vat' => $array['vat'],
+            'total_bid' => $array['total_bid'],
+            'bids' => json_encode($json_bids, true),
+            'agree_on' => now()->toDateTimeString(),
+        ]);
+//        return $offer;
+//
+        event(new \App\Events\UpdateBidBrowse('reverse-bidding',$array['po_id']));
+        DB::commit();
+
+        return redirect()->back()->with('success', 'Successfully Submitted Offer!');
+//        dd($request->all());
     }
     /**
      * Show the form for creating a new resource.
@@ -202,19 +253,30 @@ class ReverseBiddingController extends Controller
      */
     public function refreshBid(Request $request)
     {
+        $data = ReverseBidding::find($request->id);
+        $offers = $data->offers;
+//        $offers = ReverseBiddingOffers::where('reverse_bidding_id', $request->id)->orderBy('total_bid')->get();
+        $items = ReverseBiddingItems::where('reverse_bidding_id', $request->id)->pluck('item_name', 'id')->toArray();
+        $qtys = ReverseBiddingItems::where('reverse_bidding_id', $request->id)->pluck('quantity', 'id')->toArray();
+        $rank = $data->user_rank;
+        return response()->json([
+            'view' => view('wharf.reverse-bidding.offers', compact('offers', 'items', 'qtys'))->render(),
+            'rank' => $rank
+        ]);
 
-        $array = $request->all();
-
-        $model = ReverseBidding::find($request->id);
-        $current_bid = $model->current_bid;
-
-        $value = floatval(preg_replace('/,/','',$current_bid));
-
-        $nextBid = $value - settings('spot_market_next_bid');
-
-        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','asc')->pluck('bid');
-
-        return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, 'current_bid'=>$current_bid, 'value'=>$value]);
+//  Old Code
+//        $array = $request->all();
+//
+//        $model = ReverseBidding::find($request->id);
+//        $current_bid = $model->current_bid;
+//
+//        $value = floatval(preg_replace('/,/','',$current_bid));
+//
+//        $nextBid = $value - settings('spot_market_next_bid');
+//
+//        $bids = ReverseBiddingBid::where('reverse_bidding_id', $request->id)->orderBy('bid','asc')->pluck('bid');
+//
+//        return response()->json(['status' => true, 'bids' => $bids, 'next_bid' => $nextBid, 'current_bid'=>$current_bid, 'value'=>$value]);
     }
 
     /**
@@ -225,27 +287,32 @@ class ReverseBiddingController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-            'quantity' => 'numeric|max:1000000',
-        ]);
         $array = $request->except('_token');
         $array['user_id'] = auth()->user()->id;
-        $array["asking_price"] = preg_replace('/,/','', $array['selling_price']);
+        $array['delivery_date_time'] = Carbon::createFromFormat('m/d/Y H:i',$request->delivery_date. ' ' .$request->delivery_time);
+        $array['delivery_date_time'] = $array['delivery_date_time']->toDateTimeString();
+        $array['expiration_time'] = Carbon::createFromFormat('m/d/Y H:i',$request->bid_end_date. ' ' .$request->bid_end_time);
+        $array['expiration_time'] = $array['expiration_time']->toDateTimeString();
+
+        DB::beginTransaction();
+        $array['category_id'] = $request->category;
         $model = ReverseBidding::create($array);
-        $expiration = Carbon::parse($model['created_at']);
-        if($model['duration']){
-            $duration = explode(':',$model['duration']);
-            $expiration->addDays($request->days);
-            $expiration->hours($duration[0]);
-            $expiration->minute($duration[1]);
-            $expiration->second(0);
-        }
-        $model->expiration_time = $expiration;
         $model->save();
         $model->addMedia($request->file('image'))
             ->toMediaCollection('reverse-bidding');
 
+        $itemsNames = $request->item_name;
+        $itemsQuantity = $request->item_quantity;
+        $itemsUnitOfMeasure = $request->item_unit_of_measure;
+        foreach($itemsNames as $key => $itemsName){
+            $arrayItems = [];
+            $arrayItems['reverse_bidding_id'] = $model->id;
+            $arrayItems['item_name'] = $itemsName;
+            $arrayItems['quantity'] = $itemsQuantity[$key];
+            $arrayItems['unit_of_measure'] = $itemsUnitOfMeasure[$key];
+            $modelItems = ReverseBiddingItems::create($arrayItems);
+        }
+        DB::commit();
         return redirect()->route('reverse-bidding.index');
     }
 
@@ -258,7 +325,9 @@ class ReverseBiddingController extends Controller
     public function show($id)
     {
         $data = ReverseBidding::find($id);
-        return view('wharf.reverse-bidding.show', compact('data'));
+        $items = ReverseBiddingItems::where('reverse_bidding_id', $id)->pluck('item_name', 'id')->toArray();
+        $qtys = ReverseBiddingItems::where('reverse_bidding_id', $id)->pluck('quantity', 'id')->toArray();
+        return view('wharf.reverse-bidding.show', compact('data', 'items', 'qtys'));
     }
 
     /**
@@ -271,7 +340,9 @@ class ReverseBiddingController extends Controller
     {
         $data = ReverseBidding::find($id);
 
-        return view('wharf.reverse-bidding.edit', compact('data'));
+        $categories = MarketplaceCategories::orderBy('name')->get();
+
+        return view('wharf.reverse-bidding.edit', compact('data', 'categories'));
     }
 
     /**
@@ -283,10 +354,35 @@ class ReverseBiddingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'quantity' => 'numeric|max:1000000',
-            'selling_price' => 'regex:/^[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)*$/',
-        ]);
+
+
+        $array = $request->except('_token');
+        $array['user_id'] = auth()->user()->id;
+        $array['delivery_date_time'] = Carbon::createFromFormat('m/d/Y H:i',$request->delivery_date. ' ' .$request->delivery_time);
+        $array['delivery_date_time'] = $array['delivery_date_time']->toDateTimeString();
+        $array['expiration_time'] = Carbon::createFromFormat('m/d/Y H:i',$request->bid_end_date. ' ' .$request->bid_end_time);
+        $array['expiration_time'] = $array['expiration_time']->toDateTimeString();
+
+        DB::beginTransaction();
+        $array['category_id'] = $request->category;
+        $model = ReverseBidding::create($array);
+        $model->save();
+        $model->addMedia($request->file('image'))
+            ->toMediaCollection('reverse-bidding');
+
+        $itemsNames = $request->item_name;
+        $itemsQuantity = $request->item_quantity;
+        $itemsUnitOfMeasure = $request->item_unit_of_measure;
+        foreach($itemsNames as $key => $itemsName){
+            $arrayItems = [];
+            $arrayItems['reverse_bidding_id'] = $model->id;
+            $arrayItems['item_name'] = $itemsName;
+            $arrayItems['quantity'] = $itemsQuantity[$key];
+            $arrayItems['unit_of_measure'] = $itemsUnitOfMeasure[$key];
+            $modelItems = ReverseBiddingItems::create($arrayItems);
+        }
+        DB::commit();
+        return $request->all();
 
         $data = ReverseBidding::find($id);
         $request->merge([

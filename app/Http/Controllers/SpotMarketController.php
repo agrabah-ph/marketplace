@@ -135,14 +135,14 @@ class SpotMarketController extends Controller
 
         $winningBidsMarketplace = MarketPlace::whereIn('id', $marketplaceBidsWins)->get();
 
-        $reverseBiddingQuery = ReverseBiddingBid::query();
-        $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
-        $reverseBiddingQuery = $reverseBiddingQuery->where('user_id', auth()->user()->id);
-        $reverseBiddingBidsWins = $reverseBiddingQuery->pluck('reverse_bidding_id')->toArray();
+//        $reverseBiddingQuery = ReverseBiddingBid::query();
+//        $reverseBiddingQuery = $reverseBiddingQuery->Where('winner', 1);
+//        $reverseBiddingQuery = $reverseBiddingQuery->where('user_id', auth()->user()->id);
+//        $reverseBiddingBidsWins = $reverseBiddingQuery->pluck('reverse_bidding_id')->toArray();
+//
+//        $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
 
-        $winningBidsReverseBidding = ReverseBidding::whereIn('id', $reverseBiddingBidsWins)->get();
-
-        return view('wharf.spot-market.winning_bids', compact('winningBids', 'winningBidsMarketplace', 'winningBidsReverseBidding'));
+        return view('wharf.spot-market.winning_bids', compact('winningBids', 'winningBidsMarketplace'));
 
     }
 

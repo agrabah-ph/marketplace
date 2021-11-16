@@ -18,9 +18,9 @@
     {!! Html::style('/css/styles.css?v='.now()->unix()) !!}
     {{--    {!! Html::style('/css/template/bootstrap.min.css') !!}--}}
     {!! Html::style('/font-awesome/css/font-awesome.css') !!}
-    @yield('styles')
     {!! Html::style('/css/template/animate.css') !!}
     {!! Html::style('/css/template/style.css?v='.now()->unix()) !!}
+    @yield('styles')
     <style>
         @media screen and (min-width: 700px) {
             .table-responsive{
@@ -54,6 +54,9 @@
             position: absolute;
             top: 12px;
             right: 0;
+        }
+        .datepicker.dropdown-menu{
+            z-index: 5000!important;
         }
 
     </style>
@@ -198,15 +201,19 @@
         printElem($(printable).clone())
     });
     $(document).ready(function () {
-        var complete_bid_dates = $('.complete_bid_dates').datepicker({
-            todayBtn: "linked",
-            keyboardNavigation: false,
-            forceParse: false,
-            calendarWeeks: true,
-            autoclose: true,
-            format: 'yyyy-mm-dd',
-            placement: 'bottom',
-        });
+        try {
+            var complete_bid_dates = $('.complete_bid_dates').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                placement: 'bottom',
+            });
+        }catch (e){
+            console.warn('Datepicker not initialized please check if needed!')
+        }
 
     });
     $(document).on('submit', '.complete_bid',function (e){

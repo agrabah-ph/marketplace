@@ -32,7 +32,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> Marketplace</a></li>
                         <li><a class="nav-link" data-toggle="tab" href="#tab-2"> Auctions</a></li>
-                        <li><a class="nav-link" data-toggle="tab" href="#tab-3"> Purchase Order</a></li>
+{{--                        <li><a class="nav-link" data-toggle="tab" href="#tab-3"> Purchase Order</a></li>--}}
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" id="tab-1" class="tab-pane active">
@@ -239,108 +239,108 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" id="tab-3" class="tab-pane">
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table shoping-cart-table">
-                                        <tbody>
-                                        @foreach($winningBidsReverseBidding as $item)
-                                            @php
-                                                $winner = $item->bids->first()->user;
-                                                $winningBid = $item->bids->first()->bid;
-                                                $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'reverse');
-                                            @endphp
-                                            <tr>
-                                                <td>
-                                                    <div class="cart-product-imitation">
-                                                        {!! ($item->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}
-                                                    </div>
-                                                </td>
-                                                <td class="text-left">
-                                                    Winner: {{$winner->name??$winner->email}}
-                                                </td>
-                                                <td class="desc">
-                                                    <h3>
-                                                        <a href="#" class="text-navy">
-                                                            <a href="{{route('reverse-bidding.show', $item->id)}}"
-                                                               class="product-name"> {{$item->name}}</a>
-                                                        </a>
-                                                    </h3>
-                                                    {!! $item->description !!}
-                                                </td>
-                                                <td>
-                                                    <h4>
-                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 250px;">
-                                                    <div class="tabulation">
-                                                        <div class="row">
-                                                            <div class="col-4 no-wrap text-muted text-left">Sub
-                                                                Total
-                                                            </div>
-                                                            <div class="col-8 no-wrap text-right">
-                                                                ₱{{number_format($winningBid - $serviceFee, 2)}}</div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-4 no-wrap text-muted text-left">
-                                                                Service Fee
-                                                            </div>
-                                                            <div class="col-8 no-wrap text-right">
-                                                                ₱{{number_format($serviceFee, 2)}}</div>
-                                                        </div>
-                                                        <div class="row total">
-                                                            <div class="col-4 no-wrap text-muted text-left">
-                                                                Total
-                                                            </div>
-                                                            <div class="col-8 no-wrap text-right">
-                                                                ₱{{number_format($winningBid, 2)}}</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-left">
-                                                    @if($item->status == 0)
-                                                        <form action="{{route('reverse-bidding.complete_bid')}}"
-                                                              method="POST" class="complete_bid"
-                                                              data-id="{{$item->id}}"
-                                                              data-product="{{$item->name}}"
-                                                              data-qty="{{$item->quantity}}"
-                                                              data-uom="{{$item->unit_of_measure_short}}">
-                                                            @csrf
-                                                            <input type="hidden" name="id"
-                                                                   value="{{$item->id}}">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="method" id="method_local"
-                                                                       value="local" checked="">
-                                                                <label class="form-check-label"
-                                                                       for="method_local">
-                                                                    Local
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio"
-                                                                       name="method" id="method_transport"
-                                                                       value="transport">
-                                                                <label class="form-check-label"
-                                                                       for="method_transport">
-                                                                    Transport
-                                                                </label>
-                                                            </div>
-                                                            <button class="btn btn-primary mt-3">Complete
-                                                            </button>
-                                                        </form>
-                                                    @elseif($item->status == 1)
-                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div role="tabpanel" id="tab-3" class="tab-pane">--}}
+{{--                            <div class="panel-body">--}}
+{{--                                <div class="table-responsive">--}}
+{{--                                    <table class="table shoping-cart-table">--}}
+{{--                                        <tbody>--}}
+{{--                                        @foreach($winningBidsReverseBidding as $item)--}}
+{{--                                            @php--}}
+{{--                                                $winner = $item->bids->first()->user;--}}
+{{--                                                $winningBid = $item->bids->first()->bid;--}}
+{{--                                                $serviceFee = getServiceFee($item->unit_of_measure, $item->quantity, $winningBid, 'reverse');--}}
+{{--                                            @endphp--}}
+{{--                                            <tr>--}}
+{{--                                                <td>--}}
+{{--                                                    <div class="cart-product-imitation">--}}
+{{--                                                        {!! ($item->hasMedia('reverse-bidding')? "<img class='img-thumbnail' src='".url('/').$item->getFirstMediaUrl('reverse-bidding')."'>":'')  !!}--}}
+{{--                                                    </div>--}}
+{{--                                                </td>--}}
+{{--                                                <td class="text-left">--}}
+{{--                                                    Winner: {{$winner->name??$winner->email}}--}}
+{{--                                                </td>--}}
+{{--                                                <td class="desc">--}}
+{{--                                                    <h3>--}}
+{{--                                                        <a href="#" class="text-navy">--}}
+{{--                                                            <a href="{{route('reverse-bidding.show', $item->id)}}"--}}
+{{--                                                               class="product-name"> {{$item->name}}</a>--}}
+{{--                                                        </a>--}}
+{{--                                                    </h3>--}}
+{{--                                                    {!! $item->description !!}--}}
+{{--                                                </td>--}}
+{{--                                                <td>--}}
+{{--                                                    <h4>--}}
+{{--                                                        {{$item->quantity}}{{$item->unit_of_measure_short}}--}}
+{{--                                                    </h4>--}}
+{{--                                                </td>--}}
+{{--                                                <td style="width: 250px;">--}}
+{{--                                                    <div class="tabulation">--}}
+{{--                                                        <div class="row">--}}
+{{--                                                            <div class="col-4 no-wrap text-muted text-left">Sub--}}
+{{--                                                                Total--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="col-8 no-wrap text-right">--}}
+{{--                                                                ₱{{number_format($winningBid - $serviceFee, 2)}}</div>--}}
+{{--                                                        </div>--}}
+{{--                                                        <div class="row">--}}
+{{--                                                            <div class="col-4 no-wrap text-muted text-left">--}}
+{{--                                                                Service Fee--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="col-8 no-wrap text-right">--}}
+{{--                                                                ₱{{number_format($serviceFee, 2)}}</div>--}}
+{{--                                                        </div>--}}
+{{--                                                        <div class="row total">--}}
+{{--                                                            <div class="col-4 no-wrap text-muted text-left">--}}
+{{--                                                                Total--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="col-8 no-wrap text-right">--}}
+{{--                                                                ₱{{number_format($winningBid, 2)}}</div>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </td>--}}
+{{--                                                <td class="text-left">--}}
+{{--                                                    @if($item->status == 0)--}}
+{{--                                                        <form action="{{route('reverse-bidding.complete_bid')}}"--}}
+{{--                                                              method="POST" class="complete_bid"--}}
+{{--                                                              data-id="{{$item->id}}"--}}
+{{--                                                              data-product="{{$item->name}}"--}}
+{{--                                                              data-qty="{{$item->quantity}}"--}}
+{{--                                                              data-uom="{{$item->unit_of_measure_short}}">--}}
+{{--                                                            @csrf--}}
+{{--                                                            <input type="hidden" name="id"--}}
+{{--                                                                   value="{{$item->id}}">--}}
+{{--                                                            <div class="form-check">--}}
+{{--                                                                <input class="form-check-input" type="radio"--}}
+{{--                                                                       name="method" id="method_local"--}}
+{{--                                                                       value="local" checked="">--}}
+{{--                                                                <label class="form-check-label"--}}
+{{--                                                                       for="method_local">--}}
+{{--                                                                    Local--}}
+{{--                                                                </label>--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="form-check">--}}
+{{--                                                                <input class="form-check-input" type="radio"--}}
+{{--                                                                       name="method" id="method_transport"--}}
+{{--                                                                       value="transport">--}}
+{{--                                                                <label class="form-check-label"--}}
+{{--                                                                       for="method_transport">--}}
+{{--                                                                    Transport--}}
+{{--                                                                </label>--}}
+{{--                                                            </div>--}}
+{{--                                                            <button class="btn btn-primary mt-3">Complete--}}
+{{--                                                            </button>--}}
+{{--                                                        </form>--}}
+{{--                                                    @elseif($item->status == 1)--}}
+{{--                                                        <span class="text-green">{{$item->method=='transport'?'Transported':'Completed'}}</span>--}}
+{{--                                                    @endif--}}
+{{--                                                </td>--}}
+{{--                                            </tr>--}}
+{{--                                        @endforeach--}}
+{{--                                        </tbody>--}}
+{{--                                    </table>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
                 <div class="col-md-3 d-none">
