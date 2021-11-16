@@ -166,6 +166,11 @@
     {!! Html::style('/css/template/plugins/select2/select2.min.css') !!}
     {!! Html::style('/css/template/plugins/select2/select2-bootstrap4.min.css') !!}
 
+    <style>
+        .ui-helper-hidden-accessible{
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('scripts')
