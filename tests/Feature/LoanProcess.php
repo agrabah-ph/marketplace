@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class LoanTest extends TestCase
+class LoanProcess extends TestCase
 {
 //    use WithoutMiddleware; // use the trait
     /**

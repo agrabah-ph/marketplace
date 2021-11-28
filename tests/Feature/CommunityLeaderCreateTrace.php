@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Tests\TestCase;
 
-class CommunityLeaderCreateTraceTest extends TestCase
+class CommunityLeaderCreateTrace extends TestCase
 {
     /**
      * A basic feature test example.

@@ -280,7 +280,7 @@
                 success: function (response) {
                     console.log(response)
                     if (response.status) {
-                        window.location.replace("{{route('market-place-my_orders')}}");
+{{--                        window.location.replace("{{route('market-place-my_orders')}}");--}}
                     } else {
                         swal("Sorry!", response.msg, "error");
 

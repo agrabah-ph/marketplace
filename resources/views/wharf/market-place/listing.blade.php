@@ -254,8 +254,8 @@
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success:function(response){
-                    if(response>0){
-                        $('#spot_market_cart_count').html(response);
+                    if(response.status){
+                        $('#spot_market_cart_count').html(response.count);
                         $('#item_added_to_cart').html(item);
                         $('#toast-message').html("has been added to cart.");
                         toast1.removeClass('toast-danger');

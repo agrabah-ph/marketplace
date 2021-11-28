@@ -24,15 +24,6 @@ class MarketPlaceController extends Controller
 {
 
     /**
-     * @var MarketplaceInventoryService
-     */
-    private $inventoryService;
-
-    public function __construct(MarketplaceInventoryService $inventoryService)
-    {
-        $this->inventoryService = $inventoryService;
-    }
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -229,9 +220,10 @@ class MarketPlaceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     * @param MarketplaceInventoryService $inventoryService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, MarketplaceInventoryService $inventoryService)
     {
 
         $request->validate([
@@ -265,9 +257,11 @@ class MarketPlaceController extends Controller
             }
             $spotMarket->expiration_time = $expiration;
             $spotMarket->save();
-            $this->inventoryService->save($spotMarket, $array['quantity'], 'Initial Inventory');
-            $spotMarket->addMedia($request->file('image'))
-                ->toMediaCollection('market-place');
+            $inventoryService->save($spotMarket, $array['quantity'], 'Initial Inventory');
+            if($request->has('image')){
+                $spotMarket->addMedia($request->file('image'))
+                    ->toMediaCollection('market-place');
+            }
             $farmerModel->marketPlace()->save($spotMarket);
         }
 

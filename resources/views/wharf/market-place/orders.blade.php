@@ -56,8 +56,12 @@
                                     <div class="cart-list">
                                         @foreach($order->items as $item)
                                             @php
-                                                $product  = $item->product;
-                                                $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')
+                                                if ($item->product){
+                                                    $product  = $item->product;
+                                                    $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'');
+                                                }else{
+                                                    $image = "";
+                                                }
                                             @endphp
 
                                             <div class="cart-item">
@@ -69,8 +73,9 @@
                                                                     {{--                                                                        {!! $image !!}--}}
                                                                     {{--                                                    {!! ($cartItem->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$cartItem->getFirstMediaUrl('market-place')."'>":'')  !!}--}}
                                                                     {{--<div class="img" style="background-image: url({!! $image !!})"></div>--}}
+                                                                    @if($product)
                                                                     <div class="img" style="background-image: url({!! ($product->hasMedia('market-place')? url('/').$product->getFirstMediaUrl('market-place'):'')  !!})"></div>
-
+                                                                    @endif
                                                                 </div>
                                                             </a>
 
