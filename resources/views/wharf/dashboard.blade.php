@@ -477,6 +477,7 @@
                         </div>
                     </div>
                 @else
+                    @if(getRoleName() != 'enterprise-client')
                     <div class="ibox auction">
                         <div class="ibox-title">
                             <div class="ibox-tools">
@@ -563,7 +564,7 @@
                             @endforeach
                         </div>
                     </div>
-
+                    @endif
 
                     @if(getRoleName() == 'buyer')
                     {{--<div class="row revenue">--}}

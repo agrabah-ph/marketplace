@@ -325,8 +325,10 @@ class SpotMarketController extends Controller
             }
             $spotMarket->expiration_time = $expiration;
             $spotMarket->save();
-            $spotMarket->addMedia($request->file('image'))
-                ->toMediaCollection('spot-market');
+            if($request->hasFile('image')){
+                $spotMarket->addMedia($request->file('image'))
+                    ->toMediaCollection('spot-market');
+            }
             $farmerModel->spotMarket()->save($spotMarket);
         }
 

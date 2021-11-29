@@ -52,7 +52,12 @@
                                             @foreach($order->items as $item)
                                                 @php
                                                     $product  = $item->product;
-                                                    $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'')
+                                                    $image = '';
+                                                    if ($product){
+                                                        $image = ($product->hasMedia('market-place')? "<img class='img-thumbnail' src='".url('/').$product->getFirstMediaUrl('market-place')."'>":'');
+                                                    }else{
+                                                        continue;
+                                                    }
                                                 @endphp
 
                                                 <div class="cart-item">
