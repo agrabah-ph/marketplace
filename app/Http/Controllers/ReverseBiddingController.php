@@ -11,6 +11,7 @@ use App\ReverseBidding;
 use App\ReverseBiddingBid;
 use App\ReverseBiddingItems;
 use App\ReverseBiddingOffers;
+use App\Rules\PurchaseOrderSubmitOffer;
 use App\Services\LoanService;
 use App\Services\NotificationService;
 use App\Services\SpotMarketOrderService;
@@ -20,10 +21,10 @@ use App\SpotMarketCart;
 use App\SpotMarketOrder;
 use App\SpotMarketPayment;
 use Carbon\Carbon;
-use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ReverseBiddingController extends Controller
 {
@@ -182,6 +183,19 @@ class ReverseBiddingController extends Controller
 
         $array = $request->except('_token');
         DB::beginTransaction();
+
+
+        $validate = Validator::make($array, [
+            'item_price' => [
+                'required',
+                new PurchaseOrderSubmitOffer()
+            ],
+            'total_bid' => 'required',
+            'vat' => 'required',
+            'transaction_fee' => 'required',
+            'gross_total' => 'required',
+            'agree' => 'required',
+        ])->validate();
 
         $json_bids = [];
         foreach($array['item_price'] as $key => $price){
