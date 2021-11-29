@@ -41,7 +41,9 @@ class InitTest extends TestCase
             'enterprise-client',
             'buyer',
         ];
-        $this->assertTrue(Role::whereIn('name', $roles)->exists());
+        foreach($roles as $role){
+            $this->assertTrue(Role::where('name', $role)->exists());
+        }
 
         DB::rollBack();
     }
@@ -51,6 +53,27 @@ class InitTest extends TestCase
         DB::beginTransaction();
 
         $this->assertTrue(MarketplaceCategories::count()>0);
+
+        DB::rollBack();
+    }
+
+    public function testBfarSettings()
+    {
+        DB::beginTransaction();
+
+        $settings = Settings::where('name','bfar')->first();
+        $this->assertTrue(count($settings->toArray()) > 0);
+        $this->assertTrue(count($settings->profile->toArray()) > 0);
+
+        DB::rollBack();
+    }
+
+    public function testServiceFeeSettings()
+    {
+        DB::beginTransaction();
+
+        $settings = Settings::where('name','service_fee_percentage')->first();
+        $this->assertTrue(count($settings->toArray()) > 0);
 
         DB::rollBack();
     }
