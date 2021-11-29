@@ -1,42 +1,42 @@
-# Agrabah Traceability
+# Agrabah Wharf
 
-Agrabah Traceability allows community leaders to trace the delivery of a produce from the farmer to the market.
+This project contains 3 main services, Reverse Bidding, Auction and Marketplace. The goal is to connect all the services together as one complete application.
 
-Agrabah was created to empower Filipino Farmers & Fisherfolks to steadily earn fair profit through online platforms that connect them to partners and consumers.
+**Reverse Bidding** allows clients to post their purchase orders and let our community leaders bid for the best possible price.
 
-Products are directly sourced from more than 5,000 farmers and fisherfolks nationwide across the Philippines and growing. Agrabah provides farmers with a stable market channel which allows for inclusive economic growth.
+**Auction** posted by the community leaders the products are from our own farmers and will make sure that the transaction will be on the same day, fresh.
 
-Agrabah knows that with a better marketplace, we can help our Filipino farmers and fisher folks enjoy a sustained and rewarding livelihood.
+**Marketplace** is a simplified ecommerce like application that are listed by the community leaders with a simple and informative order tracking system.
 
-# Getting Started - Local Development
+#Requirements
 
-**INSTALL THE FOLLOWING GLOBAL DEPENDENCIES**
+1. Composer - https://getcomposer.org/
+1. PHP 7.2^ - preferred tools (ex: xampp, laragon, docker)
+1. Pusher Credentials -  https://pusher.com/
 
-* **laradock
+# Getting Started
 
-## Laradock usage
-1. in the agrabah parent folder, run ```git clone https://github.com/Laradock/laradock.git```
-1. add ```127.0.0.1 agrabah-trace.test``` in hosts
-1. update agrabah-trace/.env
-    ```
-    DB_HOST=mysql
-    DB_PASSWORD=root
-    ```
-1. create agrabah-trace.conf in laradock/apache2
-    ```
-      ServerName agrabah-trace.test
-      DocumentRoot /var/www/agrabah/public/
-    ```
-1. change to PHP v7.3 rename laradock/.env.example to .env and update laradock/.env
-    ```
-    PHP_VERSION=7.3
-    ```
-    run ```docker-compose build php-fpm``` 
-1. run ```docker-compose build workspace```
-1. go to laradock folder and run ```docker-compose up -d apache2 mysql```
-1. run ```docker-compose exec workspace bash```
-1. go to /var/www/agrabah-trace
-1. install dependencies with ```composer install```    
-1. if database is empty, install migration with ```artisan migrate:install```
-1. run migration ```artisan migrate```
-1. browse to http://agrabah-trace.test
+###Cloning from Repo
+
+1. Open Git Bash
+1. Change the current working directory to the location where you want the cloned directory.
+1. Type in "git clone https://github.com/agrabah-ph/marketplace.git"
+
+### Config ENV 
+
+1. Copy .env.example and name it as .env
+1. Update the DB_* configuration with your current DB setting
+1. Update the APP_URL with your current url
+1. Update pusher configuration with PUSHER_APP_*
+
+### Installing Dependency
+
+1. composer install
+1. php artisan key:generate
+1. php artisan migrate
+1. php artisan db:seed
+
+### Unit/Feature Test
+
+>php unit test
+
